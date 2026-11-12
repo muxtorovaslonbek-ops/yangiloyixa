@@ -1,4 +1,4 @@
-import { useState, useId } from "react";
+import { useState, useId, useMemo } from "react";
 import {
   BookOpen,
   Volume2,
@@ -431,7 +431,67 @@ const DIALOGUES: { id: string; title: string; desc: string; lines: DialogueLine[
 ];
 
 export function EnglishSection({ onBack }: Props) {
-  const [selectedLevel, setSelectedLevel] = useState<CEFRLevel>("B1");
+  // Track completed videos from localStorage & sync dynamically
+  const [completedVideoIds, setCompletedVideoIds] = useState<Set<number>>(() => {
+    try {
+      const saved = localStorage.getItem("eduuni_completed_video_lessons");
+      if (saved) return new Set(JSON.parse(saved));
+    } catch {
+      // Ignore
+    }
+    return new Set<number>([1]);
+  });
+
+  const handleToggleVideoCompleted = (id: number) => {
+    setCompletedVideoIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      try {
+        localStorage.setItem("eduuni_completed_video_lessons", JSON.stringify(Array.from(next)));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
+  };
+
+  const completedCount = completedVideoIds.size;
+
+  // Dynamically calculate user's earned CEFR level based on watched video count:
+  // 0 - 24 videos: A1 (Endi boshlagan bo'lsa A1)
+  // 25 - 59 videos: A2
+  // 60 - 109 videos: B1
+  // 110 - 159 videos: B2
+  // 160 - 180 videos: C1 (To'liq ko'rsa C1)
+  const earnedLevel: CEFRLevel = useMemo(() => {
+    if (completedCount >= 160) return "C1";
+    if (completedCount >= 110) return "B2";
+    if (completedCount >= 60) return "B1";
+    if (completedCount >= 25) return "A2";
+    return "A1";
+  }, [completedCount]);
+
+  const [selectedLevel, setSelectedLevel] = useState<CEFRLevel>(() => {
+    try {
+      const saved = localStorage.getItem("eduuni_completed_video_lessons");
+      if (saved) {
+        const count = (JSON.parse(saved) as number[]).length;
+        if (count >= 160) return "C1";
+        if (count >= 110) return "B2";
+        if (count >= 60) return "B1";
+        if (count >= 25) return "A2";
+        return "A1";
+      }
+    } catch {
+      // Ignore
+    }
+    return "A1";
+  });
+
   const [activeTab, setActiveTab] = useState<
     "videos" | "lessons" | "vocabulary" | "listening" | "test" | "speaking"
   >("videos");
@@ -538,29 +598,105 @@ export function EnglishSection({ onBack }: Props) {
             </p>
           </div>
 
-          {/* Quick CEFR selector bar */}
-          <div className="flex flex-col gap-2 rounded-2xl bg-navy-foreground/10 p-4 backdrop-blur-md">
-            <p className="text-xs font-semibold uppercase tracking-wider text-cyan">
-              Darajani tanlang (CEFR):
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {CEFR_LEVELS.map((lvl) => (
-                <button
-                  key={lvl.id}
-                  onClick={() => setSelectedLevel(lvl.id)}
-                  className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
-                    selectedLevel === lvl.id
-                      ? "bg-cyan text-navy shadow-glow scale-105"
-                      : "bg-navy-foreground/15 text-navy-foreground hover:bg-navy-foreground/25"
-                  }`}
-                >
-                  {lvl.id}
-                </button>
-              ))}
+          {/* Quick CEFR selector bar & Dynamic Video-Based Level */}
+          <div className="flex flex-col gap-3 rounded-2xl bg-navy-foreground/10 p-4.5 backdrop-blur-md border border-navy-foreground/15 shadow-inner">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-bold uppercase tracking-wider text-cyan">
+                Darajani tanlang (CEFR):
+              </p>
+              <div className="flex items-center gap-1.5 rounded-full bg-cyan/20 px-3 py-1 text-xs font-black text-white border border-cyan/40 shadow-glow">
+                <Sparkles className="h-3.5 w-3.5 text-cyan" />
+                <span>
+                  Sizning darajangiz: <strong className="text-cyan text-sm">{earnedLevel}</strong>
+                </span>
+              </div>
             </div>
-            <p className="text-[11px] text-navy-foreground/70">
-              {CEFR_LEVELS.find((l) => l.id === selectedLevel)?.sub}
-            </p>
+
+            <div className="flex flex-wrap gap-1.5">
+              {CEFR_LEVELS.map((lvl) => {
+                const isEarned = lvl.id === earnedLevel;
+                const isSelected = selectedLevel === lvl.id;
+                return (
+                  <button
+                    key={lvl.id}
+                    type="button"
+                    onClick={() => setSelectedLevel(lvl.id)}
+                    className={`relative rounded-xl px-3.5 py-1.5 text-xs font-extrabold transition-all ${
+                      isSelected
+                        ? "bg-cyan text-navy shadow-glow scale-105"
+                        : isEarned
+                          ? "bg-cyan/25 text-cyan border border-cyan/50 hover:bg-cyan/35"
+                          : "bg-navy-foreground/15 text-navy-foreground hover:bg-navy-foreground/25"
+                    }`}
+                  >
+                    <span>{lvl.id}</span>
+                    {isEarned && (
+                      <span
+                        className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[9px] font-bold text-white shadow-sm"
+                        title="Video darslar bo'yicha sizning joriy darajangiz"
+                      >
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Video-Based Dynamic Level Status & Progress */}
+            <div className="space-y-1.5 pt-2 border-t border-navy-foreground/15">
+              <div className="flex items-center justify-between text-xs font-semibold text-navy-foreground/90">
+                <span>
+                  O'zlashtirilgan video darslar:{" "}
+                  <strong className="text-cyan">{completedCount} / 180 ta</strong>
+                </span>
+                <span className="font-bold text-cyan">
+                  {completedCount >= 160
+                    ? "C1 (Mukammal daraja)"
+                    : completedCount < 25
+                      ? "A1 (Boshlang'ich daraja)"
+                      : `${earnedLevel} darajasi`}
+                </span>
+              </div>
+
+              {/* Mini progress bar toward C1 */}
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-navy-foreground/20">
+                <div
+                  className="h-full rounded-full bg-cyan shadow-glow transition-all duration-500"
+                  style={{ width: `${Math.round((completedCount / 180) * 100)}%` }}
+                />
+              </div>
+
+              <p className="text-[11px] text-navy-foreground/80 leading-relaxed">
+                {completedCount >= 160 ? (
+                  <span className="text-emerald-300 font-semibold">
+                    🎉 Tabriklaymiz! Siz deyarli barcha 180 ta video darsni ko'rib chiqdingiz va{" "}
+                    <strong>C1 (Advanced)</strong> darajasiga yetdingiz!
+                  </span>
+                ) : completedCount < 25 ? (
+                  <span>
+                    Siz kursni <strong>endi boshladingiz — A1 (Beginner)</strong> darajasi. A2
+                    darajaga o'tish uchun kamida 25 ta video dars ko'ring ({completedCount}/25).
+                  </span>
+                ) : completedCount < 60 ? (
+                  <span>
+                    Joriy video darajangiz: <strong>A2 (Elementary)</strong>. B1 darajaga yetish
+                    uchun yana {60 - completedCount} ta video ko'ring ({completedCount}/60).
+                  </span>
+                ) : completedCount < 110 ? (
+                  <span>
+                    Joriy video darajangiz: <strong>B1 (Intermediate)</strong>. B2 darajaga yetish
+                    uchun yana {110 - completedCount} ta video ko'ring ({completedCount}/110).
+                  </span>
+                ) : (
+                  <span>
+                    Joriy video darajangiz: <strong>B2 (Upper-Intermediate)</strong>. C1 darajaga
+                    yetish uchun yana {160 - completedCount} ta video ko'ring ({completedCount}
+                    /160).
+                  </span>
+                )}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -595,7 +731,12 @@ export function EnglishSection({ onBack }: Props) {
       </div>
 
       {/* TAB 0: VIDEO LESSONS (180 videos) */}
-      {activeTab === "videos" && <EnglishVideoLessons />}
+      {activeTab === "videos" && (
+        <EnglishVideoLessons
+          completedIds={completedVideoIds}
+          onToggleCompleted={handleToggleVideoCompleted}
+        />
+      )}
 
       {/* TAB 1: GRAMMAR LESSONS */}
       {activeTab === "lessons" && (

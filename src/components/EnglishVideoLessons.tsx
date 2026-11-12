@@ -16,7 +16,15 @@ import {
 } from "lucide-react";
 import { ENGLISH_VIDEO_LESSONS, type VideoLesson } from "@/data/englishVideoLessons";
 
-export function EnglishVideoLessons() {
+export interface EnglishVideoLessonsProps {
+  completedIds?: Set<number>;
+  onToggleCompleted?: (id: number) => void;
+}
+
+export function EnglishVideoLessons({
+  completedIds: propCompletedIds,
+  onToggleCompleted: propOnToggleCompleted,
+}: EnglishVideoLessonsProps = {}) {
   const [selectedId, setSelectedId] = useState<number>(1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -24,8 +32,8 @@ export function EnglishVideoLessons() {
 
   const playerRef = useRef<HTMLDivElement>(null);
 
-  // Persist completed lessons in localStorage
-  const [completedIds, setCompletedIds] = useState<Set<number>>(() => {
+  // Persist completed lessons in localStorage if not controlled from parent
+  const [localCompletedIds, setLocalCompletedIds] = useState<Set<number>>(() => {
     try {
       const saved = localStorage.getItem("eduuni_completed_video_lessons");
       if (saved) {
@@ -37,16 +45,28 @@ export function EnglishVideoLessons() {
     return new Set<number>([1]);
   });
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        "eduuni_completed_video_lessons",
-        JSON.stringify(Array.from(completedIds)),
-      );
-    } catch {
-      // Ignore
+  const completedIds = propCompletedIds ?? localCompletedIds;
+
+  const toggleCompleted = (id: number) => {
+    if (propOnToggleCompleted) {
+      propOnToggleCompleted(id);
+    } else {
+      setLocalCompletedIds((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+        try {
+          localStorage.setItem("eduuni_completed_video_lessons", JSON.stringify(Array.from(next)));
+        } catch {
+          // Ignore
+        }
+        return next;
+      });
     }
-  }, [completedIds]);
+  };
 
   const currentLesson: VideoLesson = useMemo(() => {
     return (
@@ -61,18 +81,6 @@ export function EnglishVideoLessons() {
       }
     );
   }, [selectedId]);
-
-  const toggleCompleted = (id: number) => {
-    setCompletedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  };
 
   const handleSelectAndPlay = (id: number) => {
     setSelectedId(id);
