@@ -190,29 +190,44 @@ function Index() {
   return (
     <div className="mesh-bg min-h-screen bg-background font-sans text-foreground">
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col overflow-hidden bg-sidebar-grad text-navy-foreground transition-transform duration-500 lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-sidebar-grad text-navy-foreground transition-transform duration-500 lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"} shadow-2xl`}
       >
         <div className="pointer-events-none absolute -left-10 top-1/3 h-48 w-48 rounded-full bg-primary/40 blob" />
-        <div className="relative px-6 pt-8 text-center">
-          <GraduationCap className="mx-auto h-14 w-14 text-cyan float" />
-          <h1 className="mt-1 text-3xl font-extrabold">
+
+        {/* Sticky Sidebar Header */}
+        <div className="relative shrink-0 border-b border-navy-foreground/10 px-6 pb-4 pt-6 text-center">
+          {open && (
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute right-3 top-3 rounded-xl p-1.5 text-navy-foreground/70 transition-colors hover:bg-navy-foreground/10 hover:text-navy-foreground lg:hidden"
+              aria-label="Menyuni yopish"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
+          <GraduationCap className="mx-auto h-12 w-12 text-cyan float" />
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">
             Edu<span className="text-shine">Uni</span>
           </h1>
-          <p className="mt-1 text-xs opacity-80">
+          <p className="mt-0.5 text-[11px] opacity-80 leading-snug">
             Universitet talabalari uchun raqamli ta’lim platformasi
           </p>
         </div>
-        <nav className="relative mt-8 flex-1 space-y-1 px-3">
+
+        {/* Scrollable Navigation Items */}
+        <nav className="menu-scrollbar relative flex-1 min-h-0 space-y-1 overflow-y-auto overflow-x-hidden px-3 pb-8 pt-3 overscroll-contain">
           {nav.map((n, i) => (
             <button
               key={n.label}
+              type="button"
               onClick={() => {
                 setActive(i);
                 setOpen(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               style={{ animationDelay: `${i * 60}ms` }}
-              className={`fade-up group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-[15px] font-semibold transition-all duration-300 ${active === i ? "nav-active bg-primary-grad shadow-glow" : "hover:translate-x-1 hover:bg-navy-foreground/10"}`}
+              className={`fade-up group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-[14px] font-semibold transition-all duration-300 ${active === i ? "nav-active bg-primary-grad shadow-glow" : "hover:translate-x-1 hover:bg-navy-foreground/10"}`}
             >
               {"img" in n && n.img ? (
                 <img
@@ -220,30 +235,40 @@ function Index() {
                   alt=""
                   width={20}
                   height={20}
-                  className="h-6 w-6 object-contain transition-transform group-hover:scale-125"
+                  className="h-5 w-5 object-contain transition-transform group-hover:scale-125"
                 />
               ) : (
-                <n.icon className="h-5 w-5 transition-transform group-hover:scale-125" />
+                <n.icon className="h-5 w-5 shrink-0 transition-transform group-hover:scale-125" />
               )}
-              {n.label}
+              <span className="truncate">{n.label}</span>
               {"badge" in n && n.badge && (
-                <span className="ml-auto rounded-full bg-cyan/20 px-2 py-0.5 text-[10px] font-extrabold text-cyan">
+                <span className="ml-auto shrink-0 rounded-full bg-cyan/20 px-2 py-0.5 text-[10px] font-extrabold text-cyan">
                   {n.badge}
                 </span>
               )}
             </button>
           ))}
+
           <div className="my-4 border-t border-navy-foreground/20" />
+
           {[
             { icon: MessageSquare, label: "Admin ga murojaat" },
             { icon: Info, label: "Biz haqimizda" },
           ].map((n) => (
             <button
               key={n.label}
+              type="button"
+              onClick={() => {
+                setActive(0);
+                setOpen(false);
+                setTimeout(() => {
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }, 100);
+              }}
               className="group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all hover:translate-x-1 hover:bg-navy-foreground/10"
             >
-              <n.icon className="h-5 w-5 transition-transform group-hover:rotate-12" />
-              {n.label}
+              <n.icon className="h-5 w-5 shrink-0 transition-transform group-hover:rotate-12" />
+              <span>{n.label}</span>
             </button>
           ))}
         </nav>
