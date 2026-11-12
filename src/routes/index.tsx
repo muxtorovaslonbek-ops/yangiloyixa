@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import type React from "react";
 import {
   Home,
@@ -25,6 +25,8 @@ import {
   Menu,
   Sparkles,
   Bot,
+  X,
+  SearchX,
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import botanika from "@/assets/botanika.jpg";
@@ -40,6 +42,7 @@ import { EnglishSection } from "@/components/EnglishSection";
 import { BiologySection } from "@/components/BiologySection";
 import { KursIshiSection } from "@/components/KursIshiSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
+import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -130,7 +133,60 @@ function spot(e: React.MouseEvent<HTMLElement>) {
 function Index() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState("Barchasi");
+  const [aiPromptForTeacher, setAiPromptForTeacher] = useState("");
+  const searchContainerRef = useRef<HTMLDivElement>(null);
   const pct = useCount(68);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const allSearchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    return searchAppContent(searchQuery);
+  }, [searchQuery]);
+
+  const filteredSearchResults = useMemo(() => {
+    if (searchCategory === "Barchasi") return allSearchResults;
+    return allSearchResults.filter((item) => item.category === searchCategory);
+  }, [allSearchResults, searchCategory]);
+
+  const searchCategories = [
+    "Barchasi",
+    "Darsliklar",
+    "Kurs ishi",
+    "Mustaqil ish",
+    "O‘yinlar",
+    "Ingliz tili",
+    "Biologiya",
+    "AI Teacher",
+  ];
+
+  const handleSelectResult = (item: SearchResultItem) => {
+    setActive(item.targetActiveTab);
+    setIsSearchOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleAskAiTeacher = (queryText: string) => {
+    setAiPromptForTeacher(queryText);
+    setActive(7);
+    setIsSearchOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="mesh-bg min-h-screen bg-background font-sans text-foreground">
       <aside
@@ -201,13 +257,147 @@ function Index() {
           <button className="lg:hidden" onClick={() => setOpen(true)} aria-label="Menyu">
             <Menu />
           </button>
-          <label className="flex flex-1 max-w-xl items-center gap-3 rounded-full bg-muted px-5 py-3 transition-all focus-within:shadow-glow focus-within:ring-2 focus-within:ring-primary">
-            <Search className="h-5 w-5 text-muted-foreground" />
-            <input
-              placeholder="Fan, mavzu yoki darslikni qidiring..."
-              className="w-full bg-transparent text-sm outline-none"
-            />
-          </label>
+          <div ref={searchContainerRef} className="relative flex-1 max-w-xl">
+            <div className="flex items-center gap-3 rounded-full bg-muted px-4 py-2.5 transition-all focus-within:shadow-glow focus-within:ring-2 focus-within:ring-primary">
+              <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+              <input
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchOpen(true);
+                }}
+                onFocus={() => setIsSearchOpen(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    setIsSearchOpen(false);
+                  }
+                }}
+                placeholder="Fan, mavzu, video dars yoki testlarni qidiring..."
+                className="w-full bg-transparent text-sm outline-none"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setIsSearchOpen(false);
+                  }}
+                  className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                  aria-label="Qidiruvni tozalash"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Floating quick search dropdown */}
+            {isSearchOpen && searchQuery.trim().length > 0 && (
+              <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[480px] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl backdrop-blur-xl">
+                <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    Topilgan natijalar ({filteredSearchResults.length})
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">ESC — yopish</span>
+                </div>
+
+                {/* Category filter pills */}
+                <div className="flex gap-1.5 overflow-x-auto border-b border-border/60 p-2 text-xs scrollbar-none">
+                  {[
+                    "Barchasi",
+                    "Darsliklar",
+                    "Kurs ishi",
+                    "Ingliz tili",
+                    "Biologiya",
+                    "AI Teacher",
+                  ].map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        setSearchCategory(cat);
+                      }}
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition-all ${
+                        searchCategory === cat
+                          ? "bg-primary text-primary-foreground font-bold shadow-sm"
+                          : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Results list */}
+                <div className="max-h-72 overflow-y-auto p-2 space-y-1">
+                  {filteredSearchResults.length > 0 ? (
+                    filteredSearchResults.slice(0, 8).map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => handleSelectResult(item)}
+                        className="group flex w-full items-start gap-3 rounded-xl p-2.5 text-left transition-colors hover:bg-muted/80"
+                      >
+                        <div className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                          {item.category === "Ingliz tili" ? (
+                            <Languages className="h-3.5 w-3.5" />
+                          ) : item.category === "Biologiya" ? (
+                            <Leaf className="h-3.5 w-3.5" />
+                          ) : item.category === "Kurs ishi" ? (
+                            <FileText className="h-3.5 w-3.5" />
+                          ) : item.category === "AI Teacher" ? (
+                            <Sparkles className="h-3.5 w-3.5" />
+                          ) : (
+                            <BookOpen className="h-3.5 w-3.5" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate text-xs font-bold text-foreground group-hover:text-primary">
+                              {item.title}
+                            </span>
+                            {item.badge && (
+                              <span className="shrink-0 rounded bg-primary/10 px-1.5 py-0.2 text-[10px] font-semibold text-primary">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="line-clamp-1 text-[11px] text-muted-foreground">
+                            {item.description}
+                          </p>
+                        </div>
+                        <ArrowRight className="h-4 w-4 shrink-0 self-center text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:text-primary group-hover:opacity-100" />
+                      </button>
+                    ))
+                  ) : (
+                    <div className="p-4 text-center">
+                      <p className="text-xs text-muted-foreground">
+                        "{searchQuery}" bo'yicha to'g'ridan-to'g'ri bo'lim topilmadi
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* AI Teacher quick trigger footer */}
+                <div className="border-t border-border bg-primary/5 p-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleAskAiTeacher(searchQuery)}
+                    className="flex w-full items-center justify-between rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-glow hover:opacity-95 transition-all"
+                  >
+                    <span className="flex items-center gap-2 truncate">
+                      <Sparkles className="h-4 w-4 shrink-0" />
+                      <span className="truncate">
+                        AI Ustozdan so'rash: "{searchQuery.slice(0, 26)}
+                        {searchQuery.length > 26 ? "..." : ""}"
+                      </span>
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 ml-2" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           <div className="ml-auto flex items-center gap-5">
             <button
               className="relative transition-transform hover:rotate-12"
@@ -257,13 +447,135 @@ function Index() {
           />
         ) : active === 7 ? (
           <AiTeacherSection
+            key={aiPromptForTeacher || "ai-teacher-root"}
+            initialPrompt={aiPromptForTeacher}
             onBack={() => {
               setActive(0);
+              setAiPromptForTeacher("");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
         ) : (
           <div className="space-y-6 px-4 pb-10 md:px-8">
+            {searchQuery.trim().length > 0 && (
+              <section className="fade-up rounded-3xl border border-primary/20 bg-card p-6 shadow-card">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Search className="h-5 w-5 text-primary" />
+                      <h2 className="text-xl font-bold">
+                        Qidiruv natijalari:{" "}
+                        <span className="text-primary font-extrabold">"{searchQuery}"</span>
+                      </h2>
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Platformaning barcha bo'limlari bo'yicha {filteredSearchResults.length} ta mos
+                      keluvchi ma'lumot topildi
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleAskAiTeacher(searchQuery)}
+                      className="flex items-center gap-1.5 rounded-xl bg-primary/10 px-3.5 py-2 text-xs font-bold text-primary transition-all hover:bg-primary/20"
+                    >
+                      <Sparkles className="h-4 w-4" /> AI Ustozdan so'rash
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setIsSearchOpen(false);
+                      }}
+                      className="flex items-center gap-1.5 rounded-xl bg-muted px-3.5 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/80 hover:text-foreground"
+                    >
+                      <X className="h-4 w-4" /> Tozalash
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category filter pills */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {searchCategories.map((cat) => {
+                    const count =
+                      cat === "Barchasi"
+                        ? allSearchResults.length
+                        : allSearchResults.filter((i) => i.category === cat).length;
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setSearchCategory(cat)}
+                        className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                          searchCategory === cat
+                            ? "bg-primary text-primary-foreground font-bold shadow-sm"
+                            : "bg-muted text-muted-foreground hover:bg-muted/80"
+                        }`}
+                      >
+                        <span>{cat}</span>
+                        <span className="rounded-full bg-background/25 px-1.5 py-0.2 text-[10px]">
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Results grid */}
+                {filteredSearchResults.length > 0 ? (
+                  <div className="mt-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+                    {filteredSearchResults.map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => handleSelectResult(item)}
+                        className="group flex flex-col justify-between rounded-2xl border border-border bg-background p-4.5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow cursor-pointer"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary">
+                              {item.category}
+                            </span>
+                            {item.badge && (
+                              <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="mt-2.5 font-bold text-sm text-foreground transition-colors group-hover:text-primary line-clamp-1">
+                            {item.title}
+                          </h4>
+                          <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                        <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3 text-xs font-semibold text-primary">
+                          <span>Bo'limga o'tish</span>
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mt-6 rounded-2xl border border-dashed border-border p-8 text-center">
+                    <SearchX className="mx-auto h-12 w-12 text-muted-foreground/60" />
+                    <p className="mt-3 font-bold text-base">
+                      "{searchQuery}" bo'yicha to'g'ridan-to'g'ri bo'lim topilmadi
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground max-w-md mx-auto">
+                      Qidiruv so'zini qisqartirib ko'ring yoki sun'iy intellekt AI Ustoziga bevosita
+                      ilmiy savolni yo'llang!
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleAskAiTeacher(searchQuery)}
+                      className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-glow hover:scale-105 transition-all"
+                    >
+                      <Sparkles className="h-4 w-4" /> AI Ustozdan so'rash: "{searchQuery}"
+                    </button>
+                  </div>
+                )}
+              </section>
+            )}
             <section className="fade-up hero-zoom relative overflow-hidden rounded-3xl shadow-card">
               <img
                 src={hero}

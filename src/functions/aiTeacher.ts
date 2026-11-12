@@ -269,7 +269,7 @@ TALABLAR:
             headers: {
               "User-Agent": "aistudio-build",
             },
-            timeout: 8000,
+            timeout: 15000,
           },
         });
 

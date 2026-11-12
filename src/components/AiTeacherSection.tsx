@@ -26,6 +26,7 @@ import { askAiTeacher } from "@/services/aiTeacherService";
 interface AiTeacherSectionProps {
   onBack: () => void;
   initialCategory?: string;
+  initialPrompt?: string;
 }
 
 interface Message {
@@ -110,9 +111,13 @@ const SUGGESTIONS: Record<string, string[]> = {
   ],
 };
 
-export function AiTeacherSection({ onBack, initialCategory = "all" }: AiTeacherSectionProps) {
+export function AiTeacherSection({
+  onBack,
+  initialCategory = "all",
+  initialPrompt = "",
+}: AiTeacherSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
-  const [inputPrompt, setInputPrompt] = useState<string>("");
+  const [inputPrompt, setInputPrompt] = useState<string>(initialPrompt);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
