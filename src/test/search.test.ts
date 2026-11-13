@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { searchAppContent } from "@/data/searchIndex";
+import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -43,5 +44,18 @@ describe("searchAppContent", () => {
     const results = searchAppContent("lishayniklar");
     expect(results.length).toBeGreaterThan(0);
     expect(results.some((r) => r.id === "bot-16" && r.category === "Darsliklar")).toBe(true);
+  });
+
+  it("provides 17 sequentially numbered and richly populated Botanika topics", () => {
+    expect(BOTANIKA_TOPICS).toHaveLength(17);
+    BOTANIKA_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+    });
   });
 });

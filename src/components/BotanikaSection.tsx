@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   ArrowLeft,
   BookOpen,
@@ -8,10 +8,15 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   X,
   Leaf,
   Maximize2,
   BookmarkCheck,
+  Table2,
+  HelpCircle,
+  ListChecks,
+  GraduationCap,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
 import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
@@ -27,6 +32,8 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const [revealedAnswers, setRevealedAnswers] = useState<Set<number>>(new Set());
+  const topicScrollRef = useRef<HTMLDivElement>(null);
 
   // Persist completed Botanika topics in localStorage
   const [completedIds, setCompletedIds] = useState<Set<string>>(() => {
@@ -47,7 +54,15 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
     }
   }, [completedIds]);
 
-  // Allow Escape key to close active topic reader or return back
+  // Reset revealed answers & scroll to top when switching full-window topics
+  useEffect(() => {
+    setRevealedAnswers(new Set());
+    if (topicScrollRef.current) {
+      topicScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [selectedTopicId]);
+
+  // Allow Escape key to close active full-window topic reader or return back
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -71,6 +86,15 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
     });
   };
 
+  const toggleRevealAnswer = (idx: number) => {
+    setRevealedAnswers((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  };
+
   const filteredTopics = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     return BOTANIKA_TOPICS.filter((topic) => {
@@ -80,7 +104,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
 
       if (q) {
         const searchable =
-          `${topic.code} ${topic.topicLabel} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+          `${topic.code} ${topic.topicLabel} ${topic.title} ${topic.overview} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
         if (!searchable.includes(q)) return false;
       }
       return true;
@@ -162,16 +186,17 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                 </h2>
                 <p className="text-xs leading-relaxed text-navy-foreground/85 md:text-sm">
                   O‘quv dasturi asosidagi barcha 17 ta mavzu (1-mavzudan 17-mavzugacha) ketma-ket
-                  tartibda alohida to‘rtburchak kartochkalarda jamlangan. Istalgan mavzuni ochib,
-                  nazariy ma’lumotlarni o‘qing va o‘zlashtirib boring.
+                  tartibda alohida to‘rtburchak kartochkalarda jamlangan. Har bir mavzu to‘liq
+                  oynada keng nazariy ma’ruza, qiyosiy jadval, atamalar lug‘ati va nazorat savollari
+                  bilan ochiladi.
                 </p>
               </div>
             </div>
 
-            <div className="w-full space-y-2 rounded-2xl bg-navy-foreground/10 p-4 backdrop-blur-md lg:w-64 shrink-0">
+            <div className="w-full shrink-0 space-y-2 rounded-2xl bg-navy-foreground/10 p-4 backdrop-blur-md lg:w-64">
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className="text-navy-foreground/80">Umumiy natija</span>
-                <span className="text-cyan font-extrabold tabular-nums">{progressPercent}%</span>
+                <span className="font-extrabold text-cyan tabular-nums">{progressPercent}%</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-navy-foreground/20">
                 <div
@@ -202,7 +227,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                 onClick={() => setSemesterFilter(tab.id as typeof semesterFilter)}
                 className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                   semesterFilter === tab.id
-                    ? "bg-primary text-primary-foreground font-bold shadow-sm"
+                    ? "bg-primary font-bold text-primary-foreground shadow-sm"
                     : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -286,16 +311,16 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                       {topic.title}
                     </h3>
 
-                    {/* Syllabus Summary Preview */}
+                    {/* Overview Summary Preview */}
                     <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                      {topic.syllabusPoints[0]}
+                      {topic.overview}
                     </p>
                   </div>
 
                   {/* Card Footer */}
                   <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      Adabiyot: {topic.references}
+                    <span className="text-[11px] font-medium text-muted-foreground">
+                      {topic.sections.length} ta bo‘lim · {topic.selfCheckQuestions.length} ta savol
                     </span>
 
                     <span className="flex items-center gap-1.5 font-bold text-primary transition-transform group-hover:translate-x-0.5">
@@ -329,93 +354,270 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
       </div>
 
       {/* ========================================================= */}
-      {/* TOPIC FULL-VIEW READER MODAL */}
+      {/* FULL-WINDOW TOPIC READER (OCCUPIES ENTIRE SCREEN) */}
       {/* ========================================================= */}
       {activeTopic && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-navy/70 p-3 backdrop-blur-sm md:p-6"
-          onClick={() => setSelectedTopicId(null)}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
-          >
-            {/* Reader Header */}
-            <div className="flex items-start justify-between gap-4 border-b border-border bg-muted/30 p-5 md:p-6">
-              <div className="space-y-1.5">
-                <div className="flex flex-wrap items-center gap-2 text-xs">
+        <div className="fixed inset-0 z-[60] flex flex-col bg-background text-foreground">
+          {/* Sticky Top Navigation Bar */}
+          <header className="shrink-0 border-b border-border bg-background/95 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 md:px-8">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTopicId(null)}
+                  className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-bold text-foreground transition-all hover:bg-muted md:text-sm"
+                >
+                  <ArrowLeft className="h-4 w-4 text-primary" />
+                  <span>Barcha mavzularga qaytish</span>
+                </button>
+
+                <div className="hidden items-center gap-2 border-l border-border pl-3 text-xs sm:flex">
                   <span className="rounded-lg bg-primary px-2.5 py-0.5 font-mono font-extrabold text-primary-foreground tabular-nums">
                     {activeTopic.topicLabel}
                   </span>
-                  <span aria-hidden="true" className="text-muted-foreground">
-                    ·
+                  <span className="font-semibold text-muted-foreground">
+                    {activeTopic.semester}
                   </span>
-                  <span className="text-muted-foreground">{activeTopic.semester}</span>
                   <span aria-hidden="true" className="text-muted-foreground">
                     ·
                   </span>
                   <span className="font-mono text-muted-foreground">
-                    Manbalar: {activeTopic.references}
+                    Adabiyot: {activeTopic.references}
                   </span>
                 </div>
-                <h2 className="text-lg font-extrabold leading-snug text-foreground md:text-2xl">
-                  {activeTopic.title}
-                </h2>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSelectedTopicId(null)}
-                className="rounded-xl border border-border bg-card p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                aria-label="Yopish"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => toggleCompleted(activeTopic.id)}
+                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition-all ${
+                    completedIds.has(activeTopic.id)
+                      ? "bg-emerald-500 text-white shadow-sm"
+                      : "border border-border bg-card text-foreground hover:bg-muted"
+                  }`}
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>
+                    {completedIds.has(activeTopic.id)
+                      ? "O‘zlashtirilgan"
+                      : "O‘zlashtirildi deb belgilash"}
+                  </span>
+                </button>
+              </div>
             </div>
+          </header>
 
-            {/* Reader Scrollable Body */}
-            <div className="flex-1 space-y-6 overflow-y-auto p-5 md:p-7">
-              {/* Theoretical Summary */}
-              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
-                <h3 className="flex items-center gap-2 text-sm font-extrabold text-primary">
-                  <Leaf className="h-4 w-4" /> Qisqacha nazariy ma’lumot
-                </h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-foreground">
-                  {activeTopic.studyNotes}
-                </p>
-              </div>
+          {/* Scrollable Full-Window Lesson Content */}
+          <div ref={topicScrollRef} className="flex-1 overflow-y-auto">
+            <div className="mx-auto max-w-5xl space-y-8 px-4 py-8 md:px-8">
+              {/* Lesson Hero Header */}
+              <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-9">
+                <div className="pointer-events-none absolute -right-12 -top-12 h-56 w-56 rounded-full bg-cyan/20 blob" />
+                <div className="relative z-10 space-y-4">
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span className="rounded-lg bg-cyan px-3 py-1 font-mono font-extrabold text-navy tabular-nums">
+                      {activeTopic.topicLabel}
+                    </span>
+                    <span className="rounded-lg bg-navy-foreground/15 px-3 py-1 font-semibold text-navy-foreground">
+                      {activeTopic.semester}
+                    </span>
+                    <span className="rounded-lg bg-navy-foreground/15 px-3 py-1 font-mono text-navy-foreground/90">
+                      Manbalar: {activeTopic.references}
+                    </span>
+                  </div>
 
-              {/* PDF Syllabus Breakdown */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-bold text-foreground">
-                  O‘quv dasturi bo‘yicha asosiy masalalar:
+                  <h2 className="text-2xl font-extrabold leading-tight tracking-tight md:text-4xl">
+                    {activeTopic.title}
+                  </h2>
+
+                  <p className="text-sm leading-relaxed text-navy-foreground/90 md:text-base">
+                    {activeTopic.overview}
+                  </p>
+                </div>
+              </section>
+
+              {/* Syllabus Outline */}
+              <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
+                <h3 className="flex items-center gap-2 text-base font-extrabold text-primary">
+                  <ListChecks className="h-5 w-5" />
+                  <span>O‘quv dasturi bo‘yicha asosiy rejalar va masalalar</span>
                 </h3>
-                <div className="space-y-2.5">
+                <div className="mt-4 grid gap-3">
                   {activeTopic.syllabusPoints.map((pt, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 rounded-2xl border border-border bg-muted/30 p-4 text-sm leading-relaxed text-foreground"
+                      className="flex items-start gap-3 rounded-xl border border-border/80 bg-card p-4 text-sm leading-relaxed text-foreground shadow-sm"
                     >
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-mono text-xs font-extrabold text-primary tabular-nums">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary font-mono text-xs font-extrabold text-primary-foreground tabular-nums">
                         {idx + 1}
                       </span>
                       <span>{pt}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              {/* Key Terms */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-bold text-foreground">Tayanch atamalar:</h3>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  {activeTopic.keyTerms.join("  ·  ")}
+              {/* Detailed Academic Lecture Sections */}
+              <section className="space-y-5">
+                <div className="flex items-center gap-2 border-b border-border pb-3">
+                  <GraduationCap className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-extrabold text-foreground md:text-xl">
+                    Mavzu bo‘yicha batafsil ilmiy ma’ruza
+                  </h3>
+                </div>
+
+                <div className="space-y-5">
+                  {activeTopic.sections.map((sec, idx) => (
+                    <article
+                      key={idx}
+                      className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/30"
+                    >
+                      <h4 className="text-base font-extrabold text-primary md:text-lg">
+                        {sec.heading}
+                      </h4>
+                      <p className="mt-3 text-sm leading-relaxed text-foreground/95 md:text-[15px]">
+                        {sec.content}
+                      </p>
+
+                      {sec.highlights && sec.highlights.length > 0 && (
+                        <ul className="mt-4 space-y-2 rounded-xl border border-border/70 bg-muted/40 p-4">
+                          {sec.highlights.map((hl, hIdx) => (
+                            <li
+                              key={hIdx}
+                              className="flex items-start gap-2.5 text-xs leading-relaxed text-foreground md:text-sm"
+                            >
+                              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                              <span>{hl}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              {/* Structured Comparison / Classification Table */}
+              <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                  <Table2 className="h-5 w-5 text-primary" />
+                  <span>{activeTopic.comparisonTable.title}</span>
+                </h3>
+
+                <div className="mt-4 overflow-x-auto rounded-xl border border-border">
+                  <table className="w-full min-w-[540px] border-collapse text-left text-xs md:text-sm">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/60">
+                        {activeTopic.comparisonTable.columns.map((col, cIdx) => (
+                          <th key={cIdx} className="px-4 py-3 font-extrabold text-foreground">
+                            {col}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/70">
+                      {activeTopic.comparisonTable.rows.map((row, rIdx) => (
+                        <tr key={rIdx} className="transition-colors hover:bg-muted/30">
+                          {row.map((cell, cellIdx) => (
+                            <td
+                              key={cellIdx}
+                              className={`px-4 py-3 leading-relaxed ${
+                                cellIdx === 0 ? "font-bold text-primary" : "text-foreground/90"
+                              }`}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              {/* Key Scientific Glossary Concepts */}
+              <section className="space-y-4">
+                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <span>Asosiy tayanch atamalar va ularning ta’riflari</span>
+                </h3>
+                <div className="grid gap-3.5 sm:grid-cols-2">
+                  {activeTopic.keyConcepts.map((concept, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-border bg-card p-4 shadow-sm"
+                    >
+                      <p className="text-sm font-extrabold text-primary">{concept.term}</p>
+                      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground md:text-sm">
+                        {concept.definition}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Interactive Self-Check Q&A */}
+              <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                  <HelpCircle className="h-5 w-5 text-primary" />
+                  <span>O‘z-o‘zini tekshirish uchun nazorat savollari</span>
+                </h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Bilimingizni mustahkamlash uchun savolni bosing va ilmiy javobni solishtiring.
                 </p>
-              </div>
-            </div>
 
-            {/* Reader Footer Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-muted/20 px-5 py-4 md:px-6">
+                <div className="mt-4 space-y-3">
+                  {activeTopic.selfCheckQuestions.map((qa, qIdx) => {
+                    const isOpen = revealedAnswers.has(qIdx);
+                    return (
+                      <div
+                        key={qIdx}
+                        className="overflow-hidden rounded-xl border border-border bg-muted/20"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => toggleRevealAnswer(qIdx)}
+                          className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-xs font-bold text-foreground transition-colors hover:bg-muted/50 md:text-sm"
+                        >
+                          <span className="flex items-start gap-2.5">
+                            <span className="font-mono text-primary tabular-nums">{qIdx + 1}.</span>
+                            <span>{qa.question}</span>
+                          </span>
+                          <ChevronDown
+                            className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
+                              isOpen ? "rotate-180 text-primary" : ""
+                            }`}
+                          />
+                        </button>
+
+                        {isOpen && (
+                          <div className="border-t border-border/70 bg-primary/5 px-4 py-3.5 text-xs leading-relaxed text-foreground md:text-sm">
+                            <span className="font-bold text-primary">Javob: </span>
+                            {qa.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Quick Summary Note Card */}
+              <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+                <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                  Tezkor xulosa
+                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-foreground">
+                  {activeTopic.studyNotes}
+                </p>
+              </section>
+            </div>
+          </div>
+
+          {/* Sticky Bottom Controls Bar */}
+          <footer className="shrink-0 border-t border-border bg-background/95 px-4 py-3.5 backdrop-blur-xl md:px-8">
+            <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
@@ -430,6 +632,11 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                   <ChevronLeft className="h-4 w-4" />
                   <span>Oldingi mavzu</span>
                 </button>
+
+                <span className="hidden px-2 font-mono text-xs font-bold text-muted-foreground tabular-nums sm:inline">
+                  {activeTopicIndex + 1} / {BOTANIKA_TOPICS.length}
+                </span>
+
                 <button
                   type="button"
                   disabled={activeTopicIndex >= BOTANIKA_TOPICS.length - 1}
@@ -480,7 +687,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                 </button>
               </div>
             </div>
-          </div>
+          </footer>
         </div>
       )}
     </div>
