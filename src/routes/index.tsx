@@ -41,6 +41,7 @@ import icBio from "@/assets/icon-biology.png";
 import { EnglishSection } from "@/components/EnglishSection";
 import { BiologySection } from "@/components/BiologySection";
 import { KursIshiSection } from "@/components/KursIshiSection";
+import { MustaqilIshSection } from "@/components/MustaqilIshSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 
@@ -456,6 +457,14 @@ function Index() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
+        ) : active === 3 ? (
+          <MustaqilIshSection
+            onBack={() => {
+              setActive(0);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onAskAi={handleAskAiTeacher}
+          />
         ) : active === 5 ? (
           <EnglishSection
             onBack={() => {
@@ -652,6 +661,9 @@ function Index() {
                     if (f.t === "Kurs ishi") {
                       setActive(2);
                       window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else if (f.t === "Mustaqil ish") {
+                      setActive(3);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     } else if (f.t === "Ingliz tili") {
                       setActive(5);
                       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -663,7 +675,7 @@ function Index() {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     } else {
                       const targetIndex =
-                        i === 1 ? 2 : i === 4 ? 5 : i === 5 ? 6 : i === 6 ? 7 : i + 1;
+                        i === 1 ? 2 : i === 2 ? 3 : i === 4 ? 5 : i === 5 ? 6 : i === 6 ? 7 : i + 1;
                       setActive(targetIndex);
                     }
                   }}
