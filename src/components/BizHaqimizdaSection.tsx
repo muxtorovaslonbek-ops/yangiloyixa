@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 
 interface BizHaqimizdaSectionProps {
   onBack: () => void;
@@ -21,7 +21,7 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
   }, []);
 
   return (
-    <div className="px-4 pb-10 md:px-8">
+    <div className="space-y-10 px-4 pb-16 md:px-8">
       {/* Full-Height Hero Section with Video Background */}
       <section className="relative min-h-[calc(100vh-112px)] w-full overflow-hidden rounded-3xl bg-slate-950 shadow-card">
         {/* Background Autoplay Loop Muted Video */}
@@ -78,6 +78,80 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
               birlashtiruvchi oliy ta’lim maskani.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Project Owner & Developer Section */}
+      <section className="mx-auto max-w-6xl space-y-6">
+        <div className="space-y-1.5">
+          <p className="text-xs font-semibold text-primary">Loyiha mualliflari</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+            Loyiha egasi va dasturchi
+          </h2>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* 1-rasm: Loyiha egasi */}
+          <article className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-transform duration-300 hover:-translate-y-1">
+            <div className="relative h-80 w-full overflow-hidden bg-muted sm:h-96">
+              <img
+                src="/assets/aistudio/photo_2026-11-14_00-02-11_3997f170.jpg"
+                alt="Halimova Nazokat To‘xtasinovna"
+                referrerPolicy="no-referrer"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+
+            <div className="flex flex-1 flex-col justify-between space-y-4 border-t border-border/70 p-6 md:p-7">
+              <div className="space-y-2.5">
+                <p className="text-xs font-bold text-primary">Loyiha egasi</p>
+                <h3 className="text-xl font-extrabold leading-snug text-foreground">
+                  Halimova Nazokat To‘xtasinovna
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Oʻzbekiston Respublikasi Taʼlim va ilm-fan vazirligi Navoiy davlat universiteti
+                  tabiiy fanlar va tibbiyot fakulteti Biologiya kafedrasi oʻqituvchisi
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* 2-rasm: Dasturchi */}
+          <article className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-transform duration-300 hover:-translate-y-1">
+            <div className="relative h-80 w-full overflow-hidden bg-white pt-4 sm:h-96">
+              <img
+                src="/assets/aistudio/5c94d94c-0fe3-4427-a97f-55c871978497_26b076c5.png"
+                alt="Muxtorov Aslonbek Maksudovich"
+                referrerPolicy="no-referrer"
+                className="h-full w-full object-contain object-bottom"
+              />
+            </div>
+
+            <div className="flex flex-1 flex-col justify-between space-y-5 border-t border-border/70 p-6 md:p-7">
+              <div className="space-y-2.5">
+                <p className="text-xs font-bold text-primary">Dasturchi</p>
+                <h3 className="text-xl font-extrabold leading-snug text-foreground">
+                  Muxtorov Aslonbek Maksudovich
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Oʻzbekiston Respublikasi Taʼlim va ilm-fan vazirligi Navoiy davlat universiteti
+                  tabiiy fanlar va tibbiyot fakulteti Biologiya yo‘nalishi talabasi
+                </p>
+              </div>
+
+              <div className="pt-1">
+                <a
+                  href="https://t.me/ASLONBEK_MUXTOROV"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
+                >
+                  <Send className="h-4 w-4" />
+                  <span>Telegram orqali bog‘lanish</span>
+                </a>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
     </div>
