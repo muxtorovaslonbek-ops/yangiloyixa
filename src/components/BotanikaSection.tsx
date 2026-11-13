@@ -18,11 +18,10 @@ import {
   ListChecks,
   GraduationCap,
   FileText,
-  Download,
-  ExternalLink,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
 import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
+import { PdfSlideViewer } from "./PdfSlideViewer";
 
 interface BotanikaSectionProps {
   onBack: () => void;
@@ -475,57 +474,16 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                       </button>
                     ))}
                   </div>
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    <a
-                      href={activeTopic.pdfUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="flex items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5 text-primary" />
-                      <span>Yangi oynada ochish</span>
-                    </a>
-                    <a
-                      href={activeTopic.pdfUrl}
-                      download
-                      className="flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-                    >
-                      <Download className="h-3.5 w-3.5" />
-                      <span>PDF yuklab olish</span>
-                    </a>
-                  </div>
                 </div>
               )}
 
-              {/* Embedded Lecture PDF Viewer */}
+              {/* Embedded Interactive PDF Canvas Viewer */}
               {activeTopic.pdfUrl && readerTab !== "lecture" && (
-                <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 px-5 py-3.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="grid h-8 w-8 place-items-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
-                        <FileText className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-extrabold text-foreground">
-                          {activeTopic.pdfTitle || `${activeTopic.topicLabel} — PDF ma’ruza`}
-                        </h3>
-                        <p className="text-[11px] text-muted-foreground">
-                          Mavzuga biriktirilgan rasmiy PDF ma’ruza taqdimoti
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-muted/20 p-3">
-                    <iframe
-                      src={`${activeTopic.pdfUrl}#view=FitH`}
-                      title={activeTopic.pdfTitle || activeTopic.title}
-                      className={`w-full rounded-xl border border-border bg-white ${
-                        readerTab === "pdf" ? "h-[78vh]" : "h-[640px]"
-                      }`}
-                    />
-                  </div>
-                </section>
+                <PdfSlideViewer
+                  url={activeTopic.pdfUrl}
+                  title={activeTopic.pdfTitle || `${activeTopic.topicLabel} — PDF ma’ruza`}
+                  compactHeight={readerTab === "all"}
+                />
               )}
 
               {/* Syllabus Outline */}
@@ -720,8 +678,9 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                   type="button"
                   disabled={activeTopicIndex <= 0}
                   onClick={() => {
-                    if (activeTopicIndex > 0) {
-                      setSelectedTopicId(BOTANIKA_TOPICS[activeTopicIndex - 1].id);
+                    const prev = BOTANIKA_TOPICS[activeTopicIndex - 1];
+                    if (prev) {
+                      setSelectedTopicId(prev.id);
                     }
                   }}
                   className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted disabled:opacity-40"
@@ -738,8 +697,9 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                   type="button"
                   disabled={activeTopicIndex >= BOTANIKA_TOPICS.length - 1}
                   onClick={() => {
-                    if (activeTopicIndex < BOTANIKA_TOPICS.length - 1) {
-                      setSelectedTopicId(BOTANIKA_TOPICS[activeTopicIndex + 1].id);
+                    const next = BOTANIKA_TOPICS[activeTopicIndex + 1];
+                    if (next) {
+                      setSelectedTopicId(next.id);
                     }
                   }}
                   className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted disabled:opacity-40"
