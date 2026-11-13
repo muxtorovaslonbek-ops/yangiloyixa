@@ -514,7 +514,6 @@ function Index() {
               setActive(1);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            onAskAi={handleAskAiTeacher}
           />
         ) : active === 5 ? (
           <EnglishSection

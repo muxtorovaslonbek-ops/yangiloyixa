@@ -131,7 +131,7 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     id: "kutubxona-main",
     title: "Elektron kutubxona va PDF manbalar",
     description:
-      "Botanika PDF taqdimotlari, Biologiya Milliy sertifikat 30 ta test varianti, Ingliz tili qo‘llanmasi va akademik kitoblar.",
+      "Biologiya Milliy sertifikat 30 ta rasmiy test varianti PDF to‘plami va elektron o‘quv manbalari.",
     category: "Kutubxona",
     targetActiveTab: 4,
     badge: "Elektron kitoblar",

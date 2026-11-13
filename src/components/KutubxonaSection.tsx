@@ -3,28 +3,21 @@ import {
   ArrowLeft,
   BookOpen,
   Download,
+  Dna,
   ExternalLink,
   FileText,
-  FlaskConical,
-  Languages,
-  Leaf,
   Library,
-  Microscope,
   Search,
-  Sparkles,
-  Dna,
   X,
 } from "lucide-react";
-import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { PdfSlideViewer } from "./PdfSlideViewer";
 
 interface KutubxonaSectionProps {
   onBack: () => void;
   onOpenDarslik?: () => void;
-  onAskAi?: (prompt: string) => void;
 }
 
-type LibraryCategory = "Barchasi" | "Botanika" | "Biologiya" | "Ingliz tili" | "Boshqa fanlar";
+type LibraryCategory = "Barchasi" | "Biologiya";
 
 interface LibraryItem {
   id: string;
@@ -32,23 +25,10 @@ interface LibraryItem {
   category: Exclude<LibraryCategory, "Barchasi">;
   meta: string;
   description: string;
-  pdfUrl?: string;
-  aiPrompt?: string;
-  openDarslik?: boolean;
+  pdfUrl: string;
 }
 
-const BOTANIKA_LIBRARY_ITEMS: LibraryItem[] = BOTANIKA_TOPICS.filter(
-  (t): t is (typeof BOTANIKA_TOPICS)[number] & { pdfUrl: string } => Boolean(t.pdfUrl),
-).map((topic) => ({
-  id: `lib-${topic.id}`,
-  title: topic.title,
-  category: "Botanika",
-  meta: `Botanika · ${topic.topicLabel} · ${topic.semester} · PDF`,
-  description: topic.overview,
-  pdfUrl: topic.pdfUrl,
-}));
-
-const GENERAL_LIBRARY_ITEMS: LibraryItem[] = [
+const LIBRARY_ITEMS: LibraryItem[] = [
   {
     id: "lib-bio-30-variant",
     title: "Biologiya fanidan Milliy sertifikat — 30 ta rasmiy test varianti",
@@ -58,77 +38,18 @@ const GENERAL_LIBRARY_ITEMS: LibraryItem[] = [
       "Sitologiya, genetika, molekulyar biologiya, botanika, zoologiya va odam anatomiyasi bo‘yicha 30 ta to‘liq imtihon varianti jamlanmasi.",
     pdfUrl: "/assets/aistudio/30_Variant_sertifikat_042325ac.pdf",
   },
-  {
-    id: "lib-english-guide",
-    title: "Ingliz tili (0 dan C1 gacha) — video darslar va o‘quv havolalari qo‘llanmasi",
-    category: "Ingliz tili",
-    meta: "Ingliz tili · A1–C1 · 180 dars · PDF",
-    description:
-      "Boshlang‘ich darajadan C1 darajagacha bosqichma-bosqich ingliz tili o‘quv dasturi, mavzular mundarijasi va mashg‘ulotlar ro‘yxati.",
-    pdfUrl: "/assets/aistudio/english_havola_88c82424.pdf",
-  },
-  {
-    id: "lib-genetika-guide",
-    title: "Genetika: Irsiyat qonunlari, xromosoma nazariyasi va seleksiya asoslari",
-    category: "Boshqa fanlar",
-    meta: "Genetika · 18 mavzu · Akademik konspekt",
-    description:
-      "Mendel qonuniyatlari, krossingover, mutatsion o‘zgaruvchanlik va molekulyar genetika masalalarini yechish bo‘yicha tayanch materiallar.",
-    aiPrompt:
-      "Genetika fanidan asosiy universitet darslik mavzulari va masalalar yechish qo‘llanmasini taqdim et.",
-    openDarslik: true,
-  },
-  {
-    id: "lib-mikro-guide",
-    title: "Mikrobiologiya: Prokariotlar, viruslar va sanoat mikrobiologiyasi",
-    category: "Boshqa fanlar",
-    meta: "Mikrobiologiya · 20 mavzu · Akademik konspekt",
-    description:
-      "Mikroorganizmlar morfologiyasi, metabolizmi, antibiotiklar ta’siri va biotexnologiyadagi qo‘llanilishiga oid ilmiy manbalar.",
-    aiPrompt:
-      "Mikrobiologiya fanidan asosiy adabiyotlar sharhi va muhim mavzular bo‘yicha qisqa konspekt ber.",
-    openDarslik: true,
-  },
-  {
-    id: "lib-biokimyo-guide",
-    title: "Biokimyo: Oqsillar, fermentlar kinetikasi va hujayra bioenergetikasi",
-    category: "Boshqa fanlar",
-    meta: "Biokimyo · 26 mavzu · Akademik konspekt",
-    description:
-      "Aminokislotalar, fermentativ kataliz, glikoliz, Krebs sikli va ATF sintezi jarayonlari bo‘yicha universitet o‘quv qo‘llanmasi.",
-    aiPrompt:
-      "Biokimyo fanidan fermentlar, Krebs sikli va ATF bioenergetikasi bo‘yicha o‘quv konspektini tuzib ber.",
-    openDarslik: true,
-  },
 ];
 
-const ALL_LIBRARY_ITEMS: LibraryItem[] = [...GENERAL_LIBRARY_ITEMS, ...BOTANIKA_LIBRARY_ITEMS];
+const CATEGORIES: LibraryCategory[] = ["Barchasi", "Biologiya"];
 
-const CATEGORIES: LibraryCategory[] = [
-  "Barchasi",
-  "Botanika",
-  "Biologiya",
-  "Ingliz tili",
-  "Boshqa fanlar",
-];
-
-function getCategoryIcon(category: LibraryItem["category"], id: string) {
-  if (category === "Botanika") return Leaf;
-  if (category === "Biologiya") return Dna;
-  if (category === "Ingliz tili") return Languages;
-  if (id.includes("mikro")) return Microscope;
-  if (id.includes("biokimyo")) return FlaskConical;
-  return BookOpen;
-}
-
-export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSectionProps) {
+export function KutubxonaSection({ onBack, onOpenDarslik }: KutubxonaSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<LibraryCategory>("Barchasi");
   const [searchQuery, setSearchQuery] = useState("");
   const [readingItem, setReadingItem] = useState<LibraryItem | null>(null);
 
   const filteredItems = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
-    return ALL_LIBRARY_ITEMS.filter((item) => {
+    return LIBRARY_ITEMS.filter((item) => {
       const matchCat = selectedCategory === "Barchasi" || item.category === selectedCategory;
       if (!matchCat) return false;
       if (!q) return true;
@@ -140,7 +61,7 @@ export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSe
     });
   }, [selectedCategory, searchQuery]);
 
-  if (readingItem && readingItem.pdfUrl) {
+  if (readingItem) {
     return (
       <div className="space-y-6 px-4 pb-16 md:px-8">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-4 pt-2">
@@ -221,8 +142,7 @@ export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSe
         </div>
 
         <span className="text-xs font-semibold text-muted-foreground tabular-nums">
-          {ALL_LIBRARY_ITEMS.length} ta elektron manba ·{" "}
-          {ALL_LIBRARY_ITEMS.filter((i) => Boolean(i.pdfUrl)).length} ta PDF kitob va taqdimot
+          {LIBRARY_ITEMS.length} ta PDF to‘plam
         </span>
       </div>
 
@@ -239,9 +159,8 @@ export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSe
               Elektron <span className="text-shine">Kutubxona</span> va O‘quv Manbalari
             </h1>
             <p className="text-sm leading-relaxed text-navy-foreground/85">
-              Botanika fanidan 18 ta PDF ma’ruza taqdimoti, Biologiya Milliy sertifikat 30 ta test
-              varianti hamda Ingliz tili o‘quv qo‘llanmalarini shu yerning o‘zida o‘qing yoki yuklab
-              oling.
+              Biologiya fanidan Milliy sertifikat — 30 ta rasmiy test varianti PDF to‘plamini shu
+              yerning o‘zida o‘qing yoki yuklab oling.
             </p>
           </div>
 
@@ -264,8 +183,8 @@ export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSe
           {CATEGORIES.map((category) => {
             const count =
               category === "Barchasi"
-                ? ALL_LIBRARY_ITEMS.length
-                : ALL_LIBRARY_ITEMS.filter((i) => i.category === category).length;
+                ? LIBRARY_ITEMS.length
+                : LIBRARY_ITEMS.filter((i) => i.category === category).length;
             const isActive = selectedCategory === category;
             return (
               <button
@@ -309,80 +228,50 @@ export function KutubxonaSection({ onBack, onOpenDarslik, onAskAi }: KutubxonaSe
       {/* Library Resource Cards */}
       {filteredItems.length > 0 ? (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filteredItems.map((item) => {
-            const Icon = getCategoryIcon(item.category, item.id);
-            return (
-              <article
-                key={item.id}
-                className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <p className="flex-1 pt-0.5 text-xs font-medium text-muted-foreground">
-                      {item.meta}
-                    </p>
+          {filteredItems.map((item) => (
+            <article
+              key={item.id}
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <div className="space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <Dna className="h-5 w-5" />
                   </div>
-
-                  <h2 className="text-base font-extrabold leading-snug text-foreground">
-                    {item.title}
-                  </h2>
-
-                  <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                    {item.description}
+                  <p className="flex-1 pt-0.5 text-xs font-medium text-muted-foreground">
+                    {item.meta}
                   </p>
                 </div>
 
-                <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border/70 pt-4">
-                  {item.pdfUrl ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setReadingItem(item)}
-                        className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-                      >
-                        <FileText className="h-3.5 w-3.5" />
-                        <span>O‘qish</span>
-                      </button>
-                      <a
-                        href={item.pdfUrl}
-                        download
-                        className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted"
-                      >
-                        <Download className="h-3.5 w-3.5 text-primary" />
-                        <span>Yuklab olish</span>
-                      </a>
-                    </>
-                  ) : (
-                    <>
-                      {onAskAi && item.aiPrompt && (
-                        <button
-                          type="button"
-                          onClick={() => onAskAi(item.aiPrompt!)}
-                          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-                        >
-                          <Sparkles className="h-3.5 w-3.5" />
-                          <span>AI Ustozdan olish</span>
-                        </button>
-                      )}
-                      {onOpenDarslik && item.openDarslik && (
-                        <button
-                          type="button"
-                          onClick={onOpenDarslik}
-                          className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted"
-                        >
-                          <BookOpen className="h-3.5 w-3.5 text-primary" />
-                          <span>Darslik</span>
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+                <h2 className="text-base font-extrabold leading-snug text-foreground">
+                  {item.title}
+                </h2>
+
+                <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border/70 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setReadingItem(item)}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>O‘qish</span>
+                </button>
+                <a
+                  href={item.pdfUrl}
+                  download
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted"
+                >
+                  <Download className="h-3.5 w-3.5 text-primary" />
+                  <span>Yuklab olish</span>
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center">
