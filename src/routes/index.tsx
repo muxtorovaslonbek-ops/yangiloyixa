@@ -45,6 +45,7 @@ import { MustaqilIshSection } from "@/components/MustaqilIshSection";
 import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSection";
 import { BotanikaSection } from "@/components/BotanikaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
+import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 
@@ -266,23 +267,36 @@ function Index() {
           {[
             { icon: MessageSquare, label: "Admin ga murojaat" },
             { icon: Info, label: "Biz haqimizda" },
-          ].map((n) => (
-            <button
-              key={n.label}
-              type="button"
-              onClick={() => {
-                setActive(0);
-                setOpen(false);
-                setTimeout(() => {
-                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-                }, 100);
-              }}
-              className="group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all hover:translate-x-1 hover:bg-navy-foreground/10"
-            >
-              <n.icon className="h-5 w-5 shrink-0 transition-transform group-hover:rotate-12" />
-              <span>{n.label}</span>
-            </button>
-          ))}
+          ].map((n) => {
+            const isBizHaqimizdaActive = n.label === "Biz haqimizda" && active === 8;
+            return (
+              <button
+                key={n.label}
+                type="button"
+                onClick={() => {
+                  if (n.label === "Biz haqimizda") {
+                    setActive(8);
+                    setOpen(false);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  } else {
+                    setActive(0);
+                    setOpen(false);
+                    setTimeout(() => {
+                      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                    }, 100);
+                  }
+                }}
+                className={`group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all duration-300 ${
+                  isBizHaqimizdaActive
+                    ? "nav-active bg-primary-grad shadow-glow"
+                    : "hover:translate-x-1 hover:bg-navy-foreground/10"
+                }`}
+              >
+                <n.icon className="h-5 w-5 shrink-0 transition-transform group-hover:rotate-12" />
+                <span>{n.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </aside>
       {open && (
@@ -508,6 +522,13 @@ function Index() {
             onBack={() => {
               setActive(0);
               setAiPromptForTeacher("");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
+        ) : active === 8 ? (
+          <BizHaqimizdaSection
+            onBack={() => {
+              setActive(0);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
@@ -873,6 +894,12 @@ function Index() {
                   key={b.t}
                   style={{ animationDelay: `${600 + k * 100}ms` }}
                   onMouseMove={spot}
+                  onClick={() => {
+                    if (b.t === "Biz haqimizda") {
+                      setActive(8);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
                   className={`fade-up lift spot group relative flex cursor-pointer items-center gap-5 overflow-hidden rounded-3xl ${b.c} p-6 pr-40`}
                 >
                   <div
