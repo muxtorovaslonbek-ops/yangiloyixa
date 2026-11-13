@@ -26,11 +26,10 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
   {
     id: "course-botanika",
     title: "Botanika darsligi va kurslari",
-    description:
-      "O‘simliklar anatomiyasi, morfologiyasi, o'tkazuvchi to'qimalar va sistematika bo‘yicha 17 ta mavzu.",
+    description: `O‘simliklar anatomiyasi, morfologiyasi, to‘qimalar va sistematika bo‘yicha ${BOTANIKA_TOPICS.length} ta mavzu.`,
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: "17 ta mavzu",
+    badge: `${BOTANIKA_TOPICS.length} ta mavzu`,
   },
   {
     id: "course-genetika",

@@ -46,6 +46,7 @@ import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSecti
 import { BotanikaSection } from "@/components/BotanikaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
+import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -105,7 +106,7 @@ const features = [
   },
 ];
 const list = [
-  { t: "Botanika", n: 17, p: 72, img: botanika },
+  { t: "Botanika", n: BOTANIKA_TOPICS.length, p: 72, img: botanika },
   { t: "Genetika", n: 18, p: 60, img: genetika },
   { t: "Mikrobiologiya", n: 20, p: 48, img: mikro },
   { t: "Biokimyo", n: 26, p: 35, img: biokimyo },

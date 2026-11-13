@@ -36,6 +36,8 @@ export interface BotanikaTopic {
   selfCheckQuestions: BotanikaSelfCheck[];
   keyTerms: string[];
   references: string;
+  pdfUrl?: string;
+  pdfTitle?: string;
 }
 
 export const BOTANIKA_TOPICS: BotanikaTopic[] = [
@@ -44,6 +46,818 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     order: 1,
     code: "1",
     topicLabel: "1-mavzu",
+    semester: "I semestr",
+    title: "Kirish. O‘simliklar dunyosi va uning xilma-xilligi.",
+    syllabusPoints: [
+      "Botanika fanining predmeti, obyekti, maqsadi va asosiy bo‘limlari (morfologiya, anatomiya, sitologiya, fiziologiya, sistematika, geobotanika).",
+      "O‘simliklar dunyosining xilma-xilligi (suvo‘tlar, yo‘sinlar, plaunlar, qirqbo‘g‘imlar, qirqquloqlar, ochiq va yopiq urug‘lilar).",
+      "O‘simliklarning tabiatda, biosferada (kislorod va moddalar aylanishida) hamda inson hayotidagi ahamiyati.",
+      "O‘zbekistonda botanika fanining rivojlanish tarixi va akademik olimlarning hissasi.",
+    ],
+    studyNotes:
+      "Botanika — o‘simliklar olami, ularning ichki va tashqi tuzilishi, hayotiy jarayonlari, tarqalishi, tasnifi hamda muhofazasini o‘rganadigan kompleks biologik fan. Yer yuzida 390 mingdan ortiq o‘simlik turi mavjud bo‘lib, ular fotosintez orqali organik modda va erkin kislorod hosil qiluvchi asosiy produtsentlardir.",
+    overview:
+      "Botanika biologiyaning eng qadimiy va keng qamrovli tarmoqlaridan biri bo‘lib, o‘simlik organizmlarini molekulyar-hujayraviy darajadan to yirik o‘simlik jamoalari (fitotsenoz) va biosfera darajasigacha tadqiq etadi. O‘simliklar quyosh energiyasini kimyoviy bog‘lar energiyasiga aylantirib, Yer yuzidagi barcha geterotrof organizmlar uchun oziqa hamda nafas olish uchun kislorod manbayini yaratadi.",
+    sections: [
+      {
+        heading: "1. Botanika fanining predmeti va asosiy bo‘limlari",
+        content:
+          "Botanika (yunoncha 'botane' — o‘t, o‘simlik) o‘simliklarning tuzilishi, rivojlanishi, ko‘payishi va atrof-muhit bilan o‘zaro ta’sirini o‘rganadi. Zamonaviy botanika quyidagi yirik yo‘nalishlarga bo‘linadi:",
+        highlights: [
+          "O‘simliklar morfologiyasi — tashqi tuzilish, organlar shakli va evolyutsion o‘zgarishlarini o‘rganadi",
+          "O‘simliklar anatomiyasi va sitologiyasi — hujayra va to‘qimalarning mikroskopik ichki tuzilishini tadqiq etadi",
+          "O‘simliklar sistematikasi — 390 000+ turni qarindoshlik darajasiga ko‘ra tasniflaydi va ilmiy nomlaydi",
+          "Geobotanika va ekologiya — o‘simlik jamoalari (o‘rmon, dasht, cho‘l) va muhit omillarini o‘rganadi",
+        ],
+      },
+      {
+        heading: "2. O‘simliklar dunyosining xilma-xilligi",
+        content:
+          "Evolyutsion taraqqiyot davomida o‘simliklar olami sodda suv muhiti shakllaridan murakkab gulli o‘simliklargacha rivojlangan. Tuban o‘simliklarga (suvo‘tlar) tanasi tallomdan iborat organizmlar kirsa, yuksak o‘simliklar haqiqiy to‘qima va organlarga (ildiz, poya, barg) ega: yo‘sintoifalar, plauntoifalar, qirqbo‘g‘imtoifalar, qirqquloqtoifalar (sporali yuksak o‘simliklar) hamda ochiq urug‘lilar va yopiq urug‘lilar (urug‘li o‘simliklar — eng katta xilma-xillik, ~300 ming tur).",
+      },
+      {
+        heading: "3. O‘simliklarning biosfera va inson hayotidagi o‘rni",
+        content:
+          "O‘simliklar har yili fotosintez jarayonida milliardlab tonna organik modda sintezlab, atmosferaga erkin O2 chiqaradi va CO2 balansini saqlaydi. Insoniyat uchun ular oziq-ovqat (don, sabzavot, meva), dori-darmon (alkaloidlar, vitaminlar, glikozidlar), sanoat xomashyosi (tola, yog‘och, kauchuk, qog‘oz), chorva ozuqasi hamda tuproqni eroziyadan himoya qiluvchi asosiy ekologik qalqondir.",
+      },
+      {
+        heading: "4. O‘zbekistonda botanika fanining rivojlanishi",
+        content:
+          "Markaziy Osiyo va O‘zbekiston florasini o‘rganishda E.P. Korovin, K.Z. Zokirov, I.I. Granitov, M.V. Kultiasov, A.J. Butkov, S.S. Sahobiddinov va O‘.P. Pratov kabi olimlar ulkan hissa qo‘shgan. Bugungi kunda O‘zR FA Botanika instituti, Milliy gerbariy fondi va Qizil kitob doirasida noyob va endemik turlarni muhofaza qilish ishlari olib borilmoqda.",
+      },
+    ],
+    comparisonTable: {
+      title: "Botanikaning asosiy bo‘limlari va o‘rganish obyektlari",
+      columns: ["Bo‘lim nomi", "O‘rganish darajasi", "Asosiy vazifasi"],
+      rows: [
+        [
+          "Sitologiya",
+          "Hujayra darajasi",
+          "O‘simlik hujayrasi organoidlari va bo‘linishini o‘rganish",
+        ],
+        [
+          "Gistologiya va Anatomiya",
+          "To‘qima va organlar",
+          "Ichki mikroskopik tuzilishni aniqlash",
+        ],
+        [
+          "Morfologiya",
+          "Organizm tashqi shakli",
+          "Vegetativ va generativ organlar tuzilishi va metamorfozi",
+        ],
+        ["Sistematika", "Tur va taksonlar", "O‘simliklarni tasniflash va binar nomlash"],
+        ["Geobotanika", "Fitotsenozlar", "O‘simliklar qoplamining geografik tarqalishi"],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Botanika",
+        definition:
+          "O‘simliklar tuzilishi, hayot faoliyati, tasnifi va ekologiyasini o‘rganuvchi fan.",
+      },
+      {
+        term: "Produtsent",
+        definition:
+          "Fotosintez orqali anorganik moddalardan birlamchi organik modda yaratuvchi avtotrof organizm.",
+      },
+      {
+        term: "Flora",
+        definition:
+          "Muayyan geografik hududda tarixan shakllangan barcha o‘simlik turlari majmuasi.",
+      },
+      {
+        term: "Fitotsenoz",
+        definition:
+          "Bir xil muhit sharoitida birgalikda yashovchi va o‘zaro ta’sirlashuvchi o‘simliklar jamoasi.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Botanika fanining morfologiya va anatomiya bo‘limlari o‘rtasida qanday farq bor?",
+        answer:
+          "Morfologiya o‘simlik va uning organlarining tashqi shakli, tuzilishi va o‘zgarishlarini o‘rgansa, anatomiya organlarning ichki hujayra va to‘qima darajasidagi mikroskopik tuzilishini tadqiq qiladi.",
+      },
+      {
+        question: "O‘simliklarning biosferadagi eng asosiy ekologik roli nimadan iborat?",
+        answer:
+          "Ular quyosh energiyasidan foydalanib birlamchi organik modda sintezlaydi, atmosferadagi karbonat angidridni yutib kislorod ishlab chiqaradi hamda oziq zanjirining asosini tashkil etadi.",
+      },
+      {
+        question: "O‘simliklar dunyosi qaysi ikki yirik evolyutsion darajaga bo‘linadi?",
+        answer:
+          "Tanasi tallomdan iborat tuban o‘simliklar (suvo‘tlar) hamda haqiqiy to‘qima va organlarga ega yuksak o‘simliklar (yo‘sinlardan gulli o‘simliklargacha) guruhlariga bo‘linadi.",
+      },
+    ],
+    keyTerms: ["Botanika", "Morfologiya", "Anatomiya", "Sistematika", "Flora", "Biosfera"],
+    references: "1-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M01_Kirish_O_simliklar_dunyosi_va_uning_xilmaxilligi_e37f360a.pdf",
+    pdfTitle: "1-ma’ruza PDF: Kirish. O‘simliklar dunyosi va uning xilma-xilligi",
+  },
+  {
+    id: "bot-2",
+    order: 2,
+    code: "2",
+    topicLabel: "2-mavzu",
+    semester: "I semestr",
+    title: "O‘simlik hujayrasining tuzilishi, kimyoviy tarkibi, vazifasi va bo‘linish usullari.",
+    syllabusPoints: [
+      "O‘simlik hujayrasining hayvon hujayrasidan farq qiluvchi asosiy belgilari (sellyuloza qobig‘i, plastidalar, markaziy vakuola).",
+      "Protoplast organoidlari (yadro, mitoxondriya, endoplazmatik to‘r, Golji apparati, ribosomalar) va plastidalar tiplari.",
+      "Vakuola shirasidagi zaxira moddalar (kraxmal, aleyron, inulin) va hujayra qobig‘ining ikkilamchi o‘zgarishlari.",
+      "Hujayraning bo‘linish usullari: amitoz, mitoz va meyoz.",
+    ],
+    studyNotes:
+      "O‘simlik hujayrasi qattiq sellyuloza hujayra devori, plastidalar (xloroplast, xromoplast, leykoplast) hamda yirik markaziy vakuolaga egaligi bilan ajralib turadi. Sitoplazmatik ko‘prikchalar — plazmodesmalar qo‘shni hujayralarni yagona tizimga bog‘laydi. Bo‘linish mitoz (somatik o‘sish) va meyoz (spora hosil bo‘lish) orqali boradi.",
+    overview:
+      "Hujayra barcha tirik organizmlar kabi o‘simliklarning ham asosiy strukturaviy, funksional va irsiy birligidir. O‘simlik hujayrasi avtotrof oziqlanish va harakatsiz hayot tarziga moslashgani sababli qattiq pektin-sellyuloza qobiq, fotosintezlovchi plastidalar hamda osmotik bosim (turgor)ni ushlab turuvchi vakuolalar bilan ta’minlangan.",
+    sections: [
+      {
+        heading: "1. O‘simlik hujayrasining o‘ziga xos tarkibiy qismlari",
+        content:
+          "O‘simlik hujayrasi tashqi tomondan sellyuloza mikrofibrillalaridan tuzilgan hujayra devori (qobig‘i) bilan o‘ralgan bo‘lib, qo‘shni hujayralar bilan plazmodesmalar orqali bog‘lanadi. Plazmalemma ostida sitoplazma va organoidlar (protoplast) joylashadi.",
+        highlights: [
+          "Xloroplastlar — xlorofill a va b saqlovchi, tilakoidlar va granalarda fotosintez olib boruvchi yashil plastidalar",
+          "Xromoplastlar — karotinoidlar (karotin, ksantofill) saqlab gul va mevalarga sariq-qizil tus beradi",
+          "Leykoplastlar — rangsiz plastidalar bo‘lib, ildiz va tugunaklarda kraxmal, oqsil va moy to‘playdi",
+        ],
+      },
+      {
+        heading: "2. Vakuola, turgor bosimi va hujayra kiritmalari",
+        content:
+          "Voyaga yetgan o‘simlik hujayrasi hajmining 70–90 foizini tonoplast membranasi bilan o‘ralgan markaziy vakuola egallaydi. Undagi hujayra shirasi suvda erigan qandlar, organik kislotalar, antotsian pigmentlari va alkaloidlarni tutib, hujayra devoriga ichki turgor bosimi beradi. Zaxira va chiqindi moddalar kiritmalar shaklida to‘planadi: birlamchi va zaxira kraxmal donachalari, aleyron donachalari (oqsil), inulin hamda kaltsiy oksalat kristallari (druza, rafida).",
+      },
+      {
+        heading: "3. Hujayra qobig‘ining kimyoviy o‘zgarishlari",
+        content:
+          "Hujayralar bajaradigan vazifasiga qarab qobig‘iga turli moddalar singadi: yog‘ochlanish (lignifikatsiya — lignin singib, mexanik mustahkamlik beradi), po‘kaklanish (suberinizatsiya — suberin suv va gaz o‘tkazmaydigan himoya qiladi), kutikulanish (kutin — yer ustki organlarda bug‘lanishni kamaytiradi), shilimshiqlanish (zig‘ir va behi urug‘larida suv tutish) va minerallashish (SiO2 — qirqbo‘g‘im va g‘alladoshlarda).",
+      },
+      {
+        heading: "4. Hujayralarning bo‘linish usullari",
+        content:
+          "Yangi hujayralar faqat oldingi hujayralarning bo‘linishi yo‘li bilan hosil bo‘ladi. Mitoz — somatik hujayralarning teng bo‘linishi (2n → 2n) bo‘lib, meristemalarda o‘sish va regeneratsiyani ta’minlaydi (o‘simliklarda sentriolalar bo‘lmaydi, sitokinez phragmoplast yordamida o‘rtadan chetga boradi). Meyoz — sporangiylarda sporalar shakllanishida xromosoma sonini ikki barobar kamaytiruvchi reduksion bo‘linish (2n → n). Amitoz esa qarigan yoki patologik hujayralarda to‘g‘ridan-to‘g‘ri yadro bo‘linishidir.",
+      },
+    ],
+    comparisonTable: {
+      title: "O‘simlik plastidalarining tuzilishi va vazifalari",
+      columns: ["Plastida tipi", "Asosiy pigmenti", "Vazifasi", "Uchraydigan organlar"],
+      rows: [
+        [
+          "Proplastid",
+          "Pigmentsiz",
+          "Barcha plastidalarga asos bo‘ladi",
+          "Meristema (o‘sish konusi)",
+        ],
+        [
+          "Xloroplast",
+          "Xlorofill a, b + karotinoid",
+          "Fotosintez (ATF va glyukoza sintezi)",
+          "Barglar, yosh yashil poyalar",
+        ],
+        [
+          "Xromoplast",
+          "Karotin, likopin, ksantofill",
+          "Changlatuvchi va tarqatuvchilarni jalb qilish",
+          "Gul tojbarglari, pishgan mevalar, sabzi",
+        ],
+        [
+          "Leykoplast",
+          "Pigment yo‘q",
+          "Kraxmal (amiloplast), oqsil va yog‘ zaxiralash",
+          "Kartoshka tugunagi, urug‘lar, ildiz",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Protoplast",
+        definition:
+          "O‘simlik hujayrasining hujayra devoridan tashqari barcha tirik tarkibiy qismi (sitoplazma + organoidlar + yadro).",
+      },
+      {
+        term: "Tonoplast",
+        definition:
+          "Markaziy vakuolani sitoplazmadan ajratib turuvchi tanlab o‘tkazuvchi membrana.",
+      },
+      {
+        term: "Plazmodesma",
+        definition:
+          "Qo‘shni o‘simlik hujayralarining qobiq teshikchalari orqali o‘tuvchi ingichka sitoplazmatik ipchalar.",
+      },
+      {
+        term: "Turgor",
+        definition:
+          "Vakuola shirasining hujayra qobig‘iga ko‘rsatadigan ichki gidrostatik bosimi (o‘simlik tarangligi).",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "O‘simlik hujayrasida mitozning oxirgi bosqichi — sitokinez hayvon hujayrasidan qanday farq qiladi?",
+        answer:
+          "Hayvon hujayrasi chetdan markazga qarab tortilib bo‘linadi; o‘simlik hujayrasida esa qattiq devor borligi sababli markazda phragmoplast hosil bo‘lib, o‘rtadan chetlarga qarab yangi hujayra to‘sig‘i quriladi.",
+      },
+      {
+        question:
+          "Yashil pomidor pishganda qizarishi va bahorgi kartoshka yasharib ketishi qaysi jarayon bilan bog‘liq?",
+        answer:
+          "Plastidalarning o‘zaro bir-biriga aylanishi bilan bog‘liq: pomidorda xloroplastlar xromoplastlarga, yorug‘likka chiqqan kartoshka tugunagida esa leykoplastlar xloroplastlarga aylanadi.",
+      },
+      {
+        question:
+          "Hujayra devorida lignin va suberin to‘planishi qanday vazifalarga xizmat qiladi?",
+        answer:
+          "Lignin qobiqni qattiqlashtirib mexanik tayanch va suv o‘tkazishga moslaydi; suberin esa suv va gaz o‘tkazmaydigan po‘kak qatlamini hosil qilib himoya vazifasini bajaradi.",
+      },
+    ],
+    keyTerms: ["Sellyuloza", "Plastidalar", "Vakuola", "Turgor", "Plazmodesma", "Mitoz"],
+    references: "2-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M02_O_simlik_hujayrasi_tuzilishi_kimyoviy_tarkibi_va_7d81c0f9.pdf",
+    pdfTitle: "2-ma’ruza PDF: O‘simlik hujayrasi tuzilishi, kimyoviy tarkibi va bo‘linishi",
+  },
+  {
+    id: "bot-3",
+    order: 3,
+    code: "3",
+    topicLabel: "3-mavzu",
+    semester: "I semestr",
+    title: "To‘qimalar haqida umumiy tushuncha. Hosil qiluvchi va qoplovchi to‘qimalar.",
+    syllabusPoints: [
+      "O‘simlik to‘qimalari haqida tushuncha, ularning kelib chiqishi va tasnifi (sodda va murakkab to‘qimalar).",
+      "Hosil qiluvchi to‘qimalar (meristemalar): apikal, lateral (kambiy, fellogen), interkalyar va yara meristemalari.",
+      "Birlamchi qoplovchi to‘qima — epiderma (epidermis), og‘izcha apparati va trixomalar.",
+      "Ikkilamchi va uchlamchi qoplovchi to‘qimalar — periderma (yasmiqchalar) va po‘stloq (ritidom).",
+    ],
+    studyNotes:
+      "To‘qima — kelib chiqishi, tuzilishi va bajaradigan vazifasi umumiy bo‘lgan hujayralar tizimi. Meristemalar o‘simlikning umr bo‘yi o‘sishini ta’minlaydi, qoplovchi to‘qimalar (epiderma, periderma, po‘stloq) esa tashqi noqulay omillardan himoya qiladi hamda gaz almashinuvini boshqaradi.",
+    overview:
+      "Yuksak o‘simliklarning suvdan quruqlikka chiqishi bilan tana qismlari o‘rtasida mehnat taqsimoti yuzaga kelib, maxsus ixtisoslashgan to‘qimalar shakllandi. Har bir doimiy to‘qima faqat meristema (hosil qiluvchi) to‘qima hujayralarining bo‘linishi va differensiallashuvi natijasida vujudga keladi.",
+    sections: [
+      {
+        heading: "1. To‘qimalar tasnifi va meristemalarning joylashuvi",
+        content:
+          "Bir xil hujayralardan tuzilgan to‘qimalar sodda (parenxima, kollenxima), har xil hujayralardan iborat to‘qimalar esa murakkab (ksilema, floema, epiderma) deyiladi. Meristema hujayralari kichik, yupqa devorli, yirik yadroli va vakuolasiz bo‘lib, uzluksiz bo‘linish qobiliyatiga ega:",
+        highlights: [
+          "Apikal (uchki) meristema — ildiz va novda uchida (o‘sish konusida) joylashib, bo‘yiga o‘sishni ta’minlaydi",
+          "Lateral (yon) meristema — kambiy va fellogen bo‘lib, ildiz va poyaning eniga yo‘g‘onlashuvini ta’minlaydi",
+          "Interkalyar (oraliq) meristema — g‘alladoshlar bo‘g‘im oraliqlari asosida joylashib, tez bo‘yiga cho‘ziladi",
+          "Travmatik (yara) meristema — o‘simlik shikastlangan joylarda kallus hosil qilib jarohatni bitiradi",
+        ],
+      },
+      {
+        heading: "2. Birlamchi qoplovchi to‘qima — Epiderma",
+        content:
+          "Yosh novdalar, barglar va gullarni qoplovchi bir qavatli tirik to‘qima. Hujayralari zich jipslashgan, xloroplastsiz (yopuvchi hujayralardan tashqari) va tashqi devori mumsimon kutikula bilan qoplangan. Epidermada gaz almashinuvi hamda suv bug‘latishni boshqaruvchi og‘izcha apparati (2 ta loviyasimon yopuvchi hujayra va tirqish) joylashadi. Trixomalar — epiderma o‘simtalari bo‘lib, qoplovchi tuklar (issiqlik va zararkunandalardan himoya), bezli tuklar (efir moyi), achitqi tuklar (qichitqi o‘t) hamda urug‘ tuklari (g‘o‘za tolasi) shaklida uchraydi.",
+      },
+      {
+        heading: "3. Ikkilamchi va uchlamchi qoplovchi to‘qimalar",
+        content:
+          "Ko‘p yillik o‘simliklar poyasi yo‘g‘onlashganda epiderma yorilib, uning o‘rnini ikkilamchi qoplovchi to‘qima — periderma egallaydi. Periderma 3 qavatdan iborat: fellogen (po‘kak kambiysi), u tashqariga hosil qilgan o‘lik po‘kak hujayralari — fellema (suberinli, havo to‘la) hamda ichkariga hosil qilgan tirik parenxima — felloderma. Po‘kakdagi gaz almashinuvini maxsus g‘ovak teshikchalar — yasmiqchalar (chechevichkalar) ta’minlaydi. Daraxt qariganda bir necha qavat periderma va o‘lik lub qatlamlari qo‘shilib qalin po‘stloq — ritidomni hosil qiladi.",
+      },
+    ],
+    comparisonTable: {
+      title: "Qoplovchi to‘qimalarning qiyosiy tavsifi",
+      columns: ["To‘qima", "Kelib chiqishi", "Hujayra holati", "Gaz almashinuv organi"],
+      rows: [
+        [
+          "Epiderma (birlamchi)",
+          "Protoderma (apikal meristema)",
+          "1 qavatli tirik hujayralar + kutikula",
+          "Og‘izchalar (ustitsalar)",
+        ],
+        [
+          "Periderma (ikkilamchi)",
+          "Fellogen (po‘kak kambiysi)",
+          "Ko‘p qavatli o‘lik po‘kak (suberin)",
+          "Yasmiqchalar (chechevichkalar)",
+        ],
+        [
+          "Po‘stloq / Ritidom (uchlamchi)",
+          "Bir necha fellogen qavatlari",
+          "O‘lik periderma + nobud bo‘lgan lub",
+          "Yoriqlar va yasmiqcha izlari",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Meristema",
+        definition:
+          "Uzluksiz mitoz bo‘linish orqali boshqa barcha to‘qimalarga asos beruvchi hosil qiluvchi to‘qima.",
+      },
+      {
+        term: "Epiderma",
+        definition: "Barg va yosh novdalarni qoplab turuvchi birlamchi tirik qoplovchi to‘qima.",
+      },
+      {
+        term: "Periderma",
+        definition:
+          "Fellogen, fellema (po‘kak) va fellodermadan tashkil topgan ikkilamchi himoya kompleksi.",
+      },
+      {
+        term: "Yasmiqcha",
+        definition:
+          "Periderma qatlamida ichki tirik to‘qimalarga kislorod kirishini ta’minlovchi g‘ovak tuzilma.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question: "G‘alladoshlar (bug‘doy, bambuk) poyasi nima uchun juda tez bo‘yiga o‘sadi?",
+        answer:
+          "Chunki ularda uchki meristemadan tashqari har bir bo‘g‘im oralig‘i asosida faol bo‘linuvchi interkalyar (oraliq) meristemalar mavjud.",
+      },
+      {
+        question:
+          "Epidermadagi og‘izcha yopuvchi hujayralari boshqa epiderma hujayralaridan nimasi bilan farq qiladi?",
+        answer:
+          "Yopuvchi hujayralarda xloroplastlar mavjud bo‘lib, kun yorug‘ligida turgor bosimini o‘zgartirish hisobiga og‘izcha tirqishini ochib-yopadi.",
+      },
+      {
+        question:
+          "Periderma tarkibidagi fellema hujayralari nima uchun tirik emas, ammo himoya uchun juda qulay?",
+        answer:
+          "Ularning devoriga suberin moddasi singib, protoplasti nobud bo‘ladi va bo‘shlig‘i havo bilan to‘ladi — bu suv bug‘lanishi, sovuq va mikroblardan mukammal izolyatsiya yaratadi.",
+      },
+    ],
+    keyTerms: ["Meristema", "Kambiy", "Epiderma", "Trixoma", "Periderma", "Ritidom"],
+    references: "3-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M03_To_qimalar_haqida_umumiy_tushuncha_Meristema_va__976e9aa6.pdf",
+    pdfTitle: "3-ma’ruza PDF: To‘qimalar haqida umumiy tushuncha. Meristema va qoplovchi to‘qima",
+  },
+  {
+    id: "bot-4",
+    order: 4,
+    code: "4",
+    topicLabel: "4-mavzu",
+    semester: "I semestr",
+    title: "Asosiy va ajratuvchi to‘qimalarning tuzilishi va vazifalari.",
+    syllabusPoints: [
+      "Asosiy to‘qimalar (parenxima) turlari: assimilyatsion (xlorenxima), g‘amlovchi, suv saqlovchi va havo saqlovchi (aerenxima).",
+      "So‘ruvchi to‘qimalar: ildiz rizodermasi (epiblema), parazit o‘simliklar gaustoriyasi va epifitlar velameni.",
+      "Tashqi ajratuvchi to‘qimalar: nektardonlar, gidatodalar (gutatsiya), bezli tuklar va tuz bezlari.",
+      "Ichki ajratuvchi to‘qimalar: idioblastlar, sxizogen va lizogen bo‘shliqlar, sut yo‘llari.",
+    ],
+    studyNotes:
+      "Asosiy to‘qimalar o‘simlik tanasining asosiy massasini tashkil etib, fotosintez (xlorenxima), zaxira to‘plash, suv hamda havo saqlash vazifalarini bajaradi. Ajratuvchi to‘qimalar esa nektar, shira, smola, efir moylari va sut shirasi (lateks) ishlab chiqarib, o‘simlikni himoya qiladi va changlatuvchilarni jalb etadi.",
+    overview:
+      "Asosiy to‘qima (parenxima) tirik, yupqa devorli hujayralardan iborat bo‘lib, o‘simlikning metabolik markazini tashkil etadi — unda fotosintez, nafas olish va oziq moddalar zaxirasi amalga oshadi. Ajratuvchi (sekretor) to‘qimalar esa moddalar almashinuvi mahsulotlarini tashqariga chiqarish yoki maxsus ichki kanallarda saqlashga ixtisoslashgan.",
+    sections: [
+      {
+        heading: "1. Asosiy to‘qima (Parenxima) xillari",
+        content: "Bajaradigan funksiyasiga qarab parenxima 4 asosiy turga bo‘linadi:",
+        highlights: [
+          "Assimilyatsion to‘qima (xlorenxima) — xloroplastga boy bo‘lib, barglarda ustunsimon (zich) va g‘ovak (hujayralararo bo‘shliqli) qavatlarni hosil qiladi",
+          "G‘amlovchi parenxima — urug‘, tugunak, ildizmeva va poya o‘zagida kraxmal, oqsil va moy zaxiralaydi",
+          "Suv saqlovchi parenxima — cho‘l sukkulentlarida (kaktus, aloe, agava) yirik shilimshiqli hujayralarda suv to‘playdi",
+          "Havo saqlovchi parenxima (aerenxima) — suv va botqoq o‘simliklarida (nilufar, qamish, sholi) kislorod o‘tkazuvchi keng havo kanallari hosil qiladi",
+        ],
+      },
+      {
+        heading: "2. So‘ruvchi to‘qimalar",
+        content:
+          "Suv, mineral tuzlar yoki tayyor oziq moddalarni tashqi muhitdan yutishga ixtisoslashgan to‘qimalar. Eng muhimi yosh ildizning so‘rish zonasidagi rizoderma (epiblema) bo‘lib, uning uzun ildiz tukchalari so‘rish yuzasini o‘nlab marta oshiradi. Tropik epifit orxideyalarda havo namini shimgichdek yutuvchi ko‘p qavatli o‘lik velamen to‘qimasi, parazit o‘simliklarda (zarpechak, shumg‘iya) esa xo‘jayin to‘qimasiga kiruvchi gaustoriyalar mavjud.",
+      },
+      {
+        heading: "3. Tashqi va ichki ajratuvchi to‘qimalar",
+        content:
+          "Sekret mahsulotining to‘planish joyiga ko‘ra ajratuvchi to‘qimalar ikki guruhga bo‘linadi. Tashqi ajratuvchi tuzilmalar: hasharotlarni jalb qiluvchi nektardonlar, ortiqcha suvni tomchi holida chiqaruvchi gidatodalar (gutatsiya hodisasi — qulupnay, bug‘doy uchida), yalpiz va rayhon bargidagi efir moyli bezli tuklar hamda sho‘rxok o‘simliklaridagi tuz bezlari. Ichki ajratuvchilar: alohida yirik hujayralar — idioblastlar, ignabarglilardagi sxizogen smola yo‘llari (hujayralar surilishi hisobiga), sitrus po‘stidagi lizogen efir moyi bo‘shliqlari (hujayra erishi hisobiga) hamda qoqio‘t, ko‘knori va sutlamalardagi lateks saqlovchi sut yo‘llari.",
+      },
+    ],
+    comparisonTable: {
+      title: "Ichki ajratuvchi bo‘shliqlarning hosil bo‘lish mexanizmlari",
+      columns: ["Tuzilma turi", "Hosil bo‘lish usuli", "Sekret moddasi", "Misollar"],
+      rows: [
+        [
+          "Sxizogen yo‘llar",
+          "Hujayralar o‘zaro ajralib orasi kengayadi",
+          "Smola (qatron), balzam",
+          "Qarag‘ay, archa, kungaboqar",
+        ],
+        [
+          "Lizogen bo‘shliqlar",
+          "Markaziy hujayralar erib ketadi",
+          "Efir moylari",
+          "Limon, apelsin, evkalipt",
+        ],
+        [
+          "Sut yo‘llari",
+          "Bo‘g‘imli yoki bo‘g‘imsiz uzun naychalar",
+          "Lateks (kauchuk, alkaloid)",
+          "Ko‘knori, qoqio‘t, geveya",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Xlorenxima",
+        definition:
+          "Tarkibida ko‘plab xloroplastlar tutuvchi asosiy fotosintezlovchi parenxima to‘qimasi.",
+      },
+      {
+        term: "Aerenxima",
+        definition:
+          "Suv va botqoq o‘simliklari organlarini havo bilan ta’minlovchi keng hujayralararo bo‘shliqli to‘qima.",
+      },
+      {
+        term: "Gidatoda",
+        definition:
+          "Barg chetida ortiqcha suvni tomchi holida tashqariga chiqaruvchi (gutatsiya) maxsus suv og‘izchasi.",
+      },
+      {
+        term: "Lateks",
+        definition:
+          "Sut yo‘llari ichida to‘planadigan, o‘simlikni jarohat va zararkunandalardan asrovchi sutsimon shira.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Gidatodalar orqali kechadigan gutatsiya oddiy transpiratsiyadan nimasi bilan farq qiladi?",
+        answer:
+          "Transpiratsiyada suv og‘izchalar orqali bug‘ holatida chiqariladi va tirik yopuvchi hujayralar bilan boshqariladi; gutatsiyada esa havo namligi 100% ga yaqin paytda suv doim ochiq gidatodalar orqali suyuq tomchi shaklida ajraladi.",
+      },
+      {
+        question:
+          "Qarag‘ayning smola yo‘llari bilan apelsin po‘stidagi efir moyi bo‘shliqlari kelib chiqishi qanday farqlanadi?",
+        answer:
+          "Qarag‘aydagi smola yo‘llari sxizogen usulda (hujayralar bir-biridan surilib bo‘shliq ochilishi), apelsindagi bo‘shliqlar esa lizogen usulda (markazdagi hujayralarning erishi natijasida) hosil bo‘ladi.",
+      },
+      {
+        question:
+          "Nima uchun sholi va nilufar ildizlari kislorodsiz suv tubida ham chirib ketmaydi?",
+        answer:
+          "Ularning poya va ildizlarida kuchli rivojlangan aerenxima to‘qimasi bo‘lib, barglardan ildizlarga uzluksiz havo (kislorod) yetkazib turadi.",
+      },
+    ],
+    keyTerms: ["Parenxima", "Xlorenxima", "Aerenxima", "Rizoderma", "Nektardon", "Sut yo‘llari"],
+    references: "4-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M04_Asosiy_va_ajratuvchi_to_qimalar_04000ea9.pdf",
+    pdfTitle: "4-ma’ruza PDF: Asosiy va ajratuvchi to‘qimalar tuzilishi va vazifalari",
+  },
+  {
+    id: "bot-5",
+    order: 5,
+    code: "5",
+    topicLabel: "5-mavzu",
+    semester: "I semestr",
+    title: "Mexanik va o‘tkazuvchi to‘qimalarning tuzilishi va ahamiyati.",
+    syllabusPoints: [
+      "Mexanik to‘qimalar: tirik kollenxima (burchakli, plastinkali, g‘ovak) va nobud sklerenxima (tolalar va sklereidlar).",
+      "O‘tkazuvchi to‘qimalar: ksilema (traxeidalar, traxeya/naylar, libriform, parenxima) — yuqoriga oqim.",
+      "Floema (elaksimon naylar, yo‘ldosh hujayralar, lub tolalari va parenxima) — pastga oqim.",
+      "O‘tkazuvchi boylamlar tiplari: kollateral (ochiq va yopiq), bikollateral, konsentrik va radial.",
+    ],
+    studyNotes:
+      "Mexanik to‘qimalar o‘simlik skeleti vazifasini o‘tab, shamol va og‘irlikka qarshilik ko‘rsatadi (kollenxima va sklerenxima). O‘tkazuvchi to‘qimalar esa ildizdan barglarga suv va mineral tuzlarni (ksilema) hamda barglardan barcha organlarga organik moddalarni (floema) tashiydi.",
+    overview:
+      "Yuksak o‘simliklarning tik o‘sishi va o‘nlab metr balandlikka ko‘tarilishi ikkita o‘zaro bog‘liq tizimga tayanadi: mustahkam tayanch beruvchi mexanik to‘qimalar hamda yer ostki va yer ustki organlar o‘rtasida moddalar transportini ta’minlovchi o‘tkazuvchi to‘qimalar.",
+    sections: [
+      {
+        heading: "1. Mexanik to‘qimalar: Kollenxima va Sklerenxima",
+        content:
+          "Mexanik to‘qima hujayralarining devori notekis yoki tekis qalinlashgan bo‘ladi. Kollenxima — yosh o‘sayotgan organlarda (poya, barg bandi) epidermis ostida joylashuvchi tirik, sellyuloza devori notekis qalinlashgan to‘qima (burchakli, plastinkali va g‘ovak xillari bor); u o‘sishga to‘sqinlik qilmay egiluvchan tayanch beradi. Sklerenxima esa o‘sishdan to‘xtagan organlarda bo‘lib, devori bir tekis qalinlashgan va ligninlangan nobud hujayralardan iborat: uzun uchli sklerenxima tolalari (zig‘ir, kanop lub tolalari — to‘qimachilikda qimmatli) hamda qattiq toshsimon hujayralar — sklereidlar (nok etidagi toshchalar, yong‘oq va olcha danagi po‘chog‘i).",
+      },
+      {
+        heading: "2. Ksilema (Yog‘ochlik) — yuqoriga yo‘nalgan oqim",
+        content:
+          "Ksilema ildizdan so‘rilgan suv va mineral tuzlarni poya bo‘ylab barglarga ko‘taradi. U murakkab to‘qima bo‘lib 4 xil hujayradan tuzilgan: 1) Traxeidalar — uchlari o‘tkirlashgan, qalin devorli nobud hujayralar (poralar orqali sekin o‘tkazadi; ochiq urug‘lilarda asosiy); 2) Traxeya (naylar) — ko‘ndalang to‘siqlari erib ketgan nobud hujayralar zanjiri (yopiq urug‘lilarda suvni juda tez o‘tkazadi; halqali, spiralli, to‘rsimon, nuqtali qalinlashuvli); 3) Yog‘ochlik tolalari (libriform) — mexanik mustahkamlik; 4) Yog‘ochlik parenximasi — tirik zaxira saqlovchi hujayralar.",
+      },
+      {
+        heading: "3. Floema (Lub) — pastga yo‘nalgan oqim",
+        content:
+          "Floema barglarda fotosintez natijasida hosil bo‘lgan organik moddalarni (saxaroza, aminokislotalar) o‘sish nuqtalari, ildiz va mevalarga tashiydi. Asosiy elementlari: elaksimon naylar — ko‘ndalang devorida mayda teshikli elak plastinkasi bo‘lgan tirik, ammo yadrosiz hujayralar; ularning hayotiy faoliyatini va modda yuklashini boshqaruvchi yirik yadroli yo‘ldosh hujayralar (faqat gulli o‘simliklarda); mexanik lub tolalari hamda lub parenximasi.",
+      },
+      {
+        heading: "4. O‘tkazuvchi boylamlarning tiplari",
+        content: "Ksilema va floema birgalikda o‘tkazuvchi boylamlarni hosil qiladi:",
+        highlights: [
+          "Kollateral ochiq boylam: ksilema ichkarida, floema tashqarida, orasida kambiy qavati bor (ikki pallalilar va ochiq urug‘lilar poyasi)",
+          "Kollateral yopiq boylam: kambiy yo‘q, ikkilamchi yo‘g‘onlashish bo‘lmaydi (bir pallalilar — makkajo‘xori, bug‘doy)",
+          "Bikollateral boylam: ksilemaning ikki tomonida ham floema joylashadi (qovoqdoshlar, ituzumdoshlar)",
+          "Konsentrik (amfikribral / amfivazal) va Radial boylam: radial boylamda ksilema va floema navbatma-navbat joylashadi (barcha birlamchi ildizlar)",
+        ],
+      },
+    ],
+    comparisonTable: {
+      title: "Ksilema va Floemaning tuzilish va funksiya qiyosi",
+      columns: ["Belgi", "Ksilema (Yog‘ochlik)", "Floema (Lub)"],
+      rows: [
+        [
+          "Asosiy o‘tkazuvchi hujayra",
+          "Traxeya (naylar) va traxeidalar",
+          "Elaksimon naylar + yo‘ldosh hujayralar",
+        ],
+        [
+          "O‘tkazuvchi hujayra holati",
+          "Nobud (bo‘sh, ligninli devor)",
+          "Tirik (sitoplazmali, yadrosiz)",
+        ],
+        [
+          "Transport yo‘nalishi",
+          "Ildizdan bargga (yuqoriga oqim)",
+          "Bargdan barcha organlarga (ikki yo‘nalishli)",
+        ],
+        [
+          "Tashiladigan modda",
+          "Suv va mineral tuzlar",
+          "Organik moddalar (saxaroza, fitogormonlar)",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Kollenxima",
+        definition:
+          "Yosh organlarda uchraydigan tirik, plastik egiluvchanlik beruvchi mexanik to‘qima.",
+      },
+      {
+        term: "Sklerenxima",
+        definition:
+          "Ligninlangan qalin devorli nobud hujayralardan (tolalar va sklereidlar) iborat mustahkam tayanch to‘qima.",
+      },
+      {
+        term: "Elaksimon nay",
+        definition:
+          "Floemaning ko‘ndalang devorlari elakdek teshikli tirik yadrosiz o‘tkazuvchi hujayrasi.",
+      },
+      {
+        term: "Kollateral boylam",
+        definition:
+          "Ksilema va floema bir radiusda yonma-yon joylashgan eng keng tarqalgan o‘tkazuvchi boylam tipi.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Daraxt poyasining po‘stlog‘ini halqa shaklida shilib tashlansa, nima uchun daraxt quriydi?",
+        answer:
+          "Po‘stloq ichki qismida joylashgan floema (lub) qatlami uziladi; natijada barglardan ildizga organik oziq moddalar yetib bormaydi, ildiz ochlikdan nobud bo‘lib, suv berish to‘xtaydi.",
+      },
+      {
+        question: "Traxeya (naylar) bilan traxeidalar o‘rtasidagi asosiy anatomik farq nimada?",
+        answer:
+          "Traxeida — uchlari berk bitta uzunchoq hujayra (suv poralar orqali sekin o‘tadi); traxeya esa ko‘ndalang to‘siqlari butunlay erib ketgan ko‘plab hujayralardan tuzilgan yaxlit ochiq naychadir.",
+      },
+      {
+        question: "Zig‘ir tolasidan mato tayyorlashda uning qaysi to‘qimasidan foydalaniladi?",
+        answer:
+          "Sklerenximaning po‘stloq qismida joylashgan juda uzun, mustahkam va ligninlanmagan sellyulozali lub tolalaridan foydalaniladi.",
+      },
+    ],
+    keyTerms: ["Kollenxima", "Sklerenxima", "Ksilema", "Floema", "Traxeya", "O‘tkazuvchi boylam"],
+    references: "5-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M05_Mexanik_va_o_tkazuvchi_to_qimalar_f0f8030f.pdf",
+    pdfTitle: "5-ma’ruza PDF: Mexanik va o‘tkazuvchi to‘qimalar tuzilishi va ahamiyati",
+  },
+  {
+    id: "bot-6",
+    order: 6,
+    code: "6",
+    topicLabel: "6-mavzu",
+    semester: "I semestr",
+    title: "Ildiz tizimining shakllanishi, tuzilishi, tiplari va shakl o‘zgarishlari.",
+    syllabusPoints: [
+      "Ildizning asosiy vazifalari va o‘sish zonalari (ildiz qalpoqchasi, bo‘linish, cho‘zilish, so‘rish, o‘tkazish).",
+      "Kelib chiqishiga ko‘ra ildiz turlari (bosh, yon, qo‘shimcha) va ildiz tizimi tiplari (o‘q, popuk, aralash).",
+      "Ildizlarning shakl o‘zgarishlari (metamorfozlari): ildizmeva, ildiz tuganagi, tayanch, havo, nafas va so‘ruvchi ildizlar.",
+      "Ildiz simbiozi: mikoriza (ekto- va endomikoriza) hamda azot to‘plovchi tuganak bakteriyalari.",
+    ],
+    studyNotes:
+      "Ildiz — cheksiz uchki o‘sishga, musbat geotropizmga ega va barg hosil qilmaydigan asosiy vegetativ organ. Ildiz bo‘ylama kesmasida 5 ta zona ajraladi. Ikki pallalilarda o‘q ildiz tizimi, bir pallalilarda esa popuk ildiz tizimi rivojlanadi; simbioz (mikoriza, Rhizobium) esa mineral oziqlanishni kuchaytiradi.",
+    overview:
+      "Ildiz o‘simlikni tuproqda mustahkam ushlab turuvchi (ankerlik), suv va mineral tuzlarni so‘ruvchi hamda oziq moddalar va fitogormonlar (sitokinin) sintezlovchi asosiy vegetativ organdir. Novdadan farqli o‘laroq ildiz uchki qismi qalpoqcha bilan himoyalangan va unda hech qachon barg yoki tugun-bo‘g‘im oraliqlari bo‘lmaydi.",
+    sections: [
+      {
+        heading: "1. Ildizning o‘sish zonalari",
+        content:
+          "Yosh ildiz uchidan yuqoriga qarab bir-biriga silliq o‘tuvchi 5 ta morfologik-fiziologik zona farqlanadi:",
+        highlights: [
+          "Ildiz qalpoqchasi (kaliptra) — nozik o‘sish konusini tuproq zarralaridan himoya qiladi, shilimshiq ajratadi va statolit kraxmali orqali geotropizmni sezadi",
+          "Bo‘linish zonasi — meristema hujayralari tinimsiz mitoz yo‘li bilan ko‘payadi (1–2 mm)",
+          "Cho‘zilish (o‘sish) zonasi — vakuolalar suv shimib hujayralar bo‘yiga tez uzayadi va ildizni tuproqqa suradi",
+          "So‘rish (tukchali) zonasi — rizodermadagi bir hujayrali ildiz tukchalari suv va ionlarni faol so‘radi",
+          "O‘tkazish zonasi — tukchalar to‘kiladi, suv yuqoriga tashiladi va peritsikldan yon ildizlar chiqadi",
+        ],
+      },
+      {
+        heading: "2. Ildiz turlari va ildiz tizimlari",
+        content:
+          "Kelib chiqishiga ko‘ra: Bosh ildiz — urug‘ murtagining boshlang‘ich ildizchasidan rivojlanadi; Yon ildizlar — bosh, qo‘shimcha va boshqa yon ildizlardan endogen yo‘l bilan (peritsikldan) chiqadi; Qo‘shimcha ildizlar — poya va barglardan rivojlanadi (makkajo‘xori, qalamcha, qulupnay). Ikki urug‘pallali va ochiq urug‘lilarda bosh ildiz ustunlik qiladigan o‘q ildiz tizimi (g‘o‘za, sabzi, eman), bir urug‘pallalilarda esa bosh ildiz erta qurib poyadan ko‘plab qo‘shimcha ildizlar chiqadigan popuk ildiz tizimi (bug‘doy, piyoz, makkajo‘xori) shakllanadi.",
+      },
+      {
+        heading: "3. Ildiz metamorfozlari va simbioz",
+        content:
+          "Qo‘shimcha funksiyalarni bajarish uchun ildizlar keskin o‘zgargan: ildizmevalar (sabzi, lavlagi, turp — zaxira to‘plovchi bosh ildiz va gipokotil); ildiz tuganaklari (georgina, batat — yon va qo‘shimcha ildizlar); tayanch va taxta ildizlar (makkajo‘xori, banyan); havo ildizlari (monstera, orxideya); botqoq daraxtlaridagi nafas ildizlari — pnevmatoforlar; parazit gaustoriyalar va piyozboshni tuproqqa tortuvchi kontraktil ildizlar. Simbiozning ikki muhim shakli keng tarqalgan: Mikoriza (o‘simlik ildizi va zamburug‘ gifalari hamkorligi — daraxtlar va orxideyalarda fosfor/suv so‘rishni keskin oshiradi) hamda dukkakdoshlar (loviya, beda, no‘xat) ildizida havo azotini (N2 → NH3) fiksatsiya qiluvchi Rhizobium tuganak bakteriyalari.",
+      },
+    ],
+    comparisonTable: {
+      title: "O‘q ildiz va Popuk ildiz tizimlarining qiyosiy tavsifi",
+      columns: ["Mezon", "O‘q ildiz tizimi", "Popuk ildiz tizimi"],
+      rows: [
+        [
+          "Asosiy ildiz",
+          "Bosh ildiz yaxshi rivojlangan va yo‘g‘on",
+          "Bosh ildiz erta nobud bo‘ladi yoki ajralmaydi",
+        ],
+        [
+          "Shakllantiruvchi ildizlar",
+          "Bosh ildiz + undan chiqqan yon ildizlar",
+          "Poya asosidan chiqqan ko‘p qo‘shimcha ildizlar",
+        ],
+        [
+          "Tuproqqa kirishi",
+          "Chuqur qatlamlargacha (yantoq 15–20 m)",
+          "Yuza qatlamda keng tarqaladi (chim hosil qiladi)",
+        ],
+        [
+          "Xos bo‘lgan o‘simliklar",
+          "Ikki pallalilar (g‘o‘za, olma, qoqio‘t) va qarag‘ay",
+          "Bir pallalilar (bug‘doy, piyoz, jo‘xori)",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Ildiz qalpoqchasi",
+        definition:
+          "Ildizning apikal meristemasini mexanik shikastlanishdan saqlovchi va geotropizmni sezuvchi qismi.",
+      },
+      {
+        term: "Ildiz tukchasi",
+        definition:
+          "So‘rish zonasi rizoderma hujayrasining suv va mineral tuzlarni shimuvchi mikroskopik o‘simtasi.",
+      },
+      {
+        term: "Mikoriza",
+        definition: "Zamburug‘ mitseliysi va yuksak o‘simlik ildizining o‘zaro manfaatli simbiozi.",
+      },
+      {
+        term: "Tuganak bakteriyalari",
+        definition:
+          "Dukkakli o‘simliklar ildizida atmosfera azotini o‘zlashtiruvchi Rhizobium bakteriyalari.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Sabzi ildizmevasi bilan georgina ildiz tuganagi kelib chiqishiga ko‘ra qanday farq qiladi?",
+        answer:
+          "Sabzi ildizmevasi asosan bitta bosh ildiz (va gipokotil) ning yo‘g‘onlashuvidan hosil bo‘ladi; georgina ildiz tuganagi esa bir nechta yon va qo‘shimcha ildizlarning zaxira oziqa to‘plab yo‘g‘onlashuvidir.",
+      },
+      {
+        question:
+          "Nima uchun sabzavot ko‘chatlarini ko‘chirib o‘tqazganda (pikirovka) bosh ildiz uchi chilpib qo‘yiladi?",
+        answer:
+          "Uchki o‘sish vaqtincha to‘xtab, yon ildizlarning jadal shoxlanishini rag‘batlantiradi — natijada oziqa maydoni unumdor yuza qatlamda kengayadi.",
+      },
+      {
+        question: "Dukkakli ekinlar (beda, no‘xat) tuproq unumdorligini qanday oshiradi?",
+        answer:
+          "Ularning ildizidagi tuganak bakteriyalari (Rhizobium) havodagi molekulyar azotni o‘simlik o‘zlashtiradigan birikmalarga aylantirib, tuproqni tabiiy azot bilan boyitadi.",
+      },
+    ],
+    keyTerms: [
+      "O‘q ildiz",
+      "Popuk ildiz",
+      "Ildiz qalpoqchasi",
+      "Rizoderma",
+      "Ildizmeva",
+      "Mikoriza",
+    ],
+    references: "6-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M06_Ildiz_tizimi_tuzilishi_tiplari_va_shakl_o_zgaris_5df154b1.pdf",
+    pdfTitle: "6-ma’ruza PDF: Ildiz tizimi tuzilishi, tiplari va shakl o‘zgarishlari",
+  },
+  {
+    id: "bot-7",
+    order: 7,
+    code: "7",
+    topicLabel: "7-mavzu",
+    semester: "I semestr",
+    title: "Ildizning birlamchi va ikkilamchi anatomik tuzilishi.",
+    syllabusPoints: [
+      "Ildizning uchki birlamchi meristemalari: protoderma, asosiy meristema va prokambiy.",
+      "Ildizning birlamchi anatomik tuzilishi: rizoderma, birlamchi po‘stloq (ekzoderma, mezoderma, endoderma + Kaspari belbog‘i).",
+      "Markaziy silindr (stela): peritsikl va radial o‘tkazuvchi boylam. Suvning apoplast va simplast yo‘llari.",
+      "Ikki pallali va ochiq urug‘li o‘simliklar ildizida ikkilamchi tuzilishga o‘tish (kambiy va fellogen). Ildizmevalar anatomiyasi.",
+    ],
+    studyNotes:
+      "Ildizning birlamchi anatomik tuzilishida tashqaridan ichkariga rizoderma, qalin birlamchi po‘stloq (endodermada Kaspari belbog‘i) hamda peritsikl bilan o‘ralgan radial o‘tkazuvchi boylam joylashadi. Bir pallalilarda bu tuzilish umr bo‘yi saqlanadi; ikki pallalilarda esa kambiy faoliyati bilan ikkilamchi yog‘ochlik va lub hosil bo‘ladi.",
+    overview:
+      "Ildizning ko‘ndalang kesmasi suv va mineral tuzlarni tuproqdan olib, filtrlab, markaziy ksilema naylariga bosim ostida uzatishga nihoyatda mukammal moslashgan. Ayniqsa, endoderma qavatidagi Kaspari belbog‘i va radial boylam tuzilishi ildizni poyadan keskin ajratib turadigan klassik anatomik belgilardir.",
+    sections: [
+      {
+        heading: "1. Birlamchi anatomik tuzilish (so‘rish zonasi kesmasi)",
+        content:
+          "Birlamchi meristemalardan (protoderma, asosiy meristema, prokambiy) uchta asosiy qavat shakllanadi: 1) Rizoderma (epiblema) — ildiz tukchalari chiqaruvchi bir qavatli yupqa devorli to‘qima; 2) Birlamchi po‘stloq — tashqi himoya qavati (ekzoderma), ko‘p qavatli tirik kraxmal saqlovchi o‘rta qavat (mezoderma) va ichki bir qavatli endoderma. Endoderma hujayralarining radial va ko‘ndalang devorlarida suberin va lignindan iborat suv o‘tkazmaydigan Kaspari belbog‘lari mavjud; 3) Markaziy silindr (stela) — tirik peritsikl halqasi (undan yon ildizlar va kambiy boshlanadi) hamda markazdagi radial o‘tkazuvchi boylam (ksilema nurlari orasida floema joylashadi).",
+      },
+      {
+        heading: "2. Suvning ko‘ndalang transport yo‘llari va Kaspari belbog‘i",
+        content:
+          "Rizodermadan markaziy ksilema naylarigacha suv va ionlar uch yo‘l bilan harakatlanadi: hujayra devorlari va hujayralararo bo‘shliqlar bo‘ylab — apoplast yo‘li; plazmodesmalar orqali sitoplazmadan — simplast yo‘li; hamda vakuolalardan membranadan o‘tib — transmembrana yo‘li. Endodermaga yetganda Kaspari belbog‘i apoplast yo‘lini to‘liq to‘sib qo‘yadi; natijada suv va tuzlar endodermaning tirik membranasi (simplast) orqali nazorat ostida o‘tkaziladi, bu esa zararli ionlarni ushlab qolish va ildiz bosimini saqlash imkonini beradi.",
+      },
+      {
+        heading: "3. Ildizning ikkilamchi tuzilishga o‘tishi",
+        content:
+          "Bir urug‘pallali o‘simliklarda (bug‘doy, makkajo‘xori, piyoz) birlamchi tuzilish butun umr saqlanadi (faqat endoderma va ekzoderma kuchli qalinlashadi). Ikki urug‘pallali va ochiq urug‘lilarda esa birlamchi floema ostidagi parenxima va ksilema nurlari qarshisidagi peritsikl hujayralaridan uzluksiz kambiy halqasi hosil bo‘ladi. Kambiy ichkariga ko‘p ikkilamchi ksilema (yog‘ochlik), tashqariga esa ikkilamchi floema (lub) ajratib, ildizni yo‘g‘onlashtiradi. Peritsikldan hosil bo‘lgan fellogen esa tashqarida himoya peridermasini (po‘kak) shakllantiradi, natijada birlamchi po‘stloq qurib tushadi.",
+      },
+      {
+        heading: "4. Ildizmevalarning anatomik tiplari",
+        content:
+          "Zaxira modda qaysi to‘qimada to‘planishiga qarab ildizmevalar uch xil anatomik tuzilishga ega:",
+        highlights: [
+          "Turp (sholg‘om, rediska) tipi — asosiy etli qismni kambiy ichkariga ajratgan yog‘ochlik (ksilema) parenximasi tashkil etadi",
+          "Sabzi tipi — asosiy etli va shirador qismini kambiy tashqariga ajratgan lub (floema) parenximasi hosil qiladi",
+          "Lavlagi (qizilcha) tipi — polikambial tuzilishli: asosiy parenximada bir nechta konsentrik qo‘shimcha kambiy halqalari hosil bo‘ladi",
+        ],
+      },
+    ],
+    comparisonTable: {
+      title: "Birlamchi ildiz va birlamchi poya anatomiyasining farqlari",
+      columns: ["Anatomik belgi", "Birlamchi ildiz", "Birlamchi poya"],
+      rows: [
+        [
+          "Tashqi qoplovchi qavat",
+          "Rizoderma (ildiz tukchalari bor, kutikula yo‘q)",
+          "Epiderma (kutikula va og‘izchalar bor)",
+        ],
+        [
+          "Birlamchi po‘stloq qalinligi",
+          "Juda keng (ildiz diametrining katta qismi)",
+          "Nisbatan yupqa",
+        ],
+        ["Endoderma", "Aniq Kaspari belbog‘lariga ega", "Odatda kraxmal qobiqli qavat"],
+        [
+          "O‘tkazuvchi boylam tipi",
+          "Radial (ksilema va floema navbatlashgan)",
+          "Kollateral (floema tashqarida, ksilema ichkarida)",
+        ],
+        [
+          "Yon shoxlanish manbayi",
+          "Endogen — ichki peritsikldan",
+          "Ekzogen — tashqi qo‘ltiq kurtaklardan",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Kaspari belbog‘i",
+        definition:
+          "Endoderma hujayralari devoridagi suv o‘tkazmaydigan suberin-lignin tasmasi (apoplast to‘sig‘i).",
+      },
+      {
+        term: "Peritsikl",
+        definition:
+          "Markaziy silindrning tashqi faol qavati; yon ildizlar, kambiy va fellogen manbayi.",
+      },
+      {
+        term: "Radial boylam",
+        definition:
+          "Ksilema nurlari orasida floema guruhlari navbatlashib joylashgan birlamchi ildiz o‘tkazuvchi tizimi.",
+      },
+      {
+        term: "Apoplast va Simplast",
+        definition:
+          "Suvning ildiz bo‘ylab hujayra devorlari (apoplast) yoki tirik sitoplazma (simplast) orqali harakati.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Endoderma hujayralaridagi Kaspari belbog‘i o‘simlik uchun qanday hayotiy vazifa bajaradi?",
+        answer:
+          "U suv va erigan tuzlarning hujayra devorlari (apoplast) orqali nazoratsiz o‘tishini to‘sib, barcha eritmani tirik plazmalemma orqali tanlab o‘tkazishga hamda ksilemada ildiz bosimini ushlab turishga majbur qiladi.",
+      },
+      {
+        question:
+          "Nima uchun yon ildizlar ichki peritsikldan (endogen) chiqadi, yosh poya shoxlari esa sirtdan (ekzogen) rivojlanadi?",
+        answer:
+          "Ildizda o‘tkazuvchi boylamlar chuqur markazda joylashgani uchun yon ildizlar bevosita suv o‘tkazuvchi tizim bilan bog‘lanishi va tuproqdagi ishqalanishdan himoyalanishi uchun endogen hosil bo‘ladi.",
+      },
+      {
+        question:
+          "Sabzi, turp va qand lavlagi ildizmevalarining etli qismlari anatomik jihatdan nimasi bilan farq qiladi?",
+        answer:
+          "Turpda oziq to‘qima asosan ksilema parenximasidan, sabzida floema (lub) parenximasidan, lavlagida esa bir nechta konsentrik kambiy halqalari hosil qilgan qavatlardan iborat.",
+      },
+    ],
+    keyTerms: [
+      "Rizoderma",
+      "Endoderma",
+      "Kaspari belbog‘i",
+      "Peritsikl",
+      "Radial boylam",
+      "Apoplast",
+    ],
+    references: "7-ma’ruza PDF taqdimoti va o‘quv dasturi",
+    pdfUrl: "/assets/aistudio/M07_Ildizning_birlamchi_va_ikkilamchi_anatomik_tuzil_c3d1ffa9.pdf",
+    pdfTitle: "7-ma’ruza PDF: Ildizning birlamchi va ikkilamchi anatomik tuzilishi",
+  },
+  {
+    id: "bot-8",
+    order: 8,
+    code: "8",
+    topicLabel: "8-mavzu",
     semester: "I semestr",
     title: "Novda va kurtak haqida umumiy tushuncha. Poya va uning vazifasi.",
     syllabusPoints: [
@@ -159,12 +973,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Novda", "Kurtak", "Fillotaksis", "Monopodial", "Simpodial", "Dixotomik"],
     references: "[2, 3, 8, 12]",
+    pdfUrl: "/assets/aistudio/M08_Novda_va_kurtak_Novdalarning_o_sishi_va_shoxlani_1da63e9f.pdf",
+    pdfTitle: "8-ma’ruza PDF: Novda va kurtak. Novdalarning o‘sishi va shoxlanishi",
   },
   {
-    id: "bot-2",
-    order: 2,
-    code: "2",
-    topicLabel: "2-mavzu",
+    id: "bot-9",
+    order: 9,
+    code: "9",
+    topicLabel: "9-mavzu",
     semester: "I semestr",
     title:
       "Poyaning birlamchi va ikkilamchi anatomik tuzilishi, shakli o‘zgargan novdalarning tuzilishi.",
@@ -276,12 +1092,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Kambiy", "Yillik halqa", "Ildizpoya", "Tugunak", "Piyozbosh", "Fillokladiy"],
     references: "[1, 5, 6, 8]",
+    pdfUrl: "/assets/aistudio/M09_Poyaning_anatomik_tuzilishi_va_shakli_o_zgargan__e390a922.pdf",
+    pdfTitle: "9-ma’ruza PDF: Poyaning anatomik tuzilishi va shakli o‘zgargan novdalar",
   },
   {
-    id: "bot-3",
-    order: 3,
-    code: "3",
-    topicLabel: "3-mavzu",
+    id: "bot-10",
+    order: 10,
+    code: "10",
+    topicLabel: "10-mavzu",
     semester: "I semestr",
     title: "Bargning morfologik va anatomik tuzilishi, asosiy vazifasi.",
     syllabusPoints: [
@@ -388,12 +1206,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Mezofill", "Og‘izcha", "Krans anatomiya", "Transpiratsiya", "Metamorfoz"],
     references: "[2, 3, 5, 8]",
+    pdfUrl: "/assets/aistudio/M10_Bargning_morfologik_va_anatomik_tuzilishi_37802d4b.pdf",
+    pdfTitle: "10-ma’ruza PDF: Bargning morfologik va anatomik tuzilishi",
   },
   {
-    id: "bot-4",
-    order: 4,
-    code: "4",
-    topicLabel: "4-mavzu",
+    id: "bot-11",
+    order: 11,
+    code: "11",
+    topicLabel: "11-mavzu",
     semester: "I semestr",
     title:
       "O‘simliklarning qayta tiklanish va ko‘payish. O‘simliklarning jinssiz va jinsiy ko‘payishi.",
@@ -498,12 +1318,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Vegetativ ko‘payish", "In-vitro", "Sporofit", "Gametofit", "Nasl gallanishi"],
     references: "[1, 2, 3, 8]",
+    pdfUrl: "/assets/aistudio/M11_O_simliklarning_ko_payishi_vegetativ_jinssiz_va__6759b29f.pdf",
+    pdfTitle: "11-ma’ruza PDF: O‘simliklarning ko‘payishi (vegetativ, jinssiz va jinsiy)",
   },
   {
-    id: "bot-5",
-    order: 5,
-    code: "5",
-    topicLabel: "5-mavzu",
+    id: "bot-12",
+    order: 12,
+    code: "12",
+    topicLabel: "12-mavzu",
     semester: "I semestr",
     title: "Gulning tuzilishi, tiplari va vazifasi.",
     syllabusPoints: [
@@ -601,12 +1423,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Androtsey", "Ginetsey", "Gul formulasi", "Mikrosporogenez", "Megasporogenez"],
     references: "[2, 5, 8]",
+    pdfUrl: "/assets/aistudio/M12_Gulning_tuzilishi_formulasi_va_diagrammasi_a8b9d703.pdf",
+    pdfTitle: "12-ma’ruza PDF: Gulning tuzilishi, formulasi va diagrammasi",
   },
   {
-    id: "bot-6",
-    order: 6,
-    code: "6",
-    topicLabel: "6-mavzu",
+    id: "bot-13",
+    order: 13,
+    code: "13",
+    topicLabel: "13-mavzu",
     semester: "I semestr",
     title: "To‘pgullarning tuzilishi, ularning asosiy morfologik belgilariga ko‘ra tiplari.",
     syllabusPoints: [
@@ -714,12 +1538,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Shingil", "Boshoq", "Soyabon", "Savatcha", "Ro‘vak", "Simoz to‘pgul"],
     references: "[4, 6, 7, 8]",
+    pdfUrl: "/assets/aistudio/M13_To_pgullarning_tuzilishi_va_tiplari_43c8d931.pdf",
+    pdfTitle: "13-ma’ruza PDF: To‘pgullarning tuzilishi va tiplari",
   },
   {
-    id: "bot-7",
-    order: 7,
-    code: "7",
-    topicLabel: "7-mavzu",
+    id: "bot-14",
+    order: 14,
+    code: "14",
+    topicLabel: "14-mavzu",
     semester: "I semestr",
     title: "Gulli o‘simliklarda changlanish va urug‘lanish.",
     syllabusPoints: [
@@ -818,12 +1644,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Changlanish", "Qo‘sh urug‘lanish", "Endosperm (3n)", "Zigot", "Embriogenez"],
     references: "[4, 5, 8]",
+    pdfUrl: "/assets/aistudio/M14_Gulli_o_simliklarda_changlanish_va_urug_lanish_0718672d.pdf",
+    pdfTitle: "14-ma’ruza PDF: Gulli o‘simliklarda changlanish va urug‘lanish",
   },
   {
-    id: "bot-8",
-    order: 8,
-    code: "8",
-    topicLabel: "8-mavzu",
+    id: "bot-15",
+    order: 15,
+    code: "15",
+    topicLabel: "15-mavzu",
     semester: "I semestr",
     title: "Yopiq urug‘li o‘simliklar urug‘ining tuzilishi.",
     syllabusPoints: [
@@ -921,12 +1749,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Urug‘ po‘sti", "Murtak", "Urug‘palla", "Endosperm", "Maysa", "Unish"],
     references: "O‘quv dasturi asosiy manbalari",
+    pdfUrl: "/assets/aistudio/M15_Urug_ning_tuzilishi_va_unib_chiqishi_ece369cf.pdf",
+    pdfTitle: "15-ma’ruza PDF: Urug‘ning tuzilishi va unib chiqishi",
   },
   {
-    id: "bot-9",
-    order: 9,
-    code: "9",
-    topicLabel: "9-mavzu",
+    id: "bot-16",
+    order: 16,
+    code: "16",
+    topicLabel: "16-mavzu",
     semester: "I semestr",
     title: "Mevalarning tuzilishi va xilma-xilligi, klassifikatsiyasi.",
     syllabusPoints: [
@@ -1027,12 +1857,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Perikarpiy", "Ho‘l mevalar", "Quruq mevalar", "Anemoxoriya", "Zooxoriya"],
     references: "[4, 6, 7, 8]",
+    pdfUrl: "/assets/aistudio/M16_Mevalarning_tuzilishi_va_tasnifi_719aad98.pdf",
+    pdfTitle: "16-ma’ruza PDF: Mevalarning tuzilishi va tasnifi",
   },
   {
-    id: "bot-10",
-    order: 10,
-    code: "10",
-    topicLabel: "10-mavzu",
+    id: "bot-17",
+    order: 17,
+    code: "17",
+    topicLabel: "17-mavzu",
     semester: "I semestr",
     title: "O‘simliklarning yashash sharoitiga moslanishlari va ekologik guruhlari.",
     syllabusPoints: [
@@ -1143,12 +1975,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Kserofit", "Mezofit", "Gidrofit", "Geliofit", "Hayotiy shakllar"],
     references: "[4, 6, 7, 8]",
+    pdfUrl: "/assets/aistudio/M17_O_simliklarning_ekologik_guruhlari_va_moslanishl_efdebf31.pdf",
+    pdfTitle: "17-ma’ruza PDF: O‘simliklarning ekologik guruhlari va moslanishlari",
   },
   {
-    id: "bot-11",
-    order: 11,
-    code: "11",
-    topicLabel: "11-mavzu",
+    id: "bot-18",
+    order: 18,
+    code: "18",
+    topicLabel: "18-mavzu",
     semester: "I semestr",
     title: "Gulli o‘simliklar ontogenezi. O‘simliklarda mavsumiy o‘zgarishlar.",
     syllabusPoints: [
@@ -1260,12 +2094,14 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Ontogenez", "Yuvenil davr", "Generativ davr", "Efemerlar", "Mavsumiy ritm"],
     references: "[4, 6, 7, 8]",
+    pdfUrl: "/assets/aistudio/M18_O_simliklar_ontogenezi_va_mavsumiy_o_zgarishlar_38d3651c.pdf",
+    pdfTitle: "18-ma’ruza PDF: O‘simliklar ontogenezi va mavsumiy o‘zgarishlar",
   },
   {
-    id: "bot-12",
-    order: 12,
-    code: "12",
-    topicLabel: "12-mavzu",
+    id: "bot-19",
+    order: 19,
+    code: "19",
+    topicLabel: "19-mavzu",
     semester: "II semestr",
     title:
       "O‘simliklar sistematikasining maqsad va vazifalari, tarixi. Tuban va yuksak o‘simliklar.",
@@ -1376,10 +2212,10 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     references: "[1, 2, 3, 4, 5]",
   },
   {
-    id: "bot-13",
-    order: 13,
-    code: "13",
-    topicLabel: "13-mavzu",
+    id: "bot-20",
+    order: 20,
+    code: "20",
+    topicLabel: "20-mavzu",
     semester: "II semestr",
     title: "Suvo‘tlarining tuzilishi, ko‘payishi, tarqalishi va klassifikatsiyasi.",
     syllabusPoints: [
@@ -1490,10 +2326,10 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     references: "[1, 2, 3, 4, 5]",
   },
   {
-    id: "bot-14",
-    order: 14,
-    code: "14",
-    topicLabel: "14-mavzu",
+    id: "bot-21",
+    order: 21,
+    code: "21",
+    topicLabel: "21-mavzu",
     semester: "II semestr",
     title:
       "Sariq yashil (Xanthophyta), Diatom (Diatomophyta), Qo‘ng‘ir (Phaeophyta) va Qizil (Rhodophyta) suv o‘tlari bo‘limlarining umumiy tavsifi.",
@@ -1602,10 +2438,10 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     references: "[1, 2, 3, 4, 5]",
   },
   {
-    id: "bot-15",
-    order: 15,
-    code: "15",
-    topicLabel: "15-mavzu",
+    id: "bot-22",
+    order: 22,
+    code: "22",
+    topicLabel: "22-mavzu",
     semester: "II semestr",
     title: "Zamburug‘lar bo‘limi (Mycophyta, Fungi).",
     syllabusPoints: [
@@ -1707,10 +2543,10 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     references: "[1, 2, 3, 4, 5]",
   },
   {
-    id: "bot-16",
-    order: 16,
-    code: "16",
-    topicLabel: "16-mavzu",
+    id: "bot-23",
+    order: 23,
+    code: "23",
+    topicLabel: "23-mavzu",
     semester: "II semestr",
     title: "Lishayniklar bo‘limi (Lichenes).",
     syllabusPoints: [
@@ -1811,10 +2647,10 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     references: "[1, 2, 3, 4, 5]",
   },
   {
-    id: "bot-17",
-    order: 17,
-    code: "17",
-    topicLabel: "17-mavzu",
+    id: "bot-24",
+    order: 24,
+    code: "24",
+    topicLabel: "24-mavzu",
     semester: "II semestr",
     title:
       "Yuksak o‘simliklarning umumiy ta’rifi. Yo‘sintoifa (Bryophyta) va Plauntoifa (Lycopodiophyta) bo‘limlari.",

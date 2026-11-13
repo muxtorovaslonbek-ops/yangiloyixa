@@ -31,17 +31,16 @@ const SUBJECTS = [
     id: "botanika" as SubjectKey,
     title: "Botanika",
     subtitle: "O‘simliklar anatomiyasi, morfologiyasi va sistematikasi",
-    description:
-      "I va II semestr bo‘yicha o‘quv dasturi asosidagi barcha 17 ta mavzu (1-mavzudan 17-mavzugacha) ketma-ket to‘rtburchak kartochkalar va nazariy konspektlar ko‘rinishida.",
+    description: `I va II semestr bo‘yicha o‘quv dasturi asosidagi barcha ${BOTANIKA_TOPICS.length} ta mavzu (1-mavzudan ${BOTANIKA_TOPICS.length}-mavzugacha) ketma-ket to‘rtburchak kartochkalar, PDF taqdimotlar va nazariy konspektlar ko‘rinishida.`,
     topicsCount: BOTANIKA_TOPICS.length,
     status: "To‘liq ishga tushirilgan",
     img: botanikaImg,
     icon: Leaf,
     ready: true,
     topicsPreview: [
-      "1–3-mavzular: Novda, kurtak, poya va barg anatomiyasi",
-      "4–9-mavzular: Ko‘payish, gul, to‘pgul, urug‘ va meva",
-      "10–17-mavzular: Ekologiya, sistematika, suvo‘tlar, zamburug‘lar va yuksak o‘simliklar",
+      "1–7-mavzular: Kirish, hujayra, to‘qimalar va ildiz anatomiyasi (PDF + ma’ruza)",
+      "8–18-mavzular: Novda, poya, barg, gul, urug‘, meva va ekologiya (PDF + ma’ruza)",
+      "19–24-mavzular: Sistematika, suvo‘tlar, zamburug‘lar, lishayniklar va yuksak o‘simliklar",
     ],
   },
   {

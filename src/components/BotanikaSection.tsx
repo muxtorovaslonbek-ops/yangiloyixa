@@ -17,6 +17,9 @@ import {
   HelpCircle,
   ListChecks,
   GraduationCap,
+  FileText,
+  Download,
+  ExternalLink,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
 import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
@@ -32,6 +35,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const [readerTab, setReaderTab] = useState<"all" | "pdf" | "lecture">("all");
   const [revealedAnswers, setRevealedAnswers] = useState<Set<number>>(new Set());
   const topicScrollRef = useRef<HTMLDivElement>(null);
 
@@ -54,9 +58,10 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
     }
   }, [completedIds]);
 
-  // Reset revealed answers & scroll to top when switching full-window topics
+  // Reset revealed answers, reader tab & scroll to top when switching full-window topics
   useEffect(() => {
     setRevealedAnswers(new Set());
+    setReaderTab("all");
     if (topicScrollRef.current) {
       topicScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -146,7 +151,8 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
               <div>
                 <h1 className="text-sm font-extrabold leading-tight md:text-base">Botanika fani</h1>
                 <p className="text-[11px] text-muted-foreground">
-                  O‘quv dasturi mavzulari · 1–17-mavzular ({BOTANIKA_TOPICS.length} ta mavzu)
+                  O‘quv dasturi mavzulari · 1–{BOTANIKA_TOPICS.length}-mavzular (
+                  {BOTANIKA_TOPICS.length} ta mavzu)
                 </p>
               </div>
             </div>
@@ -185,10 +191,10 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                   Botanika: O‘simliklar anatomiyasi, morfologiyasi va sistematikasi
                 </h2>
                 <p className="text-xs leading-relaxed text-navy-foreground/85 md:text-sm">
-                  O‘quv dasturi asosidagi barcha 17 ta mavzu (1-mavzudan 17-mavzugacha) ketma-ket
-                  tartibda alohida to‘rtburchak kartochkalarda jamlangan. Har bir mavzu to‘liq
-                  oynada keng nazariy ma’ruza, qiyosiy jadval, atamalar lug‘ati va nazorat savollari
-                  bilan ochiladi.
+                  O‘quv dasturi asosidagi barcha {BOTANIKA_TOPICS.length} ta mavzu (1-mavzudan{" "}
+                  {BOTANIKA_TOPICS.length}-mavzugacha) ketma-ket tartibda alohida to‘rtburchak
+                  kartochkalarda jamlangan. Har bir mavzu to‘liq oynada keng nazariy ma’ruza, PDF
+                  taqdimot, qiyosiy jadval, atamalar lug‘ati va nazorat savollari bilan ochiladi.
                 </p>
               </div>
             </div>
@@ -217,8 +223,8 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
           <div className="flex flex-wrap items-center gap-2">
             {[
               { id: "all", label: `Barcha mavzular (${BOTANIKA_TOPICS.length})` },
-              { id: "I semestr", label: "I semestr (1–11-mavzular)" },
-              { id: "II semestr", label: "II semestr (12–17-mavzular)" },
+              { id: "I semestr", label: "I semestr (1–18-mavzular)" },
+              { id: "II semestr", label: "II semestr (19–24-mavzular)" },
               { id: "done", label: `O‘zlashtirilganlar (${completedIds.size})` },
             ].map((tab) => (
               <button
@@ -242,7 +248,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Mavzu raqami (1–17) yoki nomi..."
+              placeholder={`Mavzu raqami (1–${BOTANIKA_TOPICS.length}) yoki nomi...`}
               className="w-full rounded-xl border border-border bg-muted/40 py-2 pl-9 pr-8 text-xs outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
             {searchQuery && (
@@ -319,8 +325,17 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
 
                   {/* Card Footer */}
                   <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs">
-                    <span className="text-[11px] font-medium text-muted-foreground">
-                      {topic.sections.length} ta bo‘lim · {topic.selfCheckQuestions.length} ta savol
+                    <span className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
+                      <span>
+                        {topic.sections.length} ta bo‘lim · {topic.selfCheckQuestions.length} ta
+                        savol
+                      </span>
+                      {topic.pdfUrl && (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-rose-500/10 px-1.5 py-0.5 font-semibold text-rose-600 dark:text-rose-400">
+                          <FileText className="h-3 w-3" />
+                          PDF
+                        </span>
+                      )}
                     </span>
 
                     <span className="flex items-center gap-1.5 font-bold text-primary transition-transform group-hover:translate-x-0.5">
@@ -437,181 +452,263 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                 </div>
               </section>
 
-              {/* Syllabus Outline */}
-              <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
-                <h3 className="flex items-center gap-2 text-base font-extrabold text-primary">
-                  <ListChecks className="h-5 w-5" />
-                  <span>O‘quv dasturi bo‘yicha asosiy rejalar va masalalar</span>
-                </h3>
-                <div className="mt-4 grid gap-3">
-                  {activeTopic.syllabusPoints.map((pt, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 rounded-xl border border-border/80 bg-card p-4 text-sm leading-relaxed text-foreground shadow-sm"
-                    >
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary font-mono text-xs font-extrabold text-primary-foreground tabular-nums">
-                        {idx + 1}
-                      </span>
-                      <span>{pt}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Detailed Academic Lecture Sections */}
-              <section className="space-y-5">
-                <div className="flex items-center gap-2 border-b border-border pb-3">
-                  <GraduationCap className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-extrabold text-foreground md:text-xl">
-                    Mavzu bo‘yicha batafsil ilmiy ma’ruza
-                  </h3>
-                </div>
-
-                <div className="space-y-5">
-                  {activeTopic.sections.map((sec, idx) => (
-                    <article
-                      key={idx}
-                      className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/30"
-                    >
-                      <h4 className="text-base font-extrabold text-primary md:text-lg">
-                        {sec.heading}
-                      </h4>
-                      <p className="mt-3 text-sm leading-relaxed text-foreground/95 md:text-[15px]">
-                        {sec.content}
-                      </p>
-
-                      {sec.highlights && sec.highlights.length > 0 && (
-                        <ul className="mt-4 space-y-2 rounded-xl border border-border/70 bg-muted/40 p-4">
-                          {sec.highlights.map((hl, hIdx) => (
-                            <li
-                              key={hIdx}
-                              className="flex items-start gap-2.5 text-xs leading-relaxed text-foreground md:text-sm"
-                            >
-                              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                              <span>{hl}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              {/* Structured Comparison / Classification Table */}
-              <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
-                  <Table2 className="h-5 w-5 text-primary" />
-                  <span>{activeTopic.comparisonTable.title}</span>
-                </h3>
-
-                <div className="mt-4 overflow-x-auto rounded-xl border border-border">
-                  <table className="w-full min-w-[540px] border-collapse text-left text-xs md:text-sm">
-                    <thead>
-                      <tr className="border-b border-border bg-muted/60">
-                        {activeTopic.comparisonTable.columns.map((col, cIdx) => (
-                          <th key={cIdx} className="px-4 py-3 font-extrabold text-foreground">
-                            {col}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/70">
-                      {activeTopic.comparisonTable.rows.map((row, rIdx) => (
-                        <tr key={rIdx} className="transition-colors hover:bg-muted/30">
-                          {row.map((cell, cellIdx) => (
-                            <td
-                              key={cellIdx}
-                              className={`px-4 py-3 leading-relaxed ${
-                                cellIdx === 0 ? "font-bold text-primary" : "text-foreground/90"
-                              }`}
-                            >
-                              {cell}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-
-              {/* Key Scientific Glossary Concepts */}
-              <section className="space-y-4">
-                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <span>Asosiy tayanch atamalar va ularning ta’riflari</span>
-                </h3>
-                <div className="grid gap-3.5 sm:grid-cols-2">
-                  {activeTopic.keyConcepts.map((concept, idx) => (
-                    <div
-                      key={idx}
-                      className="rounded-2xl border border-border bg-card p-4 shadow-sm"
-                    >
-                      <p className="text-sm font-extrabold text-primary">{concept.term}</p>
-                      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground md:text-sm">
-                        {concept.definition}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Interactive Self-Check Q&A */}
-              <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
-                  <HelpCircle className="h-5 w-5 text-primary" />
-                  <span>O‘z-o‘zini tekshirish uchun nazorat savollari</span>
-                </h3>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Bilimingizni mustahkamlash uchun savolni bosing va ilmiy javobni solishtiring.
-                </p>
-
-                <div className="mt-4 space-y-3">
-                  {activeTopic.selfCheckQuestions.map((qa, qIdx) => {
-                    const isOpen = revealedAnswers.has(qIdx);
-                    return (
-                      <div
-                        key={qIdx}
-                        className="overflow-hidden rounded-xl border border-border bg-muted/20"
+              {/* Mode Switcher when PDF is available */}
+              {activeTopic.pdfUrl && (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm">
+                  <div className="flex flex-wrap items-center gap-2">
+                    {[
+                      { id: "all", label: "Barchasi (PDF + Ma’ruza)" },
+                      { id: "pdf", label: "PDF ma’ruza taqdimoti" },
+                      { id: "lecture", label: "Nazariy darslik" },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setReaderTab(tab.id as typeof readerTab)}
+                        className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all ${
+                          readerTab === tab.id
+                            ? "bg-primary text-primary-foreground shadow-sm"
+                            : "bg-muted text-muted-foreground hover:text-foreground"
+                        }`}
                       >
-                        <button
-                          type="button"
-                          onClick={() => toggleRevealAnswer(qIdx)}
-                          className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-xs font-bold text-foreground transition-colors hover:bg-muted/50 md:text-sm"
-                        >
-                          <span className="flex items-start gap-2.5">
-                            <span className="font-mono text-primary tabular-nums">{qIdx + 1}.</span>
-                            <span>{qa.question}</span>
-                          </span>
-                          <ChevronDown
-                            className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
-                              isOpen ? "rotate-180 text-primary" : ""
-                            }`}
-                          />
-                        </button>
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
 
-                        {isOpen && (
-                          <div className="border-t border-border/70 bg-primary/5 px-4 py-3.5 text-xs leading-relaxed text-foreground md:text-sm">
-                            <span className="font-bold text-primary">Javob: </span>
-                            {qa.answer}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href={activeTopic.pdfUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="flex items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 text-primary" />
+                      <span>Yangi oynada ochish</span>
+                    </a>
+                    <a
+                      href={activeTopic.pdfUrl}
+                      download
+                      className="flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      <span>PDF yuklab olish</span>
+                    </a>
+                  </div>
                 </div>
-              </section>
+              )}
 
-              {/* Quick Summary Note Card */}
-              <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
-                <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                  Tezkor xulosa
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed text-foreground">
-                  {activeTopic.studyNotes}
-                </p>
-              </section>
+              {/* Embedded Lecture PDF Viewer */}
+              {activeTopic.pdfUrl && readerTab !== "lecture" && (
+                <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 px-5 py-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="grid h-8 w-8 place-items-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
+                        <FileText className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-extrabold text-foreground">
+                          {activeTopic.pdfTitle || `${activeTopic.topicLabel} — PDF ma’ruza`}
+                        </h3>
+                        <p className="text-[11px] text-muted-foreground">
+                          Mavzuga biriktirilgan rasmiy PDF ma’ruza taqdimoti
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-muted/20 p-3">
+                    <iframe
+                      src={`${activeTopic.pdfUrl}#view=FitH`}
+                      title={activeTopic.pdfTitle || activeTopic.title}
+                      className={`w-full rounded-xl border border-border bg-white ${
+                        readerTab === "pdf" ? "h-[78vh]" : "h-[640px]"
+                      }`}
+                    />
+                  </div>
+                </section>
+              )}
+
+              {/* Syllabus Outline */}
+              {(!activeTopic.pdfUrl || readerTab !== "pdf") && (
+                <>
+                  <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
+                    <h3 className="flex items-center gap-2 text-base font-extrabold text-primary">
+                      <ListChecks className="h-5 w-5" />
+                      <span>O‘quv dasturi bo‘yicha asosiy rejalar va masalalar</span>
+                    </h3>
+                    <div className="mt-4 grid gap-3">
+                      {activeTopic.syllabusPoints.map((pt, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-3 rounded-xl border border-border/80 bg-card p-4 text-sm leading-relaxed text-foreground shadow-sm"
+                        >
+                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary font-mono text-xs font-extrabold text-primary-foreground tabular-nums">
+                            {idx + 1}
+                          </span>
+                          <span>{pt}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* Detailed Academic Lecture Sections */}
+                  <section className="space-y-5">
+                    <div className="flex items-center gap-2 border-b border-border pb-3">
+                      <GraduationCap className="h-5 w-5 text-primary" />
+                      <h3 className="text-lg font-extrabold text-foreground md:text-xl">
+                        Mavzu bo‘yicha batafsil ilmiy ma’ruza
+                      </h3>
+                    </div>
+
+                    <div className="space-y-5">
+                      {activeTopic.sections.map((sec, idx) => (
+                        <article
+                          key={idx}
+                          className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/30"
+                        >
+                          <h4 className="text-base font-extrabold text-primary md:text-lg">
+                            {sec.heading}
+                          </h4>
+                          <p className="mt-3 text-sm leading-relaxed text-foreground/95 md:text-[15px]">
+                            {sec.content}
+                          </p>
+
+                          {sec.highlights && sec.highlights.length > 0 && (
+                            <ul className="mt-4 space-y-2 rounded-xl border border-border/70 bg-muted/40 p-4">
+                              {sec.highlights.map((hl, hIdx) => (
+                                <li
+                                  key={hIdx}
+                                  className="flex items-start gap-2.5 text-xs leading-relaxed text-foreground md:text-sm"
+                                >
+                                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                                  <span>{hl}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* Structured Comparison / Classification Table */}
+                  <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                      <Table2 className="h-5 w-5 text-primary" />
+                      <span>{activeTopic.comparisonTable.title}</span>
+                    </h3>
+
+                    <div className="mt-4 overflow-x-auto rounded-xl border border-border">
+                      <table className="w-full min-w-[540px] border-collapse text-left text-xs md:text-sm">
+                        <thead>
+                          <tr className="border-b border-border bg-muted/60">
+                            {activeTopic.comparisonTable.columns.map((col, cIdx) => (
+                              <th key={cIdx} className="px-4 py-3 font-extrabold text-foreground">
+                                {col}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border/70">
+                          {activeTopic.comparisonTable.rows.map((row, rIdx) => (
+                            <tr key={rIdx} className="transition-colors hover:bg-muted/30">
+                              {row.map((cell, cellIdx) => (
+                                <td
+                                  key={cellIdx}
+                                  className={`px-4 py-3 leading-relaxed ${
+                                    cellIdx === 0 ? "font-bold text-primary" : "text-foreground/90"
+                                  }`}
+                                >
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  {/* Key Scientific Glossary Concepts */}
+                  <section className="space-y-4">
+                    <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                      <BookOpen className="h-5 w-5 text-primary" />
+                      <span>Asosiy tayanch atamalar va ularning ta’riflari</span>
+                    </h3>
+                    <div className="grid gap-3.5 sm:grid-cols-2">
+                      {activeTopic.keyConcepts.map((concept, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-2xl border border-border bg-card p-4 shadow-sm"
+                        >
+                          <p className="text-sm font-extrabold text-primary">{concept.term}</p>
+                          <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground md:text-sm">
+                            {concept.definition}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* Interactive Self-Check Q&A */}
+                  <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h3 className="flex items-center gap-2 text-base font-extrabold text-foreground md:text-lg">
+                      <HelpCircle className="h-5 w-5 text-primary" />
+                      <span>O‘z-o‘zini tekshirish uchun nazorat savollari</span>
+                    </h3>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Bilimingizni mustahkamlash uchun savolni bosing va ilmiy javobni solishtiring.
+                    </p>
+
+                    <div className="mt-4 space-y-3">
+                      {activeTopic.selfCheckQuestions.map((qa, qIdx) => {
+                        const isOpen = revealedAnswers.has(qIdx);
+                        return (
+                          <div
+                            key={qIdx}
+                            className="overflow-hidden rounded-xl border border-border bg-muted/20"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => toggleRevealAnswer(qIdx)}
+                              className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-xs font-bold text-foreground transition-colors hover:bg-muted/50 md:text-sm"
+                            >
+                              <span className="flex items-start gap-2.5">
+                                <span className="font-mono text-primary tabular-nums">
+                                  {qIdx + 1}.
+                                </span>
+                                <span>{qa.question}</span>
+                              </span>
+                              <ChevronDown
+                                className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
+                                  isOpen ? "rotate-180 text-primary" : ""
+                                }`}
+                              />
+                            </button>
+
+                            {isOpen && (
+                              <div className="border-t border-border/70 bg-primary/5 px-4 py-3.5 text-xs leading-relaxed text-foreground md:text-sm">
+                                <span className="font-bold text-primary">Javob: </span>
+                                {qa.answer}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+
+                  {/* Quick Summary Note Card */}
+                  <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+                    <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                      Tezkor xulosa
+                    </p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-foreground">
+                      {activeTopic.studyNotes}
+                    </p>
+                  </section>
+                </>
+              )}
             </div>
           </div>
 
