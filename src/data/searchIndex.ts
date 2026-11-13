@@ -1,5 +1,6 @@
 import { ENGLISH_VIDEO_LESSONS } from "./englishVideoLessons";
 import { BIOLOGY_VARIANTS } from "./biologyVariantsData";
+import { BOTANIKA_TOPICS } from "./botanikaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -26,10 +27,10 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     id: "course-botanika",
     title: "Botanika darsligi va kurslari",
     description:
-      "O‘simliklar anatomiyasi, morfologiyasi, o'tkazuvchi to'qimalar va sistematika bo‘yicha 24 ta mavzu.",
+      "O‘simliklar anatomiyasi, morfologiyasi, o'tkazuvchi to'qimalar va sistematika bo‘yicha 17 ta mavzu.",
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: "24 ta mavzu",
+    badge: "17 ta mavzu",
   },
   {
     id: "course-genetika",
@@ -284,7 +285,25 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 4. Botanika Topics Matches (limit to top 8)
+  const botanikaMatches: SearchResultItem[] = [];
+  for (const topic of BOTANIKA_TOPICS) {
+    const combined =
+      `botanika darslik ${topic.code} ${topic.topicLabel} ${topic.semester} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      botanikaMatches.push({
+        id: topic.id,
+        title: `Botanika ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · ${topic.semester}`,
+      });
+      if (botanikaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
-  const results = [...directoryMatches, ...videoMatches, ...biologyMatches];
+  const results = [...directoryMatches, ...botanikaMatches, ...videoMatches, ...biologyMatches];
   return results;
 }

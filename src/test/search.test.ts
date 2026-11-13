@@ -30,4 +30,18 @@ describe("searchAppContent", () => {
     expect(results.length).toBeGreaterThan(0);
     expect(results.some((r) => r.category === "AI Teacher")).toBe(true);
   });
+
+  it("finds Mustaqil ish templates and guides", () => {
+    const results = searchAppContent("mustaqil ish referat");
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.some((r) => r.category === "Mustaqil ish" && r.targetActiveTab === 3)).toBe(
+      true,
+    );
+  });
+
+  it("finds Botanika sequential topics (1 through 17)", () => {
+    const results = searchAppContent("lishayniklar");
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.some((r) => r.id === "bot-16" && r.category === "Darsliklar")).toBe(true);
+  });
 });

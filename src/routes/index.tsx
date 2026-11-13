@@ -42,6 +42,8 @@ import { EnglishSection } from "@/components/EnglishSection";
 import { BiologySection } from "@/components/BiologySection";
 import { KursIshiSection } from "@/components/KursIshiSection";
 import { MustaqilIshSection } from "@/components/MustaqilIshSection";
+import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSection";
+import { BotanikaSection } from "@/components/BotanikaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 
@@ -103,7 +105,7 @@ const features = [
   },
 ];
 const list = [
-  { t: "Botanika", n: 24, p: 72, img: botanika },
+  { t: "Botanika", n: 17, p: 72, img: botanika },
   { t: "Genetika", n: 18, p: 60, img: genetika },
   { t: "Mikrobiologiya", n: 20, p: 48, img: mikro },
   { t: "Biokimyo", n: 26, p: 35, img: biokimyo },
@@ -134,6 +136,8 @@ function spot(e: React.MouseEvent<HTMLElement>) {
 function Index() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
+  const [botanikaFullscreen, setBotanikaFullscreen] = useState(false);
+  const [selectedDarslikSubject, setSelectedDarslikSubject] = useState<SubjectKey>("botanika");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("Barchasi");
@@ -176,13 +180,19 @@ function Index() {
   ];
 
   const handleSelectResult = (item: SearchResultItem) => {
-    setActive(item.targetActiveTab);
+    if (item.id === "course-botanika" || item.id.startsWith("bot-")) {
+      setActive(1);
+      setBotanikaFullscreen(true);
+    } else {
+      setActive(item.targetActiveTab);
+    }
     setIsSearchOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleAskAiTeacher = (queryText: string) => {
     setAiPromptForTeacher(queryText);
+    setBotanikaFullscreen(false);
     setActive(7);
     setIsSearchOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -450,7 +460,18 @@ function Index() {
           </div>
         </header>
 
-        {active === 2 ? (
+        {active === 1 ? (
+          <DarsliklarSection
+            key={selectedDarslikSubject}
+            initialSubject={selectedDarslikSubject}
+            onBack={() => {
+              setActive(0);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onOpenBotanika={() => setBotanikaFullscreen(true)}
+            onAskAi={handleAskAiTeacher}
+          />
+        ) : active === 2 ? (
           <KursIshiSection
             onBack={() => {
               setActive(0);
@@ -716,16 +737,33 @@ function Index() {
                   <h3 className="flex items-center gap-2 text-xl font-bold">
                     <GraduationCap className="text-primary" /> Tavsiya etilgan kurslar
                   </h3>
-                  <a className="group flex items-center gap-1 text-sm font-semibold text-primary">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActive(1);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="group flex items-center gap-1 text-sm font-semibold text-primary"
+                  >
                     Barchasi{" "}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </a>
+                  </button>
                 </div>
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                   {list.map((c) => (
                     <div
                       key={c.t}
-                      className="lift spot group relative overflow-hidden rounded-2xl border border-border bg-card"
+                      onClick={() => {
+                        const key = c.t.toLowerCase() as SubjectKey;
+                        setSelectedDarslikSubject(key);
+                        setActive(1);
+                        if (key === "botanika") {
+                          setBotanikaFullscreen(true);
+                        } else {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                      }}
+                      className="lift spot group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card"
                       onMouseMove={spot}
                     >
                       <div className="h-24 overflow-hidden">
@@ -862,6 +900,16 @@ function Index() {
           </div>
         )}
       </main>
+
+      {botanikaFullscreen && (
+        <BotanikaSection
+          onBack={() => setBotanikaFullscreen(false)}
+          onAskAi={(prompt) => {
+            setBotanikaFullscreen(false);
+            handleAskAiTeacher(prompt);
+          }}
+        />
+      )}
     </div>
   );
 }
