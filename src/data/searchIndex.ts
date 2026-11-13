@@ -10,11 +10,11 @@ export interface SearchResultItem {
     | "Darsliklar"
     | "Kurs ishi"
     | "Mustaqil ish"
-    | "O‘yinlar"
+    | "Kutubxona"
     | "Ingliz tili"
     | "Biologiya"
     | "AI Teacher";
-  targetActiveTab: number; // 0: Home, 1: Darsliklar, 2: Kurs ishi, 3: Mustaqil ish, 4: O'yinlar, 5: Ingliz tili, 6: Biologiya, 7: AI Teacher
+  targetActiveTab: number; // 0: Home, 1: Darsliklar, 2: Kurs ishi, 3: Mustaqil ish, 4: Kutubxona, 5: Ingliz tili, 6: Biologiya, 7: AI Teacher
   metadata?: string;
   badge?: string;
   targetVideoId?: number;
@@ -126,15 +126,15 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     badge: "Taqdimot",
   },
 
-  // 4. O'yinlar
+  // 4. Kutubxona
   {
-    id: "oyinlar-viktorina",
-    title: "Interaktiv bilim o‘yinlari va viktorinalar",
+    id: "kutubxona-main",
+    title: "Elektron kutubxona va PDF manbalar",
     description:
-      "Tabiiy va gumanitar fanlar bo'yicha intellektual testlar, blitz-viktorinalar va bilimlar bellashuvi.",
-    category: "O‘yinlar",
+      "Botanika PDF taqdimotlari, Biologiya Milliy sertifikat 30 ta test varianti, Ingliz tili qo‘llanmasi va akademik kitoblar.",
+    category: "Kutubxona",
     targetActiveTab: 4,
-    badge: "Gamifikatsiya",
+    badge: "Elektron kitoblar",
   },
 
   // 5. Ingliz tili (English)

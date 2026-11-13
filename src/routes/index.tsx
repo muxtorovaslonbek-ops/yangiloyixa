@@ -6,7 +6,7 @@ import {
   BookOpen,
   FileText,
   ClipboardCheck,
-  Gamepad2,
+  Library,
   Languages,
   Leaf,
   MessageSquare,
@@ -46,6 +46,7 @@ import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSecti
 import { BotanikaSection } from "@/components/BotanikaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
+import { KutubxonaSection } from "@/components/KutubxonaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 
@@ -56,7 +57,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Darsliklar, kurs ishi, mustaqil ish, o‘yinlar va ingliz tili — barchasi bir platformada.",
+          "Darsliklar, kurs ishi, mustaqil ish, kutubxona va ingliz tili — barchasi bir platformada.",
       },
       { property: "og:title", content: "EduUni — raqamli ta’lim platformasi" },
       {
@@ -75,7 +76,7 @@ const nav = [
   { icon: BookOpen, label: "Darsliklar" },
   { icon: FileText, label: "Kurs ishi" },
   { icon: ClipboardCheck, label: "Mustaqil ish" },
-  { icon: Gamepad2, label: "O‘yinlar" },
+  { icon: Library, label: "Kutubxona" },
   { icon: Languages, label: "Ingliz tili", img: icEn },
   { icon: Leaf, label: "Biologiya (Milliy sertifikat)", img: icBio },
   { icon: Sparkles, label: "AI Teacher (Ustoz)", badge: "AI" },
@@ -84,7 +85,7 @@ const features = [
   { icon: BookOpen, t: "Darsliklar", d: "Universitet fanlari bo‘yicha darsliklar", c: "icon-blue" },
   { icon: FileText, t: "Kurs ishi", d: "Kurs ishini yozish bo‘yicha yo‘riqnoma", c: "icon-violet" },
   { icon: ClipboardCheck, t: "Mustaqil ish", d: "Topshiriqlar va namunalar", c: "icon-orange" },
-  { icon: Gamepad2, t: "O‘yinlar", d: "Interaktiv bilim o‘yinlari", c: "icon-purple" },
+  { icon: Library, t: "Kutubxona", d: "Elektron kitoblar va PDF manbalar", c: "icon-purple" },
   {
     icon: Languages,
     t: "Ingliz tili",
@@ -175,7 +176,7 @@ function Index() {
     "Darsliklar",
     "Kurs ishi",
     "Mustaqil ish",
-    "O‘yinlar",
+    "Kutubxona",
     "Ingliz tili",
     "Biologiya",
     "AI Teacher",
@@ -396,6 +397,8 @@ function Index() {
                             <Leaf className="h-3.5 w-3.5" />
                           ) : item.category === "Kurs ishi" ? (
                             <FileText className="h-3.5 w-3.5" />
+                          ) : item.category === "Kutubxona" ? (
+                            <Library className="h-3.5 w-3.5" />
                           ) : item.category === "AI Teacher" ? (
                             <Sparkles className="h-3.5 w-3.5" />
                           ) : (
@@ -497,6 +500,18 @@ function Index() {
           <MustaqilIshSection
             onBack={() => {
               setActive(0);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onAskAi={handleAskAiTeacher}
+          />
+        ) : active === 4 ? (
+          <KutubxonaSection
+            onBack={() => {
+              setActive(0);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onOpenDarslik={() => {
+              setActive(1);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             onAskAi={handleAskAiTeacher}
@@ -679,7 +694,7 @@ function Index() {
                   <span className="text-shine">oson va samarali</span> o‘zlashtiring!
                 </h2>
                 <p className="mt-3 max-w-md text-lg font-medium opacity-95">
-                  Darsliklar, topshiriqlar, kurs ishi, o‘yinlar va til o‘rganish — barchasi bir
+                  Darsliklar, topshiriqlar, kurs ishi, kutubxona va til o‘rganish — barchasi bir
                   platformada!
                 </p>
                 <button
@@ -706,6 +721,9 @@ function Index() {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     } else if (f.t === "Mustaqil ish") {
                       setActive(3);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else if (f.t === "Kutubxona") {
+                      setActive(4);
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     } else if (f.t === "Ingliz tili") {
                       setActive(5);

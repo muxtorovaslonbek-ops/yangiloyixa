@@ -46,6 +46,12 @@ describe("searchAppContent", () => {
     expect(results.some((r) => r.id === "bot-23" && r.category === "Darsliklar")).toBe(true);
   });
 
+  it("finds Kutubxona library section and maps to tab 4", () => {
+    const results = searchAppContent("kutubxona");
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.some((r) => r.category === "Kutubxona" && r.targetActiveTab === 4)).toBe(true);
+  });
+
   it("provides 24 sequentially numbered Botanika topics with matched PDFs for 1-18", () => {
     expect(BOTANIKA_TOPICS).toHaveLength(24);
     BOTANIKA_TOPICS.forEach((topic, idx) => {
