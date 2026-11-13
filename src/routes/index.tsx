@@ -49,6 +49,11 @@ import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { KutubxonaSection } from "@/components/KutubxonaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
+import {
+  getDefaultStudyProgress,
+  readStudyProgressFromStorage,
+  type StudyProgressSummary,
+} from "@/utils/studyProgress";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -146,7 +151,21 @@ function Index() {
   const [searchCategory, setSearchCategory] = useState("Barchasi");
   const [aiPromptForTeacher, setAiPromptForTeacher] = useState("");
   const searchContainerRef = useRef<HTMLDivElement>(null);
-  const pct = useCount(68);
+  const [studyProgress, setStudyProgress] = useState<StudyProgressSummary>(getDefaultStudyProgress);
+  const pct = useCount(studyProgress.overallPercent);
+
+  useEffect(() => {
+    const syncProgress = () => {
+      setStudyProgress(readStudyProgressFromStorage());
+    };
+    syncProgress();
+    window.addEventListener("storage", syncProgress);
+    window.addEventListener("focus", syncProgress);
+    return () => {
+      window.removeEventListener("storage", syncProgress);
+      window.removeEventListener("focus", syncProgress);
+    };
+  }, [active, botanikaFullscreen]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -858,29 +877,47 @@ function Index() {
                         strokeLinecap="round"
                         className="ring-anim stroke-cyan"
                         strokeDasharray="440"
-                        strokeDashoffset={440 - 440 * 0.68}
+                        strokeDashoffset={440 - 440 * (studyProgress.overallPercent / 100)}
                       />
                     </svg>
                     <div className="absolute inset-0 grid place-items-center text-center">
                       <div>
-                        <p className="text-4xl font-extrabold">{pct}%</p>
+                        <p className="text-4xl font-extrabold tabular-nums">{pct}%</p>
                         <p className="text-xs opacity-80">Umumiy natija</p>
                       </div>
                     </div>
                   </div>
                   <div className="w-full space-y-3">
                     {[
-                      { i: BookOpen, n: 12, t: "Tugallangan darslar" },
-                      { i: Clock, n: 4, t: "Davom etayotgan kurslar" },
-                      { i: Trophy, n: 3, t: "Bajarilgan topshiriqlar" },
+                      {
+                        i: BookOpen,
+                        n: studyProgress.completedLessons,
+                        t: "Tugallangan darslar",
+                        sub: `${studyProgress.botanikaDone}/${studyProgress.botanikaTotal} Botanika · ${studyProgress.englishDone}/${studyProgress.englishTotal} Ingliz tili`,
+                      },
+                      {
+                        i: Clock,
+                        n: studyProgress.activeCoursesCount,
+                        t: "Davom etayotgan kurslar",
+                        sub: `${studyProgress.totalCoursesCount} ta faol o‘quv yo‘nalishidan`,
+                      },
+                      {
+                        i: Trophy,
+                        n: studyProgress.completedTasks,
+                        t: "Bajarilgan topshiriqlar",
+                        sub: `${studyProgress.mustaqilDone}/${studyProgress.mustaqilTotal} Mustaqil ish · ${studyProgress.bioDone}/${studyProgress.bioTotal} Biologiya test`,
+                      },
                     ].map((s) => (
                       <div
                         key={s.t}
                         className="flex items-center gap-3 rounded-xl bg-navy-foreground/10 px-4 py-3 transition-all hover:translate-x-1 hover:bg-navy-foreground/20"
                       >
-                        <s.i className="h-5 w-5 text-cyan" />
-                        <span className="text-xl font-bold">{s.n}</span>
-                        <span className="text-xs">{s.t}</span>
+                        <s.i className="h-5 w-5 shrink-0 text-cyan" />
+                        <span className="text-xl font-bold tabular-nums">{s.n}</span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-semibold leading-tight">{s.t}</p>
+                          <p className="truncate text-[11px] opacity-75 tabular-nums">{s.sub}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
