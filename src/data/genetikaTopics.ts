@@ -195,6 +195,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/01-mavzu_Genetika_va_genomika_asoslari_faniga_kirish_61107b8f.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "1-mavzu: Genetika va genomika asoslari faniga kirish (Taqdimot)",
+        url: "/assets/aistudio/01-mavzu_Genetika_va_genomika_asoslari_faniga_kiris_f5a3d73f.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -321,6 +326,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         title: "2-mavzu: Gen, genom va genetik tahlil haqida tushuncha (Ma’ruza matni)",
         url: "/assets/aistudio/02-mavzu_Gen_genom_va_genetik_tahlil_genlar_tuzilishi_e99e0ca8.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "2-mavzu: Gen, genom va genetik tahlil haqida tushuncha (Taqdimot)",
+        url: "/assets/aistudio/02-mavzu_Gen_genom_va_genetik_tahlil_genlar_tuzilis_bf55cde4.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -459,6 +469,12 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/03-mavzu_DNK_replikatsiyasi_va_rekombinatsiyasi_trans_cbd61eef.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title:
+          "3-mavzu: DNK replikatsiyasi, rekombinatsiya, transduksiya va transpozitsiya (Taqdimot)",
+        url: "/assets/aistudio/03-mavzu_DNK_replikatsiyasi_va_rekombinatsiyasi_tra_716af9dc.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -588,6 +604,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         title: "4-mavzu: Bir gen allellarining o‘zaro ta’siri (Ma’ruza matni)",
         url: "/assets/aistudio/04-mavzu_Allel_genlarning_o_zaro_ta_siri_va_belgilarn_ad24a5cf.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "4-mavzu: Bir gen allellarining o‘zaro ta’siri (Taqdimot)",
+        url: "/assets/aistudio/04-mavzu_Allel_genlarning_o_zaro_ta_siri_va_belgila_59f58452.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -722,6 +743,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/05-mavzu_Allel_bo_lmagan_genlarning_o_zaro_ta_siri_4ec1fd10.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "5-mavzu: Genlarning komplementar, epistatik va polimer ta’siri (Taqdimot)",
+        url: "/assets/aistudio/05-mavzu_Allel_bo_lmagan_genlarning_o_zaro_ta_siri_d97df9d9.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -844,6 +870,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         title: "6-mavzu: Polimeriya va miqdor belgilar genetikasi (Ma’ruza matni)",
         url: "/assets/aistudio/06-mavzu_Polimeriya_va_miqdor_belgilar_genetikasi_f0d1720d.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "6-mavzu: Polimeriya va miqdor belgilar genetikasi (Taqdimot)",
+        url: "/assets/aistudio/06-mavzu_Polimeriya_va_miqdor_belgilar_genetikasi_81e320cd.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -980,6 +1011,12 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/07-mavzu_Miqdor_belgilarning_kombinirlangan_irsiylani_ae049cee.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title:
+          "7-mavzu: Miqdor belgilarning kombinirlangan irsiylanishi va g‘o‘za genetikasi (Taqdimot)",
+        url: "/assets/aistudio/07-mavzu_Miqdor_belgilarning_kombinirlangan_irsiyla_1608afdd.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1101,6 +1138,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         title: "8-mavzu: Xromosoma molekulyar tuzilishi va kariotip (Ma’ruza matni)",
         url: "/assets/aistudio/08-mavzu_Xromosoma_molekulyar_tuzilishi_kariotip_va_m_adde347e.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "8-mavzu: Xromosoma molekulyar tuzilishi va kariotip (Taqdimot)",
+        url: "/assets/aistudio/08-mavzu_Xromosoma_molekulyar_tuzilishi_kariotip_va_8eec68b4.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1228,6 +1270,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
           "9-mavzu: Xromosoma nazariyasi, birikkan irsiylanish va krossingover (Ma’ruza matni)",
         url: "/assets/aistudio/09-mavzu_Xromosoma_nazariyasi_birikkan_irsiylanish_va_48f67292.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "9-mavzu: Xromosoma nazariyasi, birikkan irsiylanish va krossingover (Taqdimot)",
+        url: "/assets/aistudio/09-mavzu_Xromosoma_nazariyasi_birikkan_irsiylanish__d3443211.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1368,6 +1415,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/10-mavzu_Genetik_va_sitologik_xaritalar_odam_kariotip_82d71bcd.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "10-mavzu: Genetik va sitologik xaritalar, odam kariotipi (Taqdimot)",
+        url: "/assets/aistudio/10-mavzu_Genetik_va_sitologik_xaritalar_odam_kariot_fb1b7766.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1499,6 +1551,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
           "11-mavzu: O‘zgaruvchanlik va uning xillari, mutatsion o‘zgaruvchanlik (Ma’ruza matni)",
         url: "/assets/aistudio/11-mavzu_O_zgaruvchanlik_va_uning_xillari_mutatsion_o_ab9b43b8.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "11-mavzu: O‘zgaruvchanlik va uning xillari, mutatsion o‘zgaruvchanlik (Taqdimot)",
+        url: "/assets/aistudio/11-mavzu_O_zgaruvchanlik_va_uning_xillari_mutatsion_9696a889.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1643,6 +1700,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/12-mavzu_Gen_xromosoma_va_genom_mutatsiyalari_709d730f.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "12-mavzu: Gen, xromosoma va genom mutatsiyalari (Taqdimot)",
+        url: "/assets/aistudio/12-mavzu_Gen_xromosoma_va_genom_mutatsiyalari_baa908d6.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1763,6 +1825,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         title: "13-mavzu: Populyatsion genetika va Xardi-Vaynberg qonuni (Ma’ruza matni)",
         url: "/assets/aistudio/13-mavzu_Populyatsion_genetika_va_XardiVaynberg_qonun_de3a0f57.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "13-mavzu: Populyatsion genetika va Xardi-Vaynberg qonuni (Taqdimot)",
+        url: "/assets/aistudio/13-mavzu_Populyatsion_genetika_va_XardiVaynberg_qon_84c6af25.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1900,6 +1967,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
         url: "/assets/aistudio/14-mavzu_Odam_genetikasi_moddiy_asoslari_va_o_rganish_dad1259d.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "14-mavzu: Odam genetikasi va antropogenetika metodlari (Taqdimot)",
+        url: "/assets/aistudio/14-mavzu_Odam_genetikasi_moddiy_asoslari_va_o_rgani_d358d007.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -2027,6 +2099,11 @@ export const GENETIKA_TOPICS: GenetikaTopic[] = [
           "15-mavzu: Irsiy kasalliklar, immunogenetika va tibbiy-genetik maslahat (Ma’ruza matni)",
         url: "/assets/aistudio/15-mavzu_Irsiy_kasalliklar_immunogenetika_va_genetik__d1779f69.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "15-mavzu: Irsiy kasalliklar, immunogenetika va tibbiy-genetik maslahat (Taqdimot)",
+        url: "/assets/aistudio/15-mavzu_Irsiy_kasalliklar_immunogenetika_va_geneti_674b8ab1.pdf",
+        kind: "Taqdimot",
       },
     ],
   },

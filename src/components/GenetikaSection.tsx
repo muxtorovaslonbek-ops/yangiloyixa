@@ -222,8 +222,9 @@ export function GenetikaSection({ onBack, onAskAi }: GenetikaSectionProps) {
                 <p className="text-xs leading-relaxed text-navy-foreground/85 md:text-sm">
                   Genetika fanining barcha {GENETIKA_TOPICS.length} ta mavzusi (1-mavzudan{" "}
                   {GENETIKA_TOPICS.length}-mavzugacha) ketma-ket tartibda alohida kartochkalarda
-                  jamlangan. Har bir mavzu to‘liq oynada rasmiy PDF ma’ruza matni, nazariy konspekt,
-                  qiyosiy jadval, atamalar lug‘ati va nazorat savollari bilan ochiladi.
+                  jamlangan. Har bir mavzu to‘liq oynada rasmiy PDF ma’ruza matni va taqdimoti,
+                  nazariy konspekt, qiyosiy jadval, atamalar lug‘ati va nazorat savollari bilan
+                  ochiladi.
                 </p>
               </div>
             </div>
@@ -494,7 +495,7 @@ export function GenetikaSection({ onBack, onAskAi }: GenetikaSectionProps) {
                   <div className="flex flex-wrap items-center gap-2">
                     {[
                       { id: "all", label: "Barchasi (PDF + Ma’ruza)" },
-                      { id: "pdf", label: "PDF ma’ruza matni" },
+                      { id: "pdf", label: "PDF ma’ruza va taqdimot" },
                       { id: "lecture", label: "Nazariy darslik" },
                     ].map((tab) => (
                       <button

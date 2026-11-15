@@ -51,7 +51,7 @@ const SUBJECTS = [
     id: "genetika" as SubjectKey,
     title: "Genetika",
     subtitle: "Irsiyat va o‘zgaruvchanlik qonuniyatlari",
-    description: `Genetika va genomika asoslari, DNK replikatsiyasi, Mendel qonunlari, xromosoma nazariyasi, mutatsiyalar va odam genetikasi bo‘yicha barcha ${GENETIKA_TOPICS.length} ta mavzu (1-mavzudan ${GENETIKA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    description: `Genetika va genomika asoslari, DNK replikatsiyasi, Mendel qonunlari, xromosoma nazariyasi, mutatsiyalar va odam genetikasi bo‘yicha barcha ${GENETIKA_TOPICS.length} ta mavzu (1-mavzudan ${GENETIKA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari, taqdimotlar va nazariy konspektlar ko‘rinishida.`,
     topicsCount: GENETIKA_TOPICS.length,
     status: "To‘liq ishga tushirilgan",
     img: genetikaImg,
