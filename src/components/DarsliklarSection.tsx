@@ -17,12 +17,14 @@ import mikroImg from "@/assets/mikro.jpg";
 import biokimyoImg from "@/assets/biokimyo.jpg";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
+import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 
 export type SubjectKey = "botanika" | "genetika" | "mikrobiologiya" | "biokimyo";
 
 interface DarsliklarSectionProps {
   onBack: () => void;
   onOpenBotanika: () => void;
+  onOpenGenetika: () => void;
   onOpenBiokimyo: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
@@ -49,17 +51,16 @@ const SUBJECTS = [
     id: "genetika" as SubjectKey,
     title: "Genetika",
     subtitle: "Irsiyat va o‘zgaruvchanlik qonuniyatlari",
-    description:
-      "Mendel qonunlari, xromosoma nazariyasi, irsiy kasalliklar, gen muhandisligi va seleksiya asoslari bo‘yicha 18 ta asosiy universitet mavzusi.",
-    topicsCount: 18,
-    status: "Tayanch darslik & AI yordam",
+    description: `Genetika va genomika asoslari, DNK replikatsiyasi, Mendel qonunlari, xromosoma nazariyasi, mutatsiyalar va odam genetikasi bo‘yicha barcha ${GENETIKA_TOPICS.length} ta mavzu (1-mavzudan ${GENETIKA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    topicsCount: GENETIKA_TOPICS.length,
+    status: "To‘liq ishga tushirilgan",
     img: genetikaImg,
     icon: Dna,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Mendelning irsiyat qonunlari va chatishtirish tahlili",
-      "DNK replikatsiyasi, transkripsiya va translatsiya",
-      "Mutatsiyalar, populyatsion genetika va biotexnologiya",
+      "1–7-mavzular: Genetika va genomika asoslari, DNK replikatsiyasi, Mendel qonunlari va genlar o‘zaro ta’siri (PDF + ma’ruza)",
+      "8–12-mavzular: Xromosoma tuzilishi, Morgan nazariyasi, krossingover, kariotip va mutatsiyalar (PDF + ma’ruza)",
+      `13–${GENETIKA_TOPICS.length}-mavzular: Populyatsion genetika, Xardi-Vaynberg qonuni, odam genetikasi va irsiy kasalliklar (PDF + ma’ruza)`,
     ],
   },
   {
@@ -100,6 +101,7 @@ const SUBJECTS = [
 export function DarsliklarSection({
   onBack,
   onOpenBotanika,
+  onOpenGenetika,
   onOpenBiokimyo,
   onAskAi,
   initialSubject = "botanika",
@@ -160,6 +162,8 @@ export function DarsliklarSection({
                 setFocusedSubject(subj.id);
                 if (subj.id === "botanika") {
                   onOpenBotanika();
+                } else if (subj.id === "genetika") {
+                  onOpenGenetika();
                 } else if (subj.id === "biokimyo") {
                   onOpenBiokimyo();
                 }
@@ -234,13 +238,15 @@ export function DarsliklarSection({
 
               {/* Footer Action */}
               <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-5 py-3.5">
-                {subj.id === "botanika" || subj.id === "biokimyo" ? (
+                {subj.id === "botanika" || subj.id === "genetika" || subj.id === "biokimyo" ? (
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (subj.id === "botanika") {
                         onOpenBotanika();
+                      } else if (subj.id === "genetika") {
+                        onOpenGenetika();
                       } else {
                         onOpenBiokimyo();
                       }

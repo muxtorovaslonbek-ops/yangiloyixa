@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { searchAppContent } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
+import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -108,6 +109,34 @@ describe("searchAppContent", () => {
       topic.pdfDocuments?.forEach((doc) => {
         expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
       });
+    });
+  });
+
+  it("finds Genetika sequential topics (1 through 15) and verifies matched PDFs", () => {
+    const hardyResults = searchAppContent("Xardi");
+    expect(hardyResults.some((r) => r.id === "genetika-13" && r.category === "Darsliklar")).toBe(
+      true,
+    );
+
+    const crossingResults = searchAppContent("krossingover");
+    expect(crossingResults.some((r) => r.id === "genetika-9" && r.category === "Darsliklar")).toBe(
+      true,
+    );
+
+    expect(GENETIKA_TOPICS).toHaveLength(15);
+    GENETIKA_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+      expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      expect(topic.pdfDocuments).toBeDefined();
+      expect(topic.pdfDocuments).toHaveLength(1);
+      expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
+      expect(topic.pdfDocuments?.[0]?.url).toBe(topic.pdfUrl);
     });
   });
 });

@@ -2,6 +2,7 @@ import { ENGLISH_VIDEO_LESSONS } from "./englishVideoLessons";
 import { BIOLOGY_VARIANTS } from "./biologyVariantsData";
 import { BOTANIKA_TOPICS } from "./botanikaTopics";
 import { BIOKIMYO_TOPICS } from "./biokimyoTopics";
+import { GENETIKA_TOPICS } from "./genetikaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -35,11 +36,10 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
   {
     id: "course-genetika",
     title: "Genetika darsligi va masalalar",
-    description:
-      "Mendel qonuniyatlari, xromosomalar, irsiyat turlari va seleksiya bo‘yicha 18 ta mavzu.",
+    description: `DNK replikatsiyasi, Mendel qonunlari, xromosoma nazariyasi, mutatsiyalar, Xardi-Vaynberg qonuni va tibbiy genetika bo‘yicha ${GENETIKA_TOPICS.length} ta mavzu.`,
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: "18 ta mavzu",
+    badge: `${GENETIKA_TOPICS.length} ta mavzu`,
   },
   {
     id: "course-mikro",
@@ -320,10 +320,29 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 6. Genetika Topics Matches (limit to top 8)
+  const genetikaMatches: SearchResultItem[] = [];
+  for (const topic of GENETIKA_TOPICS) {
+    const combined =
+      `genetika darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      genetikaMatches.push({
+        id: topic.id,
+        title: `Genetika ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (genetikaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
   const results = [
     ...directoryMatches,
     ...botanikaMatches,
+    ...genetikaMatches,
     ...biokimyoMatches,
     ...videoMatches,
     ...biologyMatches,

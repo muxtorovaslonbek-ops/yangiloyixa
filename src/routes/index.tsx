@@ -44,12 +44,14 @@ import { KursIshiSection } from "@/components/KursIshiSection";
 import { MustaqilIshSection } from "@/components/MustaqilIshSection";
 import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSection";
 import { BotanikaSection } from "@/components/BotanikaSection";
+import { GenetikaSection } from "@/components/GenetikaSection";
 import { BiokimyoSection } from "@/components/BiokimyoSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { KutubxonaSection } from "@/components/KutubxonaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
+import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import {
   getDefaultStudyProgress,
@@ -116,7 +118,7 @@ const features = [
 ];
 const list = [
   { t: "Botanika", n: BOTANIKA_TOPICS.length, p: 72, img: botanika },
-  { t: "Genetika", n: 18, p: 60, img: genetika },
+  { t: "Genetika", n: GENETIKA_TOPICS.length, p: 60, img: genetika },
   { t: "Mikrobiologiya", n: 20, p: 48, img: mikro },
   { t: "Biokimyo", n: BIOKIMYO_TOPICS.length, p: 35, img: biokimyo },
 ];
@@ -147,6 +149,7 @@ function Index() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const [botanikaFullscreen, setBotanikaFullscreen] = useState(false);
+  const [genetikaFullscreen, setGenetikaFullscreen] = useState(false);
   const [biokimyoFullscreen, setBiokimyoFullscreen] = useState(false);
   const [selectedDarslikSubject, setSelectedDarslikSubject] = useState<SubjectKey>("botanika");
   const [searchQuery, setSearchQuery] = useState("");
@@ -168,7 +171,7 @@ function Index() {
       window.removeEventListener("storage", syncProgress);
       window.removeEventListener("focus", syncProgress);
     };
-  }, [active, botanikaFullscreen, biokimyoFullscreen]);
+  }, [active, botanikaFullscreen, genetikaFullscreen, biokimyoFullscreen]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -208,6 +211,9 @@ function Index() {
     if (item.id === "course-botanika" || item.id.startsWith("bot-")) {
       setActive(1);
       setBotanikaFullscreen(true);
+    } else if (item.id === "course-genetika" || item.id.startsWith("genetika-")) {
+      setActive(1);
+      setGenetikaFullscreen(true);
     } else if (item.id === "course-biokimyo" || item.id.startsWith("biokimyo-")) {
       setActive(1);
       setBiokimyoFullscreen(true);
@@ -221,6 +227,7 @@ function Index() {
   const handleAskAiTeacher = (queryText: string) => {
     setAiPromptForTeacher(queryText);
     setBotanikaFullscreen(false);
+    setGenetikaFullscreen(false);
     setBiokimyoFullscreen(false);
     setActive(7);
     setIsSearchOpen(false);
@@ -513,6 +520,7 @@ function Index() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             onOpenBotanika={() => setBotanikaFullscreen(true)}
+            onOpenGenetika={() => setGenetikaFullscreen(true)}
             onOpenBiokimyo={() => setBiokimyoFullscreen(true)}
             onAskAi={handleAskAiTeacher}
           />
@@ -825,6 +833,8 @@ function Index() {
                         setActive(1);
                         if (key === "botanika") {
                           setBotanikaFullscreen(true);
+                        } else if (key === "genetika") {
+                          setGenetikaFullscreen(true);
                         } else if (key === "biokimyo") {
                           setBiokimyoFullscreen(true);
                         } else {
@@ -1008,6 +1018,16 @@ function Index() {
           onBack={() => setBiokimyoFullscreen(false)}
           onAskAi={(prompt) => {
             setBiokimyoFullscreen(false);
+            handleAskAiTeacher(prompt);
+          }}
+        />
+      )}
+
+      {genetikaFullscreen && (
+        <GenetikaSection
+          onBack={() => setGenetikaFullscreen(false)}
+          onAskAi={(prompt) => {
+            setGenetikaFullscreen(false);
             handleAskAiTeacher(prompt);
           }}
         />
