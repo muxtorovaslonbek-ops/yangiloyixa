@@ -7,7 +7,7 @@ import { calculateStudyProgress, getDefaultStudyProgress } from "@/utils/studyPr
 describe("calculateStudyProgress", () => {
   it("computes accurate baseline progress from default starter completions", () => {
     const progress = getDefaultStudyProgress();
-    expect(progress.botanikaTotal).toBe(24);
+    expect(progress.botanikaTotal).toBe(30);
     expect(progress.englishTotal).toBe(180);
     expect(progress.mustaqilTotal).toBe(6);
     expect(progress.bioTotal).toBe(30);
@@ -19,7 +19,7 @@ describe("calculateStudyProgress", () => {
 
   it("updates metrics dynamically when completing lessons, tasks, and biology tests", () => {
     const progress = calculateStudyProgress({
-      botanikaIds: ["bot-1", "bot-2", "bot-3", "bot-4", "bot-5", "bot-6"], // 6 / 24 = 25%
+      botanikaIds: ["bot-1", "bot-2", "bot-3", "bot-4", "bot-5", "bot-6"], // 6 / 30 = 20%
       englishVideoIds: [1, 2, 3, 4, 5, 6, 7, 8, 9], // 9 / 180 = 5%
       mustaqilCompletedIds: ["m1", "m2", "m3"], // 3 / 6 = 50%
       mustaqilCustomTaskIds: [],
@@ -29,8 +29,8 @@ describe("calculateStudyProgress", () => {
     expect(progress.completedLessons).toBe(15);
     expect(progress.activeCoursesCount).toBe(4);
     expect(progress.completedTasks).toBe(9);
-    // Average of (25% + 5% + 50% + 20%) / 4 = 25%
-    expect(progress.overallPercent).toBe(25);
+    // Average of (20% + 5% + 50% + 20%) / 4 = 23.75% -> 24%
+    expect(progress.overallPercent).toBe(24);
   });
 
   it("returns 100% and 0 in-progress courses when all curriculum modules are completed", () => {
@@ -42,7 +42,7 @@ describe("calculateStudyProgress", () => {
       bioCompletedVariantIds: BIOLOGY_VARIANTS.map((b) => String(b.id)),
     });
 
-    expect(progress.completedLessons).toBe(204);
+    expect(progress.completedLessons).toBe(210);
     expect(progress.completedTasks).toBe(36);
     expect(progress.activeCoursesCount).toBe(0);
     expect(progress.overallPercent).toBe(100);

@@ -20,6 +20,12 @@ export interface BotanikaSelfCheck {
   answer: string;
 }
 
+export interface BotanikaPdfDocument {
+  title: string;
+  url: string;
+  kind?: string;
+}
+
 export interface BotanikaTopic {
   id: string;
   order: number;
@@ -38,6 +44,7 @@ export interface BotanikaTopic {
   references: string;
   pdfUrl?: string;
   pdfTitle?: string;
+  pdfDocuments?: BotanikaPdfDocument[];
 }
 
 export const BOTANIKA_TOPICS: BotanikaTopic[] = [
@@ -2210,6 +2217,20 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Sistematika", "Takson", "Binar nomenklatura", "Thallobionta", "Cormobionta"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/01-mavzu_Sistematikaning_maqsad_va_vazifalari_tarixi_Tu_8142d75b.pdf",
+    pdfTitle: "19-mavzu PDF: O‘simliklar sistematikasining maqsad va vazifalari, tarixi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: O‘simliklar sistematikasining maqsad va vazifalari, tarixi",
+        url: "/assets/aistudio/01-mavzu_Sistematikaning_maqsad_va_vazifalari_tarixi_Tu_8142d75b.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Sistematika, tuban va yuksak o‘simliklar",
+        url: "/assets/aistudio/01-mavzu_Sistematikaning_maqsad_va_vazifalari_tarixi__9438bc3f.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "bot-20",
@@ -2324,6 +2345,21 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Tallom", "Xromatofor", "Chlorophyta", "Sianobakteriya", "Xara suvo‘tlari"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/02_mavzu_Suvo_tlarning_tuzilishi_va_ko_payishi_Ko_kyash_a20eca55.pdf",
+    pdfTitle: "20-mavzu PDF: Suvo‘tlarining tuzilishi, ko‘payishi va klassifikatsiyasi",
+    pdfDocuments: [
+      {
+        title:
+          "Ma’ruza matni: Suvo‘tlarining tuzilishi, ko‘payishi, ko‘k-yashil, yashil va xara suvo‘tlari",
+        url: "/assets/aistudio/02_mavzu_Suvo_tlarning_tuzilishi_va_ko_payishi_Ko_kyash_a20eca55.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Suvo‘tlarining tuzilishi va klassifikatsiyasi",
+        url: "/assets/aistudio/02-mavzu_Suvo_tlarning_tuzilishi_va_ko_payishi_Ko_kya_0bd4b36f.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "bot-21",
@@ -2436,6 +2472,20 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Diatomophyta", "Phaeophyta", "Rhodophyta", "Laminariya", "Agar-agar"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/03_mavzu_Sariqyashil_diatom_qo_ng_ir_va_qizil_suvo_tlar_f90c53df.pdf",
+    pdfTitle: "21-mavzu PDF: Sariq-yashil, diatom, qo‘ng‘ir va qizil suvo‘tlar bo‘limlari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Sariq-yashil, diatom, qo‘ng‘ir va qizil suvo‘tlar bo‘limlari",
+        url: "/assets/aistudio/03_mavzu_Sariqyashil_diatom_qo_ng_ir_va_qizil_suvo_tlar_f90c53df.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Sariq-yashil, diatom, qo‘ng‘ir va qizil suvo‘tlar",
+        url: "/assets/aistudio/03-mavzu_Sariqyashil_diatom_qo_ng_ir_va_qizil_suvo_tl_0f984909.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "bot-22",
@@ -2541,6 +2591,20 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Gifa", "Mitseliy", "Xitin", "Askomitsetlar", "Bazidomitsetlar", "Mikoriza"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/04-mavzu_Zamburug_lar_bo_limi_Mycophyta_Fungi_b58aa1dd.pdf",
+    pdfTitle: "22-mavzu PDF: Zamburug‘lar bo‘limi (Mycophyta, Fungi)",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Zamburug‘lar bo‘limi (Mycophyta, Fungi)",
+        url: "/assets/aistudio/04-mavzu_Zamburug_lar_bo_limi_Mycophyta_Fungi_b58aa1dd.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Zamburug‘lar bo‘limi",
+        url: "/assets/aistudio/04-mavzu_Zamburug_lar_bo_limi_Mycophyta_Fungi_a9c5221e.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "bot-23",
@@ -2645,6 +2709,20 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Simbioz", "Mikobiont", "Fikobiont", "Bargsimon", "Butasimon", "Bioindikator"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/05-mavzu_Lishayniklar_bo_limi_Lichenes_e1b3867e.pdf",
+    pdfTitle: "23-mavzu PDF: Lishayniklar bo‘limi (Lichenes)",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Lishayniklar bo‘limi (Lichenes)",
+        url: "/assets/aistudio/05-mavzu_Lishayniklar_bo_limi_Lichenes_e1b3867e.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Lishayniklar bo‘limi",
+        url: "/assets/aistudio/05-mavzu_Lishayniklar_bo_limi_Lichenes_12653580.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "bot-24",
@@ -2759,5 +2837,832 @@ export const BOTANIKA_TOPICS: BotanikaTopic[] = [
     ],
     keyTerms: ["Cormobionta", "Anteridiy", "Arxegoniy", "Bryophyta", "Lycopodiophyta", "Rizoid"],
     references: "[1, 2, 3, 4, 5]",
+    pdfUrl: "/assets/aistudio/06_mavzu_Yuksak_o_simliklarning_umumiy_ta_rifi_Yo_sinto_ee46eaf1.pdf",
+    pdfTitle: "24-mavzu PDF: Yuksak o‘simliklar ta’rifi. Yo‘sintoifa va Plauntoifa bo‘limlari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Yuksak o‘simliklar ta’rifi. Yo‘sintoifa va plauntoifa bo‘limlari",
+        url: "/assets/aistudio/06_mavzu_Yuksak_o_simliklarning_umumiy_ta_rifi_Yo_sinto_ee46eaf1.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Yo‘sintoifa va plauntoifa bo‘limlari",
+        url: "/assets/aistudio/06-mavzu_Yuksak_o_simliklarning_umumiy_ta_rifi_Yo_sin_38abdf24.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-25",
+    order: 25,
+    code: "25",
+    topicLabel: "25-mavzu",
+    semester: "II semestr",
+    title: "Qirqbo‘g‘imtoifa (Equisetophyta) va Qirqquloqtoifa (Polypodiophyta) bo‘limlari.",
+    syllabusPoints: [
+      "Qirqbo‘g‘imtoifa (Equisetophyta) bo‘limining umumiy tavsifi, poya va barg tuzilishi (sporifer va assimilyatsion poyalar).",
+      "Qirqbo‘g‘imlarning ko‘payishi (strobil, sporangiofor, elater), rivojlanish sikli, klassifikatsiyasi va ekologiyasi.",
+      "Qirqquloqtoifa (Polypodiophyta) bo‘limining umumiy tavsifi, makrofill (vay) barglari va ekologik guruhlari.",
+      "Qirqquloqlarning ko‘payish usullari (sorus, induziy, protall), nasl gallanishi, asosiy sinflari va vakillari.",
+    ],
+    studyNotes:
+      "Qirqbo‘g‘imlar va qirqquloqlar — sporofit (2n) avlodi to‘liq ustunlik qiladigan qadimgi sporali yuksak o‘simliklar. Qirqbo‘g‘imlarda poya bo‘g‘im-bo‘g‘im oralig‘iga ajralgan, kremnezyom (SiO2) ga boy va fotosintez poyada boradi; qirqquloqlarda esa fotosintez va spora hosil qilish yirik patsimon barglarda (vaylarda) kechadi.",
+    overview:
+      "Qirqbo‘g‘imtoifalar va qirqquloqtoifalar Devon davridan buyon mavjud bo‘lgan qadimgi sporali o‘simliklardir. Ularda yo‘sinlardan farqli ravishda sporofit butunlay ustun bo‘lib, gametofit (o‘simta/protall) mustaqil yashaydigan mayda plastinkaga aylangan. Biroq har ikkala bo‘limda ham urug‘lanish tomchi suv orqali boradi.",
+    sections: [
+      {
+        heading: "1. Qirqbo‘g‘imtoifa (Equisetophyta) bo‘limi tuzilishi",
+        content:
+          "Hozirgi vaqtda bo‘limga yagona Equisetum turkumi (25–30 tur) kiradi; paleozoyda esa 20 m gacha yetuvchi daraxtsimon kalamitlar yashagan. Poyasi aniq bo‘g‘im va bo‘g‘im oraliqlariga ajralgan, hujayra qobig‘ida kremnezyom (SiO2) to‘planadi. Barglari mayda tangachasimon bo‘lib, halqa shaklida qin hosil qiladi va fotosintezda deyarli qatnashmaydi — fotosintez yashil qirrali poyada boradi. Dala qirqbo‘g‘imi (Equisetum arvense) da erta bahorda uchida strobilli rangsiz sporifer poya, yozda esa halqa shoxli yashil assimilyatsion poya rivojlanadi.",
+      },
+      {
+        heading: "2. Qirqbo‘g‘imlarning ko‘payishi va vakillari",
+        content:
+          "Strobil o‘qidagi qalqonsimon sporangioforlar tagida osilgan sporangiylarda meyoz orqali bir xil (izospor) sporalar yetiladi. Har bir sporada namlikka qarab buralib-yoyiluvchi 4 ta spiral elater tasmasi bo‘ladi. Spora unib mayda yashil o‘simta (gametofit) beradi; suv tomchisi ishtirokida urug‘langach, zigotadan ko‘p yillik ildizpoyali sporofit rivojlanadi. E. arvense rasmiy tibbiyotda siydik haydovchi dorivor o‘simlik va dalalarda qaysar begona o‘t; E. palustre esa palustrin alkaloidi tufayli chorva uchun zaharlidir.",
+      },
+      {
+        heading: "3. Qirqquloqtoifa (Polypodiophyta) bo‘limining umumiy tavsifi",
+        content:
+          "10–12 mingdan ortiq turni birlashtiruvchi eng yirik sporali bo‘lim. Haqiqiy ildizlari (ildizpoyadan chiquvchi qo‘shimcha ildizlar) va yirik makrofill barglari — vaylari (yoshligida jingalakdek o‘ralgan) mavjud. Qirqquloqlar o‘rmon tuproqlaridan tortib tropik daraxtlardagi epifitlargacha (Platycerium, Asplenium nidus) hamda suzuvchi suv qirqquloqlarigacha (Salvinia, Azolla, Marsilea) turli ekologik guruhlarni hosil qiladi.",
+        highlights: [
+          "Sorus va induziy: vaylarning ostki tomonida sporangiylar to‘plami (sorus) ko‘pincha induziy pardasi bilan qoplanadi",
+          "Annulus: sporangiy devoridagi maxsus halqa qurib qisqarganda sporalarni keskin otib chiqaradi",
+          "Protall: sporadan yuraksimon, mustaqil fotosintezlovchi yashil gametofit rivojlanadi",
+          "Suv qirqquloqlari (Azolla): geterospor bo‘lib, Anabaena azollae sianobakteriyasi bilan azot fiksatsiyalaydi",
+        ],
+      },
+      {
+        heading: "4. Qirqquloqlarning sinflari va ahamiyati",
+        content:
+          "Hozirgi qirqquloqlarning asosiy qismi Polypodiopsida sinfiga mansub: Dryopteris filix-mas (erkak qirqquloq — ildizpoyasi anthelmintik dorivor), Pteridium aquilinum (burgut qirqquloq), Adiantum capillus-veneris (Venera sochi — manzarali), Salvinia natans (suv qirqqulog‘i). Qirilib ketgan daraxtsimon qirqquloqlar kalamitlar bilan birga toshko‘mir qatlamlarini hosil qilgan.",
+      },
+    ],
+    comparisonTable: {
+      title: "Qirqbo‘g‘imtoifa va Qirqquloqtoifa bo‘limlarining qiyosiy jadvali",
+      columns: ["Mezon", "Qirqbo‘g‘imtoifa (Equisetophyta)", "Qirqquloqtoifa (Polypodiophyta)"],
+      rows: [
+        [
+          "Poya tuzilishi",
+          "Bo‘g‘im va bo‘g‘im oraliqli, ichi havo bo‘shliqli, kremnezyomli",
+          "Asosan yer ostki ildizpoya (tropikda tik daraxt)",
+        ],
+        [
+          "Barg tipi",
+          "Mayda tangachasimon, halqa qin hosil qiladi",
+          "Yirik makrofill (vay), yoshligida jingalakdek o‘ralgan",
+        ],
+        ["Fotosintez organi", "Asosan yashil qirrali poya", "Yirik barg plastinkasi (vay)"],
+        [
+          "Sporangiy joylashuvi",
+          "Strobildagi sporangioforlar ostida",
+          "Barg ostidagi soruslarda (induziy bilan)",
+        ],
+        [
+          "Spora tarqatish mexanizmi",
+          "4 ta gigroskopik elater tasmasi",
+          "Sporangiy devoridagi annulus halqasi",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Sporangiofor",
+        definition:
+          "Qirqbo‘g‘im strobili o‘qida joylashgan va ostida sporangiylar osilib turuvchi qalqonsimon tuzilma.",
+      },
+      {
+        term: "Elater",
+        definition:
+          "Qirqbo‘g‘im sporasiga birikkan, havo namligiga qarab buralib-yoyiluvchi 4 ta spiral tasma.",
+      },
+      {
+        term: "Sorus va Induziy",
+        definition:
+          "Qirqquloq bargi ostidagi sporangiylar guruhi (sorus) va uni yopib turuvchi himoya pardasi (induziy).",
+      },
+      {
+        term: "Protall (O‘simta)",
+        definition:
+          "Qirqquloq sporasidan unib chiqadigan, rizoidli yuraksimon mustaqil yashil gametofit.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question: "Dala qirqbo‘g‘imida bahorgi va yozgi poyalar qanday vazifa taqsimotiga ega?",
+        answer:
+          "Erta bahorda chiqadigan rangsiz sporifer poya uchidagi strobilda sporalar yetishtirib tarqatadi va quriydi; yozgi yashil assimilyatsion poya esa fotosintez qilib yer ostki ildizpoyaga oziqa to‘playdi.",
+      },
+      {
+        question:
+          "Qirqbo‘g‘imlar va qirqquloqlar fotosintez yuzasini oshirish masalasini qanday turlicha hal qilgan?",
+        answer:
+          "Qirqbo‘g‘imlarda barglar kichiklashib fotosintez vazifasi yashil halqa shoxli poyaga o‘tgan; qirqquloqlarda esa aksincha yirik patsimon barglar (vaylar) rivojlangan.",
+      },
+      {
+        question: "Azolla suv qirqqulog‘ining sholichilikdagi amaliy ahamiyati nimada?",
+        answer:
+          "Azolla Anabaena azollae sianobakteriyasi bilan simbiozda atmosfera azotini o‘zlashtiradi va sholipoyalarda tabiiy biologik azotli o‘g‘it sifatida qo‘llaniladi.",
+      },
+    ],
+    keyTerms: ["Equisetophyta", "Kremnezyom", "Elater", "Polypodiophyta", "Makrofill", "Sorus"],
+    references: "O‘simliklar sistematikasi · 7-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/07_mavzu_Qirqbo_g_imtoifa_va_qirqquloqtoifa_bo_limlari_77938dea.pdf",
+    pdfTitle: "25-mavzu PDF: Qirqbo‘g‘imtoifa va qirqquloqtoifa bo‘limlari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Qirqbo‘g‘imtoifa (Equisetophyta) va qirqquloqtoifa (Polypodiophyta)",
+        url: "/assets/aistudio/07_mavzu_Qirqbo_g_imtoifa_va_qirqquloqtoifa_bo_limlari_77938dea.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Qirqbo‘g‘imtoifa va qirqquloqtoifa bo‘limlari",
+        url: "/assets/aistudio/07-mavzu_Qirqbo_g_imtoifa_va_qirqquloqtoifa_bo_limlar_46675f21.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-26",
+    order: 26,
+    code: "26",
+    topicLabel: "26-mavzu",
+    semester: "II semestr",
+    title: "Ochiq urug‘lilar yoki qarag‘aytoifa bo‘limi (Gymnospermae, Pinophyta).",
+    syllabusPoints: [
+      "Ochiq urug‘lilarning umumiy tavsifi; tashqi va anatomik tuzilishidagi (traxeidalar, smola yo‘llari) xarakterli belgilar.",
+      "Urug‘ning paydo bo‘lishi, urug‘kurtak tuzilishi va chang nayi orqali urug‘lanish (sifonogamiya).",
+      "Qarag‘ay (Pinus sylvestris) misolida ikki yillik rivojlanish sikli va gaploid (n) endosperm.",
+      "Bo‘lim klassifikatsiyasi (Sagovniksimonlar, Ginkgosimonlar, Gnetumsimonlar, Qarag‘aysimonlar) va O‘zbekiston archazorlarining ahamiyati.",
+    ],
+    studyNotes:
+      "Ochiq urug‘lilarda birinchi marta urug‘ va chang nayi (sifonogamiya) paydo bo‘lib, urug‘lanish suvdan mustaqil bo‘ldi. Urug‘kurtak meva ichida yopilmagan, qubba tangachasida ochiq joylashadi; endospermi gaploid (n) bo‘lib, urug‘lanishdan oldin shakllanadi.",
+    overview:
+      "Ochiq urug‘lilarning paydo bo‘lishi o‘simliklar evolyutsiyasidagi eng muhim burilish nuqtasidir: urug‘ (himoyalangan murtak + zaxira oziq + tinim holati) va chang nayi orqali suvsiz urug‘lanish hisobiga ular quruq, sovuq va mo‘tadil mintaqalarni, jumladan shimoliy tayga va tog‘ yonbag‘irlarini egallagan.",
+    sections: [
+      {
+        heading: "1. Ochiq urug‘lilarning tashqi va anatomik belgilari",
+        content:
+          "Deyarli barcha vakillari monopodial shoxlanuvchi daraxt va butalardir. Barglari ko‘pincha igna yoki tangachasimon (kseromorf tuzilishli: qalin kutikula, chuqurlashgan og‘izchalar, gipoderma). Kambiy faoliyati bilan yillik halqalar hosil bo‘ladi; ksilemasi asosan traxeidalardan iborat (sovuqda havo pufagi hosil bo‘lish xavfi kam), po‘stloq va yog‘ochida smola yo‘llari joylashgan. Gul va haqiqiy meva yo‘q — ko‘payish organlari mikrostrobil va megastrobil (qubba) lardan iborat.",
+      },
+      {
+        heading: "2. Urug‘ning paydo bo‘lishi va Sifonogamiya",
+        content:
+          "Urug‘ evolyutsiyasi geterosporiyadan (mikro- va megaspora) endosporiyaga, megasporaning ona o‘simlikda saqlanishiga va integument bilan o‘ralib urug‘kurtak (integument + nutsellus + mikropile) hosil bo‘lishiga olib kelgan. Chang donasi shamol bilan mikropilega tushib chang nayi o‘stiradi va spermiylarni to‘g‘ridan-to‘g‘ri arxegoniyga yetkazadi (sifonogamiya). Qarag‘ayda changlanishdan urug‘lanishgacha taxminan 1 yil o‘tadi; urug‘ida murtak (2n), urug‘lanishdan oldin shakllangan gaploid birlamchi endosperm (n) va urug‘ po‘sti (2n) uchraydi.",
+      },
+      {
+        heading: "3. Qadimgi sinflar va Gnetumsimonlar",
+        content: "Ochiq urug‘lilar bir nechta muhim sinflarni birlashtiradi:",
+        highlights: [
+          "Sagovniksimonlar (Cycadopsida): palma ko‘rinishli daraxtlar (Cycas revoluta), ikki uyli, ko‘p xivchinli spermatozoid saqlangan",
+          "Ginkgosimonlar (Ginkgoopsida): yagona tirik qazilma tur — Ginkgo biloba, yelpig‘ichsimon bargli va ko‘p xivchinli spermatozoidli",
+          "Gnetumsimonlar (Gnetopsida): ksilemada haqiqiy naylari bor (Ephedra — O‘rta Osiyo cho‘l va tog‘larida efedrin manbai; Welwitschia mirabilis)",
+          "Bennettitsimonlar va Urug‘li paporotniklar: toshqotgan qadimgi qirilib ketgan sinflar",
+        ],
+      },
+      {
+        heading: "4. Qarag‘aysimonlar sinfi va O‘zbekistondagi ahamiyati",
+        content:
+          "Pinopsida (600+ tur) hozirgi ochiq urug‘lilarning asosini tashkil etadi: Qarag‘aydoshlar (Pinus, Picea, Abies, Larix — kuzda ignasini to‘kadi, Cedrus), Sarvdoshlar (Juniperus — archa, Cupressus, Thuja), Taxodiaceae (Sekvoya) va Qarag‘aychadoshlar (Taxus baccata — taksol manbai). O‘zbekiston tog‘larida (1500–3000 m) Zarafshon, Turkiston va qora archa (Juniperus) o‘rmonlari suv rejimini saqlab, eroziyadan himoya qiladi.",
+      },
+    ],
+    comparisonTable: {
+      title: "Ochiq urug‘lilarning asosiy sinflarini taqqoslash",
+      columns: ["Sinf", "Holati", "Barg tipi", "Spermiy va vakillar"],
+      rows: [
+        [
+          "Cycadopsida",
+          "Hozir ham bor (~300 tur)",
+          "Yirik patsimon",
+          "Ko‘p xivchinli; Cycas, Zamia",
+        ],
+        [
+          "Ginkgoopsida",
+          "Yagona tur (tirik qazilma)",
+          "Yelpig‘ichsimon, kuzda to‘kiladi",
+          "Ko‘p xivchinli; Ginkgo biloba",
+        ],
+        [
+          "Pinopsida",
+          "Dominant guruh (600+ tur)",
+          "Igna yoki tangachasimon",
+          "Harakatsiz spermiy; Qarag‘ay, Archa, Sarv",
+        ],
+        [
+          "Gnetopsida",
+          "3 ta o‘ziga xos turkum",
+          "Tangacha, yassi yoki tasmasimon",
+          "Harakatsiz spermiy; Ephedra, Gnetum, Welwitschia",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Sifonogamiya",
+        definition:
+          "Erkak jinsiy hujayralarning (spermiylarning) urug‘kurtakka suv ishtirokisiz chang nayi orqali yetkazilishi.",
+      },
+      {
+        term: "Birlamchi endosperm (n)",
+        definition:
+          "Ochiq urug‘lilar urug‘kurtak ichida urug‘lanishdan oldin shakllanadigan gaploid urg‘ochi gametofit zaxira to‘qimasi.",
+      },
+      {
+        term: "Mikropile",
+        definition:
+          "Urug‘kurtak integumenti uchidagi chang donasi va chang nayi kiradigan kichik teshikcha.",
+      },
+      {
+        term: "Tirik qazilma (Relikt)",
+        definition:
+          "Qadimgi geologik davrlardan deyarli o‘zgarmay saqlanib qolgan yagona tur (masalan, Ginkgo biloba).",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Ochiq urug‘lilar urug‘idagi endosperm yopiq urug‘lilar endospermidan xromosoma to‘plami va hosil bo‘lish vaqtiga ko‘ra qanday farq qiladi?",
+        answer:
+          "Ochiq urug‘lilarda endosperm gaploid (n) bo‘lib, urug‘lanishdan oldin urg‘ochi gametofit sifatida hosil bo‘ladi; yopiq urug‘lilarda esa triploid (3n) bo‘lib, qo‘sh urug‘lanishdan keyin hosil bo‘ladi.",
+      },
+      {
+        question:
+          "Nima uchun traxeidalardan iborat ksilema sovuq tayga mintaqasida ochiq urug‘lilar uchun afzal hisoblanadi?",
+        answer:
+          "Tor traxeidalarda qishki muzlash-erish davrida havo pufakchalari (emboliya) hosil bo‘lish xavfi keng naylarga qaraganda ancha past bo‘ladi.",
+      },
+      {
+        question: "O‘zbekiston tog‘ ekotizimlarida archazorlarning roli nimada?",
+        answer:
+          "Archa o‘rmonlari 1500–3000 m balandlikda qor-yomg‘ir suvlarini ushlab, tog‘ daryolari rejimini barqarorlashtiradi va tuproqni eroziyadan saqlaydi.",
+      },
+    ],
+    keyTerms: [
+      "Gymnospermae",
+      "Pinophyta",
+      "Urug‘kurtak",
+      "Sifonogamiya",
+      "Ginkgo biloba",
+      "Juniperus",
+    ],
+    references: "O‘simliklar sistematikasi · 8-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/08_mavzu_Ochiq_urug_lilar_yoki_qarag_aytoifa_bo_limi_Pi_037c81ab.pdf",
+    pdfTitle: "26-mavzu PDF: Ochiq urug‘lilar yoki qarag‘aytoifa bo‘limi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Ochiq urug‘lilar yoki qarag‘aytoifa bo‘limi (Pinophyta)",
+        url: "/assets/aistudio/08_mavzu_Ochiq_urug_lilar_yoki_qarag_aytoifa_bo_limi_Pi_037c81ab.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Ochiq urug‘lilar bo‘limi",
+        url: "/assets/aistudio/08-mavzu_Ochiq_urug_lilar_yoki_qarag_aytoifa_bo_limi__91c1677a.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-27",
+    order: 27,
+    code: "27",
+    topicLabel: "27-mavzu",
+    semester: "II semestr",
+    title:
+      "Magnoliyatoifalar bo‘limi (Magnoliophyta). Magnoliyakabilar, ayiqtovonkabilar va chinnigulkabilar sinfchalari.",
+    syllabusPoints: [
+      "Magnoliyatoifalar (yopiq urug‘lilar) bo‘limining umumiy tavsifi: gul, meva, yopiq tuguncha, qo‘sh urug‘lanish va traxeyalar.",
+      "Ikki va bir urug‘pallalilar sinflarining qiyosiy tavsifi (Takhtadjan va zamonaviy APG tasnifi haqida).",
+      "Magnoliyakabilar (Magnoliidae) sinfchasi: magnoliyadoshlar, nilufardoshlar va lavrdoshlar oilalari.",
+      "Ayiqtovonkabilar (Ranunculidae: Ranunculaceae, Berberidaceae, Papaveraceae) va Chinnigulkabilar (Caryophyllidae: Caryophyllaceae, Chenopodiaceae, Polygonaceae) sinfchalari.",
+    ],
+    studyNotes:
+      "Magnoliyatoifalar (350 ming+ tur) — gul, yopiq tuguncha ichidagi urug‘kurtak, qo‘sh urug‘lanish (3n endosperm) va meva hosil qilishi tufayli Yerda hukmron bo‘lim. Magnoliyakabilarda ko‘p qismli spiral gul va apokarpiya saqlangan; Chinnigulkabilar esa sho‘r va quruq muhitga (saksovul, sho‘ra) moslashgan.",
+    overview:
+      "Magnoliyatoifalar (Angiospermae) bo‘r davridan boshlab tez tarqalib, zamonaviy floraning 90 foizini tashkil etadi. Ularning muvaffaqiyati gulning hasharotlar bilan ko‘evolyutsiyasi, tuguncha himoyasi, qo‘sh urug‘lanish, traxeyali ksilema hamda hayotiy shakllarning nihoyatda xilma-xilligi bilan bog‘liq.",
+    sections: [
+      {
+        heading: "1. Magnoliyatoifalar bo‘limi va ikki sinfning qiyosi",
+        content:
+          "Asosiy evolyutsion yutuqlari: gul va gul formulasi/diagrammasi bilan ifodalanuvchi tuzilish, urug‘kurtakning yopiq tugunchada rivojlanishi, 3 hujayrali erkak va 7 hujayrali 8 yadroli urg‘ochi gametofit, qo‘sh urug‘lanish (zigota 2n + endosperm 3n) va meva. An’anaviy tizimda Ikki urug‘pallalilar (Magnoliopsida — o‘q ildiz, to‘rsimon tomir, evstel, kambiy, 4–5 tali gul) va Bir urug‘pallalilar (Liliopsida — popuk ildiz, parallel tomir, ataktostel, 3 tali gul) sinflariga ajratiladi.",
+      },
+      {
+        heading: "2. Magnoliyakabilar (Magnoliidae) sinfchasi",
+        content:
+          "Eng qadimgi plezimorf belgilarni saqlagan sinfcha: gul qismlari ko‘p sonli va spiral joylashgan, changchilari lentasimon, urug‘chisi apokarp, ksilemada traxeidalar ko‘p, qo‘ng‘izlar bilan changlanadi. Asosiy oilalari: Magnoliyadoshlar (Magnolia — manzarali daraxtlar, halqasimon yon barg chandig‘i), Nilufardoshlar (Nymphaea, Nelumbo — suv o‘simliklari, aerenxima, barg ustida og‘izchalar), Lavrdoshlar (Laurus, Persea — avokado, dolchin).",
+      },
+      {
+        heading: "3. Ayiqtovonkabilar (Ranunculidae) sinfchasi",
+        content:
+          "Magnoliyakabilardan kelib chiqqan, lekin asosan o‘tsimon shakldagi va alkaloid-glikozidlarga boy sinfcha:",
+        highlights: [
+          "Ayiqtovondoshlar (Ranunculaceae): barmoqsimon qirqilgan barglar, ko‘p changchi va apokarp urug‘chi (Ranunculus, Adonis vernalis, Aconitum, Delphinium)",
+          "Zirkdoshlar (Berberidaceae): tikanga aylangan barglar, sariq berberin alkaloidi, qizil rezavor (Berberis vulgaris; bug‘doy zangi zamburug‘ining oraliq xo‘jayini!)",
+          "Ko‘knordoshlar (Papaveraceae): oq/sariq lateks (sut shirasi), 2 ta tez to‘kiluvchi kosachabarg, 4 tojbarg va teshikchali ko‘sakcha (Papaver, Chelidonium)",
+        ],
+      },
+      {
+        heading: "4. Chinnigulkabilar (Caryophyllidae) sinfchasi",
+        content:
+          "Evolyutsiyasi gulning ikkilamchi soddalashishi va quruq-sho‘r tuproqlarga moslashuv yo‘nalishida borgan: Chinniguldoshlar (Caryophyllaceae — bo‘g‘imi yo‘g‘on poya, qarama-qarshi barg, saponin moddasi; Dianthus, Saponaria); Sho‘radoshlar (Chenopodiaceae / APG da Amaranthaceae — O‘zbekiston cho‘l va sho‘rxok florasining asosi, galofit va C4 fotosintezli saksovul Haloxylon, sho‘ra Salsola, lavlagi Beta vulgaris); Torondoshlar (Polygonaceae — barg asosida plyonkali raqibcha/ochreya qini, uch qirrali yong‘oqcha; shavel, ravoch, juzg‘un Calligonum).",
+      },
+    ],
+    comparisonTable: {
+      title: "Ikki urug‘pallalilar va Bir urug‘pallalilar sinflarini qiyoslash",
+      columns: [
+        "Belgi",
+        "Ikki urug‘pallalilar (Magnoliopsida)",
+        "Bir urug‘pallalilar (Liliopsida)",
+      ],
+      rows: [
+        ["Urug‘palla soni", "Ikkita (2)", "Bitta (1)"],
+        [
+          "Ildiz va barg tomirlanishi",
+          "O‘q ildizli, to‘rsimon tomirli",
+          "Popuk ildizli, parallel yoki yoysimon",
+        ],
+        [
+          "Poya o‘tkazuvchi tizimi",
+          "Halqa bo‘lib joylashgan (evstel), kambiy bor",
+          "Tarqoq joylashgan (ataktostel), kambiy yo‘q",
+        ],
+        [
+          "Gul tuzilishi",
+          "4 yoki 5 tali, kosacha va toj farqlangan",
+          "3 tali, ko‘pincha oddiy gulqo‘rg‘on",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Apokarp va Senokarp urug‘chi",
+        definition:
+          "Mevabarglari erkin (qadimiy magnoliya, ayiqtovon) yoki birlashib yagona urug‘chi hosil qilgan (rivojlangan) tuzilish.",
+      },
+      {
+        term: "Saponin",
+        definition:
+          "Chinniguldoshlar to‘qimasida uchraydigan va suvda sovundek ko‘pik hosil qiluvchi glikozid.",
+      },
+      {
+        term: "Ochreya (Raqibcha)",
+        definition:
+          "Torondoshlar oilasi vakillarida barg bandi asosini o‘rab turuvchi plyonkali naycha qin.",
+      },
+      {
+        term: "Evstel va Ataktostel",
+        definition:
+          "Ikki pallali o‘simliklar poyasida boylamlarning halqa (evstel) va bir pallalilarda tarqoq (ataktostel) joylashishi.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Zirk (Berberis) butalarining g‘alla dalalari yaqinida o‘sishi nima uchun xavfli?",
+        answer:
+          "Chunki zirk bug‘doy poyasining chiziqli zang kasalligini qo‘zg‘atuvchi zamburug‘ning oraliq xo‘jayini hisoblanadi.",
+      },
+      {
+        question:
+          "Sho‘radoshlar (masalan, saksovul va sho‘ra) gullarining mayda va tojbargsiz bo‘lishi qadimiylik belgisimi?",
+        answer:
+          "Yo‘q, bu qadimiylik emas, balki quruq-cho‘l muhitida shamol bilan changlanishga (anemofiliyaga) o‘tish natijasidagi ikkilamchi soddalashishdir.",
+      },
+      {
+        question:
+          "Ko‘knordoshlar oilasini dala sharoitida qaysi tezkor belgilari orqali ajratish mumkin?",
+        answer:
+          "Poya va bargi sindirilganda oq, sariq yoki to‘q sariq sut shirasi (lateks) chiqishi, 2 ta tez to‘kiluvchi kosachabargi va g‘ijimlangan 4 tojbargi orqali.",
+      },
+    ],
+    keyTerms: [
+      "Magnoliophyta",
+      "Magnoliidae",
+      "Ranunculaceae",
+      "Papaveraceae",
+      "Chenopodiaceae",
+      "Apokarp",
+    ],
+    references: "O‘simliklar sistematikasi · 9-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/09-mavzu_Magnoliyatoifalar_bo_limi_Magnoliyakabilar_ayi_ed5fed4c.pdf",
+    pdfTitle: "27-mavzu PDF: Magnoliyatoifalar. Magnoliya-, ayiqtovon- va chinnigulkabilar",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Magnoliyatoifalar, magnoliya-, ayiqtovon- va chinnigulkabilar",
+        url: "/assets/aistudio/09-mavzu_Magnoliyatoifalar_bo_limi_Magnoliyakabilar_ayi_ed5fed4c.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Magnoliyatoifalar bo‘limi (9-mavzu)",
+        url: "/assets/aistudio/09-mavzu_Magnoliyatoifalar_bo_limi_Magnoliyakabilar_a_2d75ad7c.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-28",
+    order: 28,
+    code: "28",
+    topicLabel: "28-mavzu",
+    semester: "II semestr",
+    title: "Temirdaraxtkabilar (Hamamelididae) va Dalachoykabilar (Dillenidae) sinfchalari.",
+    syllabusPoints: [
+      "Temirdaraxtkabilar (Hamamelididae) sinfchasining shamol bilan changlanishga moslashuvi; Chinordoshlar oilasi.",
+      "Emandoshlar (palyacha/kupula), Qayindoshlar (Frankia azot fiksatsiyasi) va Yong‘oqdoshlar (yuglon allelopatiyasi).",
+      "Dalachoykabilar (Dillenidae) sinfchasi: Toldoshlar (ikki uyli kuchala, popukli urug‘) oilasi.",
+      "Qovoqdoshlar, Kovuldoshlar, Karamdoshlar (4+2 changchi, qo‘zoq/qo‘zoqcha) va Gulxayridoshlar (g‘o‘za, changchi naychasi) oilalari.",
+    ],
+    studyNotes:
+      "Temirdaraxtkabilar shamol bilan changlanadigan (anemofil) kuchalali daraxtlar bo‘lib, o‘rmon va bog‘dorchilikda katta o‘rin tutadi (chinor, eman, qayin, yong‘oq). Dalachoykabilar esa Markaziy Osiyo qishloq xo‘jaligining tayanch oilalarini — g‘o‘za (Malvaceae), qovun-tarvuz (Cucurbitaceae), karam-raps (Brassicaceae) va terak-tol (Salicaceae) ni o‘z ichiga oladi.",
+    overview:
+      "Bu ikki sinfcha evolyutsiyaning ikki muqobil strategiyasini namoyon etadi: Temirdaraxtkabilarda gulqo‘rg‘on soddalashib barg chiqishidan oldin shamol orqali changlanishga moslashilgan bo‘lsa, Dalachoykabilarda yirik rangli gullar, nektar bezlari va maxsus kimyoviy himoya moddalari (glyukozinolat, shilimshiq, kukurbitatsin) rivojlangan.",
+    sections: [
+      {
+        heading: "1. Temirdaraxtkabilar: Chinor, Eman, Qayin va Yong‘oq oilalari",
+        content:
+          "Kuchala to‘pgul, ko‘pincha bir uyli daraxtlar va soddalashgan gullar xos: Chinordoshlar (Platanaceae — sharsimon boshcha to‘pgul, po‘stlog‘i plastinkadek ko‘chadi); Emandoshlar (Fagaceae — yong‘oqcha mevasi asosi piyolasimon palyacha/kupula bilan o‘ralgan: Quercus, Fagus, Castanea); Qayindoshlar (Betulaceae — qanotchali yong‘oqcha, qoraqayin ildizida Frankia aktinomitseti azot to‘playdi); Yong‘oqdoshlar (Juglandaceae — murakkab patsimon barg, soxta danakli meva; Juglans regia po‘stlog‘i va bargida yuglon moddasi boshqa o‘simliklarni bo‘g‘ib allelopatiya ko‘rsatadi).",
+      },
+      {
+        heading: "2. Dalachoykabilar: Toldoshlar, Qovoqdoshlar va Kovuldoshlar",
+        content:
+          "Dalachoykabilarda changchilar ko‘p sonli bo‘lib markazdan chetga rivojlanadi. Toldoshlar (Salicaceae — ikki uyli kuchala, gulqo‘rg‘onsiz, popukli mayda urug‘lar, po‘stlog‘ida salitsin; tol hasharot, terak shamol bilan changlanadi). Qovoqdoshlar (Cucurbitaceae — jingalakli lianalar, bir uyli, ostin tugunchali qovoqcha meva: bodring, qovun, tarvuz, qovoq). Kovuldoshlar (Capparaceae — kserofit buta, kechqurun ochiluvchi gul, uzun ginofor ustida ko‘tarilgan tuguncha, kaper ziravori: Capparis spinosa).",
+      },
+      {
+        heading: "3. Karamdoshlar (Brassicaceae) va Gulxayridoshlar (Malvaceae)",
+        content:
+          "Bu ikki oila O‘zbekiston iqtisodiyoti va biologiyasi uchun hal qiluvchi ahamiyatga ega:",
+        highlights: [
+          "Karamdoshlar (Cruciferae): krestsimon 4 tojbarg, 6 changchi (4 uzun + 2 qisqa), o‘rtasida pardali qo‘zoq/qo‘zoqcha meva, glyukozinolat moddalari (Brassica oleracea navlari, sholg‘om, raps, Arabidopsis thaliana — genetika model o‘simligi)",
+          "Gulxayridoshlar (Malvaceae): yulduzsimon tuklar, qo‘shimcha kosacha, changchi iplari birlashib urug‘chini o‘rovchi naycha hosil qilishi va shilimshiq moddalar (Gossypium — g‘o‘za tolasi urug‘ epidermis o‘simtasidan iborat; gulxayri, gibiskus, kakao)",
+        ],
+      },
+    ],
+    comparisonTable: {
+      title: "Temirdaraxtkabilar va Dalachoykabilar asosiy oilalari",
+      columns: ["Oila", "Gul formulasi / To‘pgul", "Meva tipi", "Asosiy diagnostik belgi"],
+      rows: [
+        [
+          "Fagaceae (Emandoshlar)",
+          "Bir uyli kuchala + yakka gul",
+          "Yong‘oqcha",
+          "Palyacha (kupula) qobig‘i",
+        ],
+        [
+          "Juglandaceae (Yong‘oqdoshlar)",
+          "Osilgan kuchala",
+          "Soxta danakli",
+          "Murakkab patsimon barg, yuglon",
+        ],
+        [
+          "Salicaceae (Toldoshlar)",
+          "P0 A2–∞ / G(2–4), kuchala",
+          "Ko‘sakcha",
+          "Ikki uyli, gulqo‘rg‘onsiz, oq popukli urug‘",
+        ],
+        [
+          "Brassicaceae (Karamdoshlar)",
+          "Ca4 Co4 A4+2 G(2)",
+          "Qo‘zoq / qo‘zoqcha",
+          "Krestsimon gul, 4 uzun + 2 qisqa changchi",
+        ],
+        [
+          "Malvaceae (Gulxayridoshlar)",
+          "Ca(5) Co5 A(∞) G(5–∞)",
+          "Ko‘sak / ko‘sakcha",
+          "Changchi naychasi va shilimshiq moddalar",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Palyacha (Kupula)",
+        definition:
+          "Emandoshlar oilasi (eman, kashtan) mevasini asosidan o‘rab turuvchi piyolasimon yoki tikanli himoya qobig‘i.",
+      },
+      {
+        term: "Allelopatiya",
+        definition:
+          "Bir o‘simlikning kimyoviy moddalar (masalan, yong‘oqdagi yuglon) ajratib boshqa o‘simliklar o‘sishini susaytirishi.",
+      },
+      {
+        term: "Ginofor",
+        definition:
+          "Kovul (Capparis) gulida tugunchani gul o‘rnidan yuqoriga ko‘tarib turuvchi uzun poyacha.",
+      },
+      {
+        term: "Glyukozinolat",
+        definition:
+          "Karamdoshlar va kovuldoshlar to‘qimasida uchraydigan, o‘tkir ta’m va himoya beruvchi oltingugurtli glikozidlar.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Nima uchun yong‘oq daraxti ostida ko‘plab madaniy va yovvoyi o‘simliklar yaxshi o‘smaydi?",
+        answer:
+          "Yong‘oq bargi, po‘stlog‘i va ildizida boshqa o‘simliklarning unishi va o‘sishini bo‘g‘uvchi yuglon moddasi (allelopatiya hodisasi) mavjud.",
+      },
+      {
+        question: "Toldoshlar oilasida terak va tolning changlanish usuli qanday farq qiladi?",
+        answer:
+          "Ikkalasi ham ikki uyli kuchalali bo‘lsa-da, terak shamol bilan (anemofil), tol esa nektar bezlari hisobiga hasharotlar bilan (entomofil) changlanadi.",
+      },
+      {
+        question:
+          "G‘o‘za va karam gullarini formula yozmasdan eng aniq qaysi belgilari bilan farqlash mumkin?",
+        answer:
+          "G‘o‘zada ko‘p changchilar iplari birlashib naycha hosil qiladi va qo‘shimcha kosacha bo‘ladi; karamda esa 4 tojbarg krest shaklida va 4 ta uzun + 2 ta qisqa changchi bo‘ladi.",
+      },
+    ],
+    keyTerms: [
+      "Hamamelididae",
+      "Palyacha",
+      "Dillenidae",
+      "Salicaceae",
+      "Brassicaceae",
+      "Malvaceae",
+    ],
+    references: "O‘simliklar sistematikasi · 10-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/10-mavzu_Temirdaraxtkabilar_va_dalachoykabilar_sinfchal_f0e6daf7.pdf",
+    pdfTitle: "28-mavzu PDF: Temirdaraxtkabilar va dalachoykabilar sinfchalari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Temirdaraxtkabilar va dalachoykabilar sinfchalari",
+        url: "/assets/aistudio/10-mavzu_Temirdaraxtkabilar_va_dalachoykabilar_sinfchal_f0e6daf7.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Temirdaraxtkabilar va dalachoykabilar",
+        url: "/assets/aistudio/10-mavzu_Temirdaraxtkabilar_va_dalachoykabilar_sinfch_70c5b210.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-29",
+    order: 29,
+    code: "29",
+    topicLabel: "29-mavzu",
+    semester: "II semestr",
+    title:
+      "Ra’nokabilar (Rosidae), Yalpizkabilar (Lamiidae) va Qoqio‘tkabilar (Asteridae) sinfchalari.",
+    syllabusPoints: [
+      "Ra’nokabilar sinfchasi: Ra’nodoshlar (gipantiy, 4 kenja oila), Burchoqdoshlar (kapalaksimon gul, dukkak, Rhizobium), Zig‘irdoshlar, Jiydadoshlar, Tokdoshlar va Ziradoshlar.",
+      "Yalpizkabilar (Lamiidae) sinfchasi: birlashgan tojli va ixtisoslashgan gullar — Ituzumdoshlar, Pechakdoshlar va Zarpechakdoshlar (obligat parazit).",
+      "Zaytundoshlar (2 ta changchi), Tizimguldoshlar va Yalpizdoshlar (4 qirrali poya, 2 labli gul, efir moylari).",
+      "Qoqio‘tkabilar (Asteridae) sinfchasi: Qoqio‘tdoshlar oilasi, savatcha to‘pgulidagi gul tiplari va pappusli pista.",
+    ],
+    studyNotes:
+      "Ikki urug‘pallalilar sinfining eng yirik va eng rivojlangan uchta sinfchasi: Ra’nokabilar (mevali daraxtlar va dukkakli ekinlar), Yalpizkabilar (birlashgan tojbargli, ko‘pincha zigomorf gulli ituzum va yalpizdoshlar) hamda Qoqio‘tkabilar (savatcha to‘pguli orqali evolyutsion cho‘qqiga chiqqan eng katta oila — Asteraceae).",
+    overview:
+      "Mazkur mavzu insoniyat oziq-ovqati, bog‘dorchilik, ziravorchilik va dorivorlikda eng katta ulushga ega oilalarni qamraydi. Gullarning soddadan murakkab ixtisoslashgan shakllarga — kapalaksimon guldan (Fabaceae) ikki labli gul (Lamiaceae) va ko‘p gullardan yaxlit tizim hosil qiluvchi savatcha to‘pguligacha (Asteraceae) evolyutsiyasi o‘rganiladi.",
+    sections: [
+      {
+        heading: "1. Ra’nokabilar (Rosidae) sinfchasi: Ra’nodoshlar va Burchoqdoshlar",
+        content:
+          "Ra’nodoshlar (Rosaceae — gipantiy, yon bargli, ko‘p changchili): tobulg‘isimonlar (ko‘sakcha), ra’nosimonlar (na’matak, malina, qulupnay), olmasimonlar (soxta olmacha — olma, nok, behi, do‘lana) va olxo‘risimonlar (danakli — o‘rik, shaftoli, bodom, gilos). Burchoqdoshlar (Fabaceae, 18–20 ming tur): kapalaksimon gul (yelkan 1, qanot 2, qayiqcha 2), 9+1 diadelf changchilar, dukkak meva va ildizida Rhizobium tugunak bakteriyalari (loviya, no‘xat, beda, qizilmiya). Zig‘irdoshlar (Linum — tola va omega-3 moyi) va Jiydadoshlar (Elaeagnus, chakanda Hippophae — kumushrang tuklar, ildizida Frankia).",
+      },
+      {
+        heading: "2. Tokdoshlar (Vitaceae) va Ziradoshlar (Apiaceae)",
+        content:
+          "Tokdoshlar — jingalak bilan tiralib chiquvchi lianalar, rezavor meva (Vitis vinifera — xo‘raki va kishmish uzum navlari). Ziradoshlar (Umbelliferae) — ichi bo‘sh poya, qinli ko‘p qirqilgan barg, murakkab soyabon to‘pgul va ikki pistachaga ajraluvchi vislokarpiy meva (sabzi, kashnich, shivit, zira, kovrak Ferula; shuningdek bargi petrushkaga o‘xshaydigan o‘ta zaharli chuchuktalxa Conium maculatum).",
+      },
+      {
+        heading: "3. Yalpizkabilar (Lamiidae) sinfchasi",
+        content:
+          "Birlashgan toj (simpetal), kamaygan changchilar va 2 mevabargli urug‘chi bilan tavsiflanadi:",
+        highlights: [
+          "Ituzumdoshlar (Solanaceae): 5 ta tojga birikkan changchi, tropan alkaloidlar va solanin (kartoshka, pomidor, baqlajon, qalampir, belladonna)",
+          "Pechakdoshlar va Zarpechakdoshlar: dala pechagi, batat hamda xlorofillsiz gaustoriyali obligat parazit zarpechak (Cuscuta)",
+          "Zaytundoshlar (Oleaceae): qarama-qarshi barg va faqat 2 ta changchi (zaytun, nastarin, shumtol)",
+          "Yalpizdoshlar (Lamiaceae): 4 qirrali poya, qarama-qarshi efir moyli barg, ikki labli gul (2+3), 4/2 changchi va 4 pistacha meva (yalpiz, rayhon, lavanda, mavrak)",
+        ],
+      },
+      {
+        heading: "4. Qoqio‘tkabilar (Asteridae) — Qoqio‘tdoshlar oilasi",
+        content:
+          "25–30 ming turga ega yopiq urug‘lilarning eng yirik oilasi. Ko‘plab mayda gullar o‘ram bargli savatcha (calathidium) to‘pguliga jamlanib, bitta yirik gul kabi ishlaydi. Gullari naysimon (aktinomorf), tilsimon (qoqio‘t), soxta tilsimon (kungaboqar cheti) va voronkasimon bo‘ladi. Kosacha o‘zgarib popuk (pappus) ga aylangan, changdonlar naycha bo‘lib birikkan, meva — pista, zaxirasi esa kraxmal emas inulin (topinambur, sachratqi, kungaboqar, maxsar, moychechak, shuvoq, artemizinin manbai Artemisia annua).",
+      },
+    ],
+    comparisonTable: {
+      title: "Ra’nokabilar, Yalpizkabilar va Qoqio‘tkabilar asosiy oilalari",
+      columns: ["Oila", "Gul xususiyati", "Meva", "Kimyoviy / biologik belgi"],
+      rows: [
+        [
+          "Rosaceae",
+          "Ca5 Co5 A∞, gipantiy",
+          "Danakli, olmacha, to‘pmeva",
+          "Yon bargli, vitamin C (na’matak)",
+        ],
+        ["Fabaceae", "Kapalaksimon, 9+1 changchi", "Dukkak", "Rhizobium azot fiksatsiyasi"],
+        [
+          "Apiaceae",
+          "Murakkab soyabon, 5 tali",
+          "Vislokarpiy (2 pistacha)",
+          "Efir moylari, qinli barg",
+        ],
+        [
+          "Solanaceae",
+          "Ca(5) Co(5) A5 G(2)",
+          "Rezavor / ko‘sakcha",
+          "Solanin va tropan alkaloidlar",
+        ],
+        [
+          "Lamiaceae",
+          "Ikki labli, A4 yoki A2",
+          "To‘rt pistacha",
+          "4 qirrali poya, efir moylari (mentol)",
+        ],
+        [
+          "Asteraceae",
+          "Savatcha to‘pgul, pappus",
+          "Popukli pista",
+          "Inulin zaxirasi, nayga birikkan changdon",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Gipantiy",
+        definition:
+          "Ra’nodoshlar gulida kosachabarg, tojbarg va changchilar asosi gul o‘rni bilan birikib hosil qilgan kosasimon tuzilma.",
+      },
+      {
+        term: "Kapalaksimon gul",
+        definition:
+          "Burchoqdoshlarga xos yelkan (1), qanot (2) va birlashgan qayiqcha (2) tojbargli zigomorf gul.",
+      },
+      {
+        term: "Savatcha (Calathidium)",
+        definition:
+          "Qoqio‘tdoshlarda kengaygan gul o‘rnida o‘rama barglar bilan himoyalangan ko‘p sonli mayda gullar to‘pguli.",
+      },
+      {
+        term: "Inulin",
+        definition:
+          "Qoqio‘tdoshlar oilasi o‘simliklarida (topinambur, qoqio‘t, sachratqi) kraxmal o‘rniga to‘planadigan zaxira polisaxarid.",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question: "Kungaboqar 'urug‘i' va olmaning etli qismi botanik jihatdan nimadan iborat?",
+        answer:
+          "Kungaboqar 'urug‘i' aslida bir urug‘li quruq pista meva (po‘chog‘i meva devori); olmaning sersuv qismi esa asosan kengaygan gul o‘rni — gipantiydan hosil bo‘lgan soxta mevadir.",
+      },
+      {
+        question:
+          "Yalpizdoshlar (Lamiaceae) ni dala sharoitida qaysi 3 belgi bilan oson tanish mumkin?",
+        answer:
+          "To‘rt qirrali poyasi, qarama-qarshi joylashgan xushbo‘y (efir moyli) barglari va ikki labli (2+3) guli orqali.",
+      },
+      {
+        question: "Zarpechak (Cuscuta) o‘simligi nega fotosintez qilmaydi va qanday oziqlanadi?",
+        answer:
+          "U obligat parazit bo‘lib, xlorofilli, bargi va ildizi yo‘q; poyasidan hosil bo‘ladigan gaustoriyalari orqali xo‘jayin o‘simlikning o‘tkazuvchi to‘qimasidan suv va organik moddalarni so‘radi.",
+      },
+    ],
+    keyTerms: ["Rosaceae", "Fabaceae", "Apiaceae", "Solanaceae", "Lamiaceae", "Asteraceae"],
+    references: "O‘simliklar sistematikasi · 11-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/11-mavzu_Ra_nokabilar_yalpizkabilar_va_qoqio_tkabilar_s_e9e0dec6.pdf",
+    pdfTitle: "29-mavzu PDF: Ra’nokabilar, yalpizkabilar va qoqio‘tkabilar sinfchalari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Ra’nokabilar, yalpizkabilar va qoqio‘tkabilar sinfchalari",
+        url: "/assets/aistudio/11-mavzu_Ra_nokabilar_yalpizkabilar_va_qoqio_tkabilar_s_e9e0dec6.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Ra’no-, yalpiz- va qoqio‘tkabilar sinfchalari",
+        url: "/assets/aistudio/11-mavzu_Ra_nokabilar_yalpizkabilar_va_qoqio_tkabilar_8634f892.pdf",
+        kind: "Taqdimot",
+      },
+    ],
+  },
+  {
+    id: "bot-30",
+    order: 30,
+    code: "30",
+    topicLabel: "30-mavzu",
+    semester: "II semestr",
+    title:
+      "Bir urug‘pallalilar (Monocotyledones) sinfi. Kommelinkabilar va palmakabilar sinfchalari. O‘simliklar jamoasi haqida umumiy tushuncha.",
+    syllabusPoints: [
+      "Bir urug‘pallalilar sinfining ekologik moslanishi; Loladoshlar, Gulsafsardoshlar (3 changchi, ostin tuguncha) va Chuchmomadoshlar oilalari.",
+      "Salobdoshlar (Orchidaceae: labellum, kolonka, pollinariy, mikoriza), Piyozdoshlar (Alliaceae), Nargizdoshlar (Amaryllidaceae) va Shirachdoshlar (Asphodelaceae).",
+      "Kommelinkabilar (Hiloldoshlar va Bug‘doydoshlar — somonpoya, boshoqcha, interkalyar o‘sish, don) va Palmakabilar (Palmadoshlar) sinfchalari.",
+      "O‘simliklar jamoasi (fitotsenoz): tarkibi (dominant, edifikator), yaruslik, suksessiya, klimaks va ekologik guruhlar.",
+    ],
+    studyNotes:
+      "Bir urug‘pallalilar (60 ming+ tur) o‘tsimon hayot tarziga moslashib, dunyo oziq-ovqat xavfsizligining asosi (Bug‘doydoshlar — bug‘doy, sholi, makkajo‘xori) va eng boy gulchilik oilasi (Salobdoshlar — 25–28 ming tur) ni o‘z ichiga oladi. Yakuniy qism alohida turlardan jamoa darajasiga — fitotsenoz, yaruslik va suksessiya qonuniyatlariga bag‘ishlanadi.",
+    overview:
+      "Bir urug‘pallalilarda kambiy yo‘qligi, popuk ildiz, piyozboshi va ildizpoya kabi yer ostki organlari hamda bug‘doydoshlardagi interkalyar o‘sish ularga dasht, savanna, cho‘l va yaylovlarda hukmronlik qilish imkonini bergan. Kurs oxirida esa turlarning tabiatdagi birgalikdagi hayoti — fitotsenoz va o‘simlik qoplami dinamikasi umumlashtiriladi.",
+    sections: [
+      {
+        heading: "1. Loladoshkabilar (Liliidae): Lola, Gulsafsar, Salob va Piyoz oilalari",
+        content:
+          "3 tali oddiy 6 bo‘lakli gulqo‘rg‘on va piyozboshi/ildizpoya xos: Loladoshlar (Liliaceae — 6 changchi, ustun tuguncha; O‘zbekistonda 30+ yovvoyi Tulipa turi, Lilium, Colchicum); Gulsafsardoshlar (Iridaceae — qilichsimon barg, 3 ta changchi va ostin tuguncha; Iris, Crocus sativus — za’faron); Chuchmomadoshlar (Ixioliriaceae — efemeroid). Salobdoshlar (Orchidaceae — labcha/labellum, kolonka/ginostemiy, pollinariy, changdek endospermsiz urug‘lari unishi uchun mikoriza shart!). Piyozdoshlar (Allium — oltingugurtli alliin/allitsin), Nargizdoshlar (Narcissus, Galanthus, Ungernia — ostin tuguncha, galantamin) va Shirachdoshlar (Eremurus, Aloë).",
+      },
+      {
+        heading: "2. Kommelinkabilar: Hiloldoshlar va Bug‘doydoshlar",
+        content:
+          "Shamol bilan changlanishga o‘tish natijasida gulqo‘rg‘on tangachalarga aylangan ikki yirik o‘tsimon oila:",
+        highlights: [
+          "Hiloldoshlar (Cyperaceae): uch qirrali ichi to‘la bo‘g‘imsiz poya, 3 qatorli yopiq qinli barg, pista meva (Carex — qiyoq, Cyperus papyrus)",
+          "Bug‘doydoshlar (Poaceae): silindrik bo‘sh somonpoya (kalamus), 2 qatorli ochiq qinli va tilchali (ligula) barg, bo‘g‘im asosidagi interkalyar o‘sish, tuplanish, boshoqcha to‘pguli va don (karyopsis) meva",
+          "Asosiy bug‘doydoshlar: bug‘doy (Triticum), sholi (Oryza), makkajo‘xori (Zea mays), arpa, javdar, suli, shakarqamish, bambuk, g‘umay va ajriq",
+        ],
+      },
+      {
+        heading: "3. Palmakabilar (Arecidae) sinfchasi",
+        content:
+          "Palmadoshlar (Arecaceae — 2500+ tur) bir urug‘pallalilar ichida kambiysiz ham birlamchi yo‘g‘onlashish meristemasi hisobiga yirik ustunsimon shoxlanmaydigan daraxt hosil qiladi (yillik halqa yo‘q, uchki kurtak nobud bo‘lsa daraxt quriydi). Vakillari: xurmo palmasi (Phoenix dactylifera), kokos (Cocos nucifera), moyli palma. Ushbu sinfchaga bo‘g‘imo‘tdoshlar (Araceae — monstera, taro) va eng mayda gulli suvo‘tdoshlar (Lemna) ham kiradi.",
+      },
+      {
+        heading: "4. O‘simliklar jamoasi (Fitotsenoz) va dinamikasi",
+        content:
+          "Fitotsenoz — ma’lum maydonda bir xil ekologik sharoitda o‘zaro ta’sirlashib yashovchi o‘simlik turlari majmui (flora esa faqat turlar ro‘yxatidir). Jamoaning vertikal strukturasi — yaruslik (daraxt, buta, o‘t, mox), dominant (soni/massasi ko‘p tur) va edifikator (muhitni belgilovchi asosiy tur) orqali tavsiflanadi. Fitotsenoz dinamikasi mavsumiy fenologik aspektlar (bahorgi efemer va efemeroidlar), yillik qaytar tebranishlar (fluktuatsiya) hamda qonuniy bir yo‘nalishli almashinuv — birlamchi (qoyadan boshlanadigan) va ikkilamchi (buzilgan yerda tez kechadigan) suksessiya orqali barqaror klimaks jamoaga intiladi.",
+      },
+    ],
+    comparisonTable: {
+      title: "Hiloldoshlar (Cyperaceae) va Bug‘doydoshlar (Poaceae) farqlari",
+      columns: ["Belgi", "Hiloldoshlar (Cyperaceae)", "Bug‘doydoshlar (Poaceae)"],
+      rows: [
+        [
+          "Poya shakli va ichi",
+          "Uch qirrali, bo‘g‘imsiz, ichi to‘la",
+          "Silindrik, bo‘g‘imli, ichi bo‘sh (somonpoya)",
+        ],
+        [
+          "Barg joylashuvi va qini",
+          "3 qatorda, barg qini yopiq",
+          "2 qatorda, barg qini ochiq + tilcha (ligula)",
+        ],
+        [
+          "O‘sish va tuplanish",
+          "Ildizpoyali, uchki o‘sish",
+          "Bo‘g‘im asosida interkalyar o‘sish (yaylovga chidamli)",
+        ],
+        [
+          "Meva tipi va muhit",
+          "Pista (yong‘oqcha); botqoq va nam o‘tloq",
+          "Don (karyopsis); dasht, ekinzor, savanna",
+        ],
+      ],
+    },
+    keyConcepts: [
+      {
+        term: "Pollinariy va Ginostemiy",
+        definition:
+          "Salobdoshlar (Orchidaceae) gulida chang donalarining yopishqoq to‘plami (pollinariy) hamda changchi va urug‘chi qo‘shilgan ustuncha (kolonka).",
+      },
+      {
+        term: "Don (Karyopsis)",
+        definition:
+          "Bug‘doydoshlarga xos, meva devori urug‘ po‘sti bilan ajralmas darajada birlashib ketgan bir urug‘li quruq meva.",
+      },
+      {
+        term: "Edifikator",
+        definition:
+          "Fitotsenoz ichidagi yorug‘lik, namlik va tuproq mikromuhitini asosiy belgilab beruvchi yetakchi tur.",
+      },
+      {
+        term: "Suksessiya va Klimaks",
+        definition:
+          "O‘simlik jamoalarining qonuniy almashinuvi (suksessiya) va ma’lum iqlimda shakllanadigan barqaror yakuniy bosqich (klimaks).",
+      },
+    ],
+    selfCheckQuestions: [
+      {
+        question:
+          "Bug‘doydoshlar (Poaceae) ning chorva tomonidan doimiy o‘tlanishiga va pichan o‘rishga chidamliligi nimaga asoslangan?",
+        answer:
+          "Bo‘g‘im va barg asosida joylashgan interkalyar (oraliq) meristema barg uchi yeyilganda ham o‘sishni tez tiklash imkonini beradi, shuningdek asosidan tuplanish novdalari chiqadi.",
+      },
+      {
+        question:
+          "Gulsafsardoshlar (Iridaceae) ni loladoshlar (Liliaceae) dan ajratuvchi ikki asosiy gul belgisi qaysi?",
+        answer:
+          "Gulsafsardoshlarda changchilar soni 6 ta emas atigi 3 ta bo‘lib, tugunchasi ustun emas ostin joylashadi.",
+      },
+      {
+        question: "Birlamchi va ikkilamchi suksessiya o‘rtasida qanday farq bor?",
+        answer:
+          "Birlamchi suksessiya ilgari hayot bo‘lmagan tuproqsiz joyda (yalang‘och qoya, qum) lishayniklardan boshlanib juda sekin boradi; ikkilamchi suksessiya esa avval jamoa bo‘lgan, tuproq va urug‘ banki saqlangan (yong‘in, kesilgan o‘rmon) joyda tez kechadi.",
+      },
+    ],
+    keyTerms: ["Monocotyledones", "Liliaceae", "Orchidaceae", "Poaceae", "Arecaceae", "Fitotsenoz"],
+    references: "O‘simliklar sistematikasi · 12-mavzu ma’ruza matni va taqdimoti",
+    pdfUrl: "/assets/aistudio/12-mavzu_Bir_urug_pallalilar_sinfi_Kommelinkabilar_va_p_c7b418a9.pdf",
+    pdfTitle: "30-mavzu PDF: Bir urug‘pallalilar, Kommelin- va Palmakabilar, Fitotsenoz",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Bir urug‘pallalilar, Kommelinkabilar, Palmakabilar va Fitotsenoz",
+        url: "/assets/aistudio/12-mavzu_Bir_urug_pallalilar_sinfi_Kommelinkabilar_va_p_c7b418a9.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Bir urug‘pallalilar sinfi va fitotsenoz",
+        url: "/assets/aistudio/12-mavzu_Bir_urug_pallalilar_sinfi_Kommelinkabilar_va_22a1e233.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
 ];

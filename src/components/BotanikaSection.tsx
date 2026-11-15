@@ -20,8 +20,27 @@ import {
   FileText,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
-import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
+import {
+  BOTANIKA_TOPICS,
+  type BotanikaPdfDocument,
+  type BotanikaTopic,
+} from "@/data/botanikaTopics";
 import { PdfSlideViewer } from "./PdfSlideViewer";
+
+function getTopicPdfDocuments(topic: BotanikaTopic): BotanikaPdfDocument[] {
+  if (topic.pdfDocuments && topic.pdfDocuments.length > 0) {
+    return topic.pdfDocuments;
+  }
+  if (topic.pdfUrl) {
+    return [
+      {
+        title: topic.pdfTitle || `${topic.topicLabel} — PDF ma’ruza`,
+        url: topic.pdfUrl,
+      },
+    ];
+  }
+  return [];
+}
 
 interface BotanikaSectionProps {
   onBack: () => void;
@@ -35,6 +54,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [readerTab, setReaderTab] = useState<"all" | "pdf" | "lecture">("all");
+  const [selectedPdfIndex, setSelectedPdfIndex] = useState(0);
   const [revealedAnswers, setRevealedAnswers] = useState<Set<number>>(new Set());
   const topicScrollRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +81,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
   useEffect(() => {
     setRevealedAnswers(new Set());
     setReaderTab("all");
+    setSelectedPdfIndex(0);
     if (topicScrollRef.current) {
       topicScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -123,6 +144,12 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
   const activeTopicIndex = activeTopic
     ? BOTANIKA_TOPICS.findIndex((t) => t.id === activeTopic.id)
     : -1;
+
+  const activeTopicDocs = useMemo(
+    () => (activeTopic ? getTopicPdfDocuments(activeTopic) : []),
+    [activeTopic],
+  );
+  const activePdf = activeTopicDocs[selectedPdfIndex] ?? activeTopicDocs[0] ?? null;
 
   const progressPercent = Math.round((completedIds.size / BOTANIKA_TOPICS.length) * 100);
 
@@ -223,7 +250,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
             {[
               { id: "all", label: `Barcha mavzular (${BOTANIKA_TOPICS.length})` },
               { id: "I semestr", label: "I semestr (1–18-mavzular)" },
-              { id: "II semestr", label: "II semestr (19–24-mavzular)" },
+              { id: "II semestr", label: `II semestr (19–${BOTANIKA_TOPICS.length}-mavzular)` },
               { id: "done", label: `O‘zlashtirilganlar (${completedIds.size})` },
             ].map((tab) => (
               <button
@@ -267,6 +294,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredTopics.map((topic) => {
               const isDone = completedIds.has(topic.id);
+              const topicDocs = getTopicPdfDocuments(topic);
               return (
                 <div
                   key={topic.id}
@@ -329,10 +357,10 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                         {topic.sections.length} ta bo‘lim · {topic.selfCheckQuestions.length} ta
                         savol
                       </span>
-                      {topic.pdfUrl && (
+                      {topicDocs.length > 0 && (
                         <span className="inline-flex items-center gap-1 rounded-md bg-rose-500/10 px-1.5 py-0.5 font-semibold text-rose-600 dark:text-rose-400">
                           <FileText className="h-3 w-3" />
-                          PDF
+                          {topicDocs.length > 1 ? `${topicDocs.length} PDF` : "PDF"}
                         </span>
                       )}
                     </span>
@@ -452,7 +480,7 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
               </section>
 
               {/* Mode Switcher when PDF is available */}
-              {activeTopic.pdfUrl && (
+              {activePdf && (
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm">
                   <div className="flex flex-wrap items-center gap-2">
                     {[
@@ -474,20 +502,40 @@ export function BotanikaSection({ onBack, onAskAi }: BotanikaSectionProps) {
                       </button>
                     ))}
                   </div>
+
+                  {activeTopicDocs.length > 1 && readerTab !== "lecture" && (
+                    <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-border bg-muted/40 p-1">
+                      {activeTopicDocs.map((doc, idx) => (
+                        <button
+                          key={doc.url}
+                          type="button"
+                          onClick={() => setSelectedPdfIndex(idx)}
+                          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                            selectedPdfIndex === idx
+                              ? "bg-rose-600 text-white shadow-sm"
+                              : "text-muted-foreground hover:bg-background hover:text-foreground"
+                          }`}
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          <span>{doc.kind || `${idx + 1}-PDF`}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Embedded Interactive PDF Canvas Viewer */}
-              {activeTopic.pdfUrl && readerTab !== "lecture" && (
+              {activePdf && readerTab !== "lecture" && (
                 <PdfSlideViewer
-                  url={activeTopic.pdfUrl}
-                  title={activeTopic.pdfTitle || `${activeTopic.topicLabel} — PDF ma’ruza`}
+                  url={activePdf.url}
+                  title={activePdf.title}
                   compactHeight={readerTab === "all"}
                 />
               )}
 
               {/* Syllabus Outline */}
-              {(!activeTopic.pdfUrl || readerTab !== "pdf") && (
+              {(!activePdf || readerTab !== "pdf") && (
                 <>
                   <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
                     <h3 className="flex items-center gap-2 text-base font-extrabold text-primary">

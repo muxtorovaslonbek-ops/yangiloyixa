@@ -40,7 +40,7 @@ const SUBJECTS = [
     topicsPreview: [
       "1–7-mavzular: Kirish, hujayra, to‘qimalar va ildiz anatomiyasi (PDF + ma’ruza)",
       "8–18-mavzular: Novda, poya, barg, gul, urug‘, meva va ekologiya (PDF + ma’ruza)",
-      "19–24-mavzular: Sistematika, suvo‘tlar, zamburug‘lar, lishayniklar va yuksak o‘simliklar",
+      `19–${BOTANIKA_TOPICS.length}-mavzular: Sistematika, suvo‘tlar, zamburug‘lar, sporali va urug‘li o‘simliklar (PDF + ma’ruza)`,
     ],
   },
   {

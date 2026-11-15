@@ -40,10 +40,15 @@ describe("searchAppContent", () => {
     );
   });
 
-  it("finds Botanika sequential topics (1 through 24)", () => {
+  it("finds Botanika sequential topics (1 through 30)", () => {
     const results = searchAppContent("lishayniklar");
     expect(results.length).toBeGreaterThan(0);
     expect(results.some((r) => r.id === "bot-23" && r.category === "Darsliklar")).toBe(true);
+
+    const angiospermResults = searchAppContent("fitotsenoz");
+    expect(angiospermResults.some((r) => r.id === "bot-30" && r.category === "Darsliklar")).toBe(
+      true,
+    );
   });
 
   it("finds Kutubxona library section and maps to tab 4", () => {
@@ -52,8 +57,8 @@ describe("searchAppContent", () => {
     expect(results.some((r) => r.category === "Kutubxona" && r.targetActiveTab === 4)).toBe(true);
   });
 
-  it("provides 24 sequentially numbered Botanika topics with matched PDFs for 1-18", () => {
-    expect(BOTANIKA_TOPICS).toHaveLength(24);
+  it("provides 30 sequentially numbered Botanika topics with matched PDFs for all topics", () => {
+    expect(BOTANIKA_TOPICS).toHaveLength(30);
     BOTANIKA_TOPICS.forEach((topic, idx) => {
       expect(topic.order).toBe(idx + 1);
       expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
@@ -64,6 +69,12 @@ describe("searchAppContent", () => {
       expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
       if (idx < 18) {
         expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/M\d{2}_.*\.pdf$/);
+      } else {
+        expect(topic.pdfDocuments).toBeDefined();
+        expect(topic.pdfDocuments).toHaveLength(2);
+        topic.pdfDocuments?.forEach((doc) => {
+          expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}[-_]mavzu_.*\.pdf$/);
+        });
       }
     });
   });
