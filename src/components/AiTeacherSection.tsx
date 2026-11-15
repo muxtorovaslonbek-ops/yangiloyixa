@@ -160,7 +160,9 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const responseCache = useRef<Map<string, string>>(new Map());
+  const responseCache = useRef<
+    Map<string, { content: string; source: "gemini" | "knowledge_base" }>
+  >(new Map());
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend || inputPrompt).trim();
@@ -185,9 +187,9 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
         const assistantMsg: Message = {
           id: `assistant-${Date.now()}`,
           role: "assistant",
-          content: cached,
+          content: cached.content,
           timestamp: new Date().toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit" }),
-          source: "knowledge_base",
+          source: cached.source,
         };
         setMessages((prev) => [...prev, assistantMsg]);
         setIsLoading(false);
@@ -212,7 +214,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
 
       const replyContent =
         res.response || "Savolingizga javob tayyorlanmoqda, iltimos qaytadan yuboring.";
-      responseCache.current.set(cacheKey, replyContent);
+      responseCache.current.set(cacheKey, { content: replyContent, source: res.source });
 
       const assistantMsg: Message = {
         id: `assistant-${Date.now()}`,
@@ -258,7 +260,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
     }
   };
 
-  const currentSuggestions = SUGGESTIONS[selectedCategory] || SUGGESTIONS.all;
+  const currentSuggestions = SUGGESTIONS[selectedCategory] ?? SUGGESTIONS["all"] ?? [];
 
   return (
     <div className="space-y-6 px-4 pb-16 md:px-8">
@@ -303,17 +305,18 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
               Universitet Fanlari Bo‘yicha Barcha Savollaringizga Ilmiy Javoblar
             </h2>
             <p className="mt-2 text-xs text-indigo-100/90 md:text-sm">
-              Darsliklar, Kurs ishi yozish, Mustaqil ish, O‘yinlar, Ingliz tili (0 dan C1 gacha) va
-              Biologiya Milliy sertifikati talablariga to'liq mos javob oling.
+              Platformaga yuklangan barcha darsliklar, 103 ta rasmiy PDF ma’ruza va taqdimotlar,
+              Kurs ishi, Mustaqil ish, Ingliz tili hamda Biologiya Milliy sertifikat testlari
+              asosida aniq ilmiy javob oling.
             </p>
           </div>
 
           <div className="shrink-0 rounded-2xl bg-white/10 p-4 backdrop-blur-md text-xs space-y-1.5 border border-white/10">
             <div className="flex items-center gap-2 text-emerald-300 font-bold">
-              <Zap className="h-4 w-4" /> Real-time Gemini 3.8 Flash
+              <Zap className="h-4 w-4" /> Real-time Gemini 4 Hydrogen
             </div>
             <div className="text-[11px] text-indigo-100">
-              6 ta asosiy yo'nalish bo'yicha chuqur akademik bilim
+              Barcha darslik, taqdimot va PDF hujjatlar asosida
             </div>
           </div>
         </div>
@@ -397,7 +400,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
                     <span>{msg.timestamp}</span>
                     {msg.source && (
                       <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
-                        {msg.source === "gemini" ? "Gemini 3.8 Flash" : "Akademik Baza"}
+                        {msg.source === "gemini" ? "Gemini 4 Hydrogen" : "Darslik & PDF Bazasi"}
                       </span>
                     )}
                   </div>
