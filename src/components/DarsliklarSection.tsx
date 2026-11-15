@@ -16,12 +16,14 @@ import genetikaImg from "@/assets/genetika.jpg";
 import mikroImg from "@/assets/mikro.jpg";
 import biokimyoImg from "@/assets/biokimyo.jpg";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
+import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 
 export type SubjectKey = "botanika" | "genetika" | "mikrobiologiya" | "biokimyo";
 
 interface DarsliklarSectionProps {
   onBack: () => void;
   onOpenBotanika: () => void;
+  onOpenBiokimyo: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
 }
@@ -81,17 +83,16 @@ const SUBJECTS = [
     id: "biokimyo" as SubjectKey,
     title: "Biokimyo",
     subtitle: "Tirik organizmlar kimyoviy tarkibi va metabolizmi",
-    description:
-      "Oqsillar, fermentlar kinetikasi, uglevodlar, lipidlar, nuklein kislotalar va hujayraviy bioenergetika (ATF sintezi).",
-    topicsCount: 26,
-    status: "Tayanch darslik & AI yordam",
+    description: `Statik biokimyo, fermentologiya, vitaminlar, gormonlar va moddalar almashinuvi bo‘yicha barcha ${BIOKIMYO_TOPICS.length} ta mavzu (1-mavzudan ${BIOKIMYO_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    topicsCount: BIOKIMYO_TOPICS.length,
+    status: "To‘liq ishga tushirilgan",
     img: biokimyoImg,
     icon: FlaskConical,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Aminokislotalar va oqsillarning strukturaviy darajalari",
-      "Fermentlar faolligi va allosterik boshqaruv",
-      "Glikoliz, Krebs sikli va oksidlovchi fosforlanish",
+      "1–7-mavzular: Biokimyo asoslari, oqsillar, nuklein kislotalar, uglevodlar va lipidlar (PDF + ma’ruza)",
+      "8–11-mavzular: Fermentlar kinetikasi, vitaminlar va gormonlar (PDF + ma’ruza)",
+      `12–${BIOKIMYO_TOPICS.length}-mavzular: Moddalar almashinuvi, glikoliz, Krebs sikli va oqsil-nuklein metabolizmi (PDF + ma’ruza)`,
     ],
   },
 ];
@@ -99,6 +100,7 @@ const SUBJECTS = [
 export function DarsliklarSection({
   onBack,
   onOpenBotanika,
+  onOpenBiokimyo,
   onAskAi,
   initialSubject = "botanika",
 }: DarsliklarSectionProps) {
@@ -158,6 +160,8 @@ export function DarsliklarSection({
                 setFocusedSubject(subj.id);
                 if (subj.id === "botanika") {
                   onOpenBotanika();
+                } else if (subj.id === "biokimyo") {
+                  onOpenBiokimyo();
                 }
               }}
               className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
@@ -230,12 +234,16 @@ export function DarsliklarSection({
 
               {/* Footer Action */}
               <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-5 py-3.5">
-                {subj.id === "botanika" ? (
+                {subj.id === "botanika" || subj.id === "biokimyo" ? (
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onOpenBotanika();
+                      if (subj.id === "botanika") {
+                        onOpenBotanika();
+                      } else {
+                        onOpenBiokimyo();
+                      }
                     }}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
                   >

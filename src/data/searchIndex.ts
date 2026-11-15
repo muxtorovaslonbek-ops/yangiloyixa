@@ -1,6 +1,7 @@
 import { ENGLISH_VIDEO_LESSONS } from "./englishVideoLessons";
 import { BIOLOGY_VARIANTS } from "./biologyVariantsData";
 import { BOTANIKA_TOPICS } from "./botanikaTopics";
+import { BIOKIMYO_TOPICS } from "./biokimyoTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -52,11 +53,10 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
   {
     id: "course-biokimyo",
     title: "Biokimyo darsligi",
-    description:
-      "Oqsillar, nuklein kislotalar, fermentlar kinetikasi va ATF bioenergetikasi bo‘yicha 26 ta mavzu.",
+    description: `Oqsillar, nuklein kislotalar, fermentlar kinetikasi, vitaminlar, gormonlar va metabolizm bo‘yicha ${BIOKIMYO_TOPICS.length} ta mavzu.`,
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: "26 ta mavzu",
+    badge: `${BIOKIMYO_TOPICS.length} ta mavzu`,
   },
 
   // 2. Kurs ishi bo'limi
@@ -302,7 +302,31 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 5. Biokimyo Topics Matches (limit to top 8)
+  const biokimyoMatches: SearchResultItem[] = [];
+  for (const topic of BIOKIMYO_TOPICS) {
+    const combined =
+      `biokimyo darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      biokimyoMatches.push({
+        id: topic.id,
+        title: `Biokimyo ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (biokimyoMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
-  const results = [...directoryMatches, ...botanikaMatches, ...videoMatches, ...biologyMatches];
+  const results = [
+    ...directoryMatches,
+    ...botanikaMatches,
+    ...biokimyoMatches,
+    ...videoMatches,
+    ...biologyMatches,
+  ];
   return results;
 }

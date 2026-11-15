@@ -44,11 +44,13 @@ import { KursIshiSection } from "@/components/KursIshiSection";
 import { MustaqilIshSection } from "@/components/MustaqilIshSection";
 import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSection";
 import { BotanikaSection } from "@/components/BotanikaSection";
+import { BiokimyoSection } from "@/components/BiokimyoSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { KutubxonaSection } from "@/components/KutubxonaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
+import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import {
   getDefaultStudyProgress,
   readStudyProgressFromStorage,
@@ -116,7 +118,7 @@ const list = [
   { t: "Botanika", n: BOTANIKA_TOPICS.length, p: 72, img: botanika },
   { t: "Genetika", n: 18, p: 60, img: genetika },
   { t: "Mikrobiologiya", n: 20, p: 48, img: mikro },
-  { t: "Biokimyo", n: 26, p: 35, img: biokimyo },
+  { t: "Biokimyo", n: BIOKIMYO_TOPICS.length, p: 35, img: biokimyo },
 ];
 
 function useCount(to: number) {
@@ -145,6 +147,7 @@ function Index() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const [botanikaFullscreen, setBotanikaFullscreen] = useState(false);
+  const [biokimyoFullscreen, setBiokimyoFullscreen] = useState(false);
   const [selectedDarslikSubject, setSelectedDarslikSubject] = useState<SubjectKey>("botanika");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -165,7 +168,7 @@ function Index() {
       window.removeEventListener("storage", syncProgress);
       window.removeEventListener("focus", syncProgress);
     };
-  }, [active, botanikaFullscreen]);
+  }, [active, botanikaFullscreen, biokimyoFullscreen]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -205,6 +208,9 @@ function Index() {
     if (item.id === "course-botanika" || item.id.startsWith("bot-")) {
       setActive(1);
       setBotanikaFullscreen(true);
+    } else if (item.id === "course-biokimyo" || item.id.startsWith("biokimyo-")) {
+      setActive(1);
+      setBiokimyoFullscreen(true);
     } else {
       setActive(item.targetActiveTab);
     }
@@ -215,6 +221,7 @@ function Index() {
   const handleAskAiTeacher = (queryText: string) => {
     setAiPromptForTeacher(queryText);
     setBotanikaFullscreen(false);
+    setBiokimyoFullscreen(false);
     setActive(7);
     setIsSearchOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -506,6 +513,7 @@ function Index() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             onOpenBotanika={() => setBotanikaFullscreen(true)}
+            onOpenBiokimyo={() => setBiokimyoFullscreen(true)}
             onAskAi={handleAskAiTeacher}
           />
         ) : active === 2 ? (
@@ -817,6 +825,8 @@ function Index() {
                         setActive(1);
                         if (key === "botanika") {
                           setBotanikaFullscreen(true);
+                        } else if (key === "biokimyo") {
+                          setBiokimyoFullscreen(true);
                         } else {
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }
@@ -988,6 +998,16 @@ function Index() {
           onBack={() => setBotanikaFullscreen(false)}
           onAskAi={(prompt) => {
             setBotanikaFullscreen(false);
+            handleAskAiTeacher(prompt);
+          }}
+        />
+      )}
+
+      {biokimyoFullscreen && (
+        <BiokimyoSection
+          onBack={() => setBiokimyoFullscreen(false)}
+          onAskAi={(prompt) => {
+            setBiokimyoFullscreen(false);
             handleAskAiTeacher(prompt);
           }}
         />
