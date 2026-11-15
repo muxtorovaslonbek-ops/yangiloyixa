@@ -20,6 +20,12 @@ export interface BiokimyoSelfCheck {
   answer: string;
 }
 
+export interface BiokimyoPdfDocument {
+  title: string;
+  url: string;
+  kind?: string;
+}
+
 export interface BiokimyoTopic {
   id: string;
   order: number;
@@ -41,6 +47,7 @@ export interface BiokimyoTopic {
   references: string;
   pdfUrl: string;
   pdfTitle: string;
+  pdfDocuments?: BiokimyoPdfDocument[];
 }
 
 export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
@@ -173,6 +180,20 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 1-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/01-mavzu_Biokimyo_fanining_maqsadi_vazifalari_metodla_41bd55d6.pdf",
     pdfTitle: "1-mavzu PDF: Biokimyo fanining maqsadi, vazifalari, metodlari va tarixi",
+    pdfDocuments: [
+      {
+        title:
+          "Ma’ruza matni: Biokimyo fanining maqsadi, vazifalari, metodlari va rivojlanish tarixi",
+        url: "/assets/aistudio/01-mavzu_Biokimyo_fanining_maqsadi_vazifalari_metodla_41bd55d6.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title:
+          "Taqdimot slaydlari: Biokimyo fanining maqsadi, vazifalari, metodlari va rivojlanish tarixi",
+        url: "/assets/aistudio/01-mavzu_Biokimyo_fanining_maqsadi_vazifalari_metod_700c90ea.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-2",
@@ -299,6 +320,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     pdfUrl:
       "/assets/aistudio/02-mavzu_Oqsillarning_kimyoviy_tarkibi_va_funksiyasi___1__c4891127.pdf",
     pdfTitle: "2-mavzu PDF: Oqsillarning kimyoviy tarkibi, funksiyasi va aminokislotalar",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Oqsillarning kimyoviy tarkibi, aminokislotalar va funksiyasi",
+        url: "/assets/aistudio/02-mavzu_Oqsillarning_kimyoviy_tarkibi_va_funksiyasi___1__c4891127.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Oqsillarning kimyoviy tarkibi va funksiyasi",
+        url: "/assets/aistudio/02-mavzu_Oqsillarning_kimyoviy_tarkibi_va_funksiyas_f929ea98.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-3",
@@ -425,6 +458,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 3-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/03-mavzu_Oqsillarning_strukturasi_va_klassifikatsiyas_45d3aad1.pdf",
     pdfTitle: "3-mavzu PDF: Oqsillarning strukturasi va klassifikatsiyasi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Oqsillarning strukturasi va klassifikatsiyasi",
+        url: "/assets/aistudio/03-mavzu_Oqsillarning_strukturasi_va_klassifikatsiyas_45d3aad1.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Oqsillarning strukturasi va klassifikatsiyasi",
+        url: "/assets/aistudio/03-mavzu_Oqsillarning_strukturasi_va_klassifikatsiy_22617af9.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-4",
@@ -532,6 +577,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 4-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/04-mavzu_Nuklein_kislotalar_va_ularning_kimyoviy_tark_aee07703.pdf",
     pdfTitle: "4-mavzu PDF: Nuklein kislotalar va ularning kimyoviy tarkibi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Nuklein kislotalar va ularning kimyoviy tarkibi",
+        url: "/assets/aistudio/04-mavzu_Nuklein_kislotalar_va_ularning_kimyoviy_tark_aee07703.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Nuklein kislotalar va ularning kimyoviy tarkibi",
+        url: "/assets/aistudio/04-mavzu_Nuklein_kislotalar_va_ularning_kimyoviy_ta_4c84031d.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-5",
@@ -642,6 +699,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 5-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/05-mavzu_DNK_va_RNK_larning_tuzilishi_va_strukturalar_a50dcf0c.pdf",
     pdfTitle: "5-mavzu PDF: DNK va RNK larning tuzilishi va ularning strukturalari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: DNK va RNK larning tuzilishi va ularning strukturalari",
+        url: "/assets/aistudio/05-mavzu_DNK_va_RNK_larning_tuzilishi_va_strukturalar_a50dcf0c.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: DNK va RNK larning tuzilishi va ularning strukturalari",
+        url: "/assets/aistudio/05-mavzu_DNK_va_RNK_larning_tuzilishi_va_struktural_ffc976b4.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-6",
@@ -760,6 +829,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 6-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/06-mavzu_Uglevodlar_va_ularning_tirik_organizmlardagi_be8e581b.pdf",
     pdfTitle: "6-mavzu PDF: Uglevodlar va ularning tirik organizmlardagi ahamiyati",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Uglevodlar va ularning tirik organizmlardagi ahamiyati",
+        url: "/assets/aistudio/06-mavzu_Uglevodlar_va_ularning_tirik_organizmlardagi_be8e581b.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Uglevodlar va ularning tirik organizmlardagi ahamiyati",
+        url: "/assets/aistudio/06-mavzu_Uglevodlar_va_ularning_tirik_organizmlarda_d99a315c.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-7",
@@ -886,6 +967,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 7-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/07-mavzu_Lipidlar_va_ularning_xususiyatlari_dc732223.pdf",
     pdfTitle: "7-mavzu PDF: Lipidlar va ularning xususiyatlari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Lipidlar va ularning xususiyatlari",
+        url: "/assets/aistudio/07-mavzu_Lipidlar_va_ularning_xususiyatlari_dc732223.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Lipidlar va ularning xususiyatlari",
+        url: "/assets/aistudio/07-mavzu_Lipidlar_va_ularning_xususiyatlari_26316688.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-8",
@@ -1009,6 +1102,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     pdfUrl:
       "/assets/aistudio/08-mavzu_Fermentlar_ularning_tuzilishi_va_ta_sir_mexa__1__b407d68f.pdf",
     pdfTitle: "8-mavzu PDF: Fermentlar tuzilishi va ta’sir qilish mexanizmlari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Fermentlar, ularning tuzilishi va ta’sir mexanizmlari",
+        url: "/assets/aistudio/08-mavzu_Fermentlar_ularning_tuzilishi_va_ta_sir_mexa__1__b407d68f.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Fermentlar, ularning tuzilishi va ta’sir mexanizmlari",
+        url: "/assets/aistudio/08-mavzu_Fermentlar_ularning_tuzilishi_va_ta_sir_me_4052e7f2.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-9",
@@ -1144,6 +1249,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 9-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/09-mavzu_Fermentlarning_biologik_fizik_va_kimyoviy_xo_2fbad7b9.pdf",
     pdfTitle: "9-mavzu PDF: Fermentlarning biologik, fizik va kimyoviy xossalari",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Fermentlarning biologik, fizik va kimyoviy xossalari",
+        url: "/assets/aistudio/09-mavzu_Fermentlarning_biologik_fizik_va_kimyoviy_xo_2fbad7b9.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Fermentlarning biologik, fizik va kimyoviy xossalari",
+        url: "/assets/aistudio/09-mavzu_Fermentlarning_biologik_fizik_va_kimyoviy__92de7992.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-10",
@@ -1296,6 +1413,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 10-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/10-mavzu_Vitaminlar_klassifikatsiyasi_tuzilishi_va_fu_b3f2d94f.pdf",
     pdfTitle: "10-mavzu PDF: Vitaminlar klassifikatsiyasi, tuzilishi va funksiyasi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Vitaminlar klassifikatsiyasi, tuzilishi va funksiyasi",
+        url: "/assets/aistudio/10-mavzu_Vitaminlar_klassifikatsiyasi_tuzilishi_va_fu_b3f2d94f.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Vitaminlar klassifikatsiyasi, tuzilishi va funksiyasi",
+        url: "/assets/aistudio/10-mavzu_Vitaminlar_klassifikatsiyasi_tuzilishi_va__6a9abd81.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-11",
@@ -1423,6 +1552,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 11-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/11-mavzu_Gormonlar_ularning_klassifikatsiyasi_va_funk_10652bf5.pdf",
     pdfTitle: "11-mavzu PDF: Gormonlar, klassifikatsiyasi va funksiyasi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Gormonlar, ularning klassifikatsiyasi va funksiyasi",
+        url: "/assets/aistudio/11-mavzu_Gormonlar_ularning_klassifikatsiyasi_va_funk_10652bf5.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Gormonlar, ularning klassifikatsiyasi va funksiyasi",
+        url: "/assets/aistudio/11-mavzu_Gormonlar_ularning_klassifikatsiyasi_va_fu_459902f5.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-12",
@@ -1534,6 +1675,20 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 12-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/12-mavzu_Moddalar_almashinuvi_haqida_umumiy_tushuncha_38e16871.pdf",
     pdfTitle: "12-mavzu PDF: Moddalar almashinuvi va lipidlar almashinuvi",
+    pdfDocuments: [
+      {
+        title:
+          "Ma’ruza matni: Moddalar almashinuvi haqida umumiy tushuncha va lipidlar almashinuvi",
+        url: "/assets/aistudio/12-mavzu_Moddalar_almashinuvi_haqida_umumiy_tushuncha_38e16871.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title:
+          "Taqdimot slaydlari: Moddalar almashinuvi haqida umumiy tushuncha va lipidlar almashinuvi",
+        url: "/assets/aistudio/12-mavzu_Moddalar_almashinuvi_haqida_umumiy_tushunc_df6eab22.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-13",
@@ -1664,6 +1819,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 13-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/13-mavzu_Uglevodlar_almashinuvi_Aerob_va_anaerob_parc_a4f409af.pdf",
     pdfTitle: "13-mavzu PDF: Uglevodlar almashinuvi, aerob va anaerob parchalanish",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Uglevodlar almashinuvi, aerob va anaerob parchalanish",
+        url: "/assets/aistudio/13-mavzu_Uglevodlar_almashinuvi_Aerob_va_anaerob_parc_a4f409af.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Uglevodlar almashinuvi, aerob va anaerob parchalanish",
+        url: "/assets/aistudio/13-mavzu_Uglevodlar_almashinuvi_Aerob_va_anaerob_pa_0a865a89.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-14",
@@ -1776,6 +1943,18 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 14-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/14-mavzu_Glikoliz_Krebs_sikli_038a3dad.pdf",
     pdfTitle: "14-mavzu PDF: Glikoliz va Krebs sikli",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Glikoliz va Krebs sikli",
+        url: "/assets/aistudio/14-mavzu_Glikoliz_Krebs_sikli_038a3dad.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Glikoliz va Krebs sikli",
+        url: "/assets/aistudio/14-mavzu_Glikoliz_Krebs_sikli_3c6c1302.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
   {
     id: "biokimyo-15",
@@ -1908,5 +2087,17 @@ export const BIOKIMYO_TOPICS: BiokimyoTopic[] = [
     references: "Biokimyo · 15-mavzu ma’ruza matni (Xalimova N.T.)",
     pdfUrl: "/assets/aistudio/15-mavzu_Oqsillar_va_nuklein_kislotalar_almashinuvi__1__653378e3.pdf",
     pdfTitle: "15-mavzu PDF: Oqsillar va nuklein kislotalar almashinuvi",
+    pdfDocuments: [
+      {
+        title: "Ma’ruza matni: Oqsillar va nuklein kislotalar almashinuvi",
+        url: "/assets/aistudio/15-mavzu_Oqsillar_va_nuklein_kislotalar_almashinuvi__1__653378e3.pdf",
+        kind: "Ma’ruza matni",
+      },
+      {
+        title: "Taqdimot slaydlari: Oqsillar va nuklein kislotalar almashinuvi",
+        url: "/assets/aistudio/15-mavzu_Oqsillar_va_nuklein_kislotalar_almashinuvi_9a0fa235.pdf",
+        kind: "Taqdimot",
+      },
+    ],
   },
 ];

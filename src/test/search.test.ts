@@ -101,6 +101,13 @@ describe("searchAppContent", () => {
       expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
       expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
       expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      expect(topic.pdfDocuments).toBeDefined();
+      expect(topic.pdfDocuments).toHaveLength(2);
+      expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
+      expect(topic.pdfDocuments?.[1]?.kind).toBe("Taqdimot");
+      topic.pdfDocuments?.forEach((doc) => {
+        expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      });
     });
   });
 });
