@@ -189,11 +189,15 @@ async function main() {
     });
   }
 
-  const outPath = path.join(ROOT, "src/data/aiPdfCorpus.json");
-  fs.writeFileSync(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), documents }));
-  const sizeMb = (fs.statSync(outPath).size / (1024 * 1024)).toFixed(2);
+  const payload = JSON.stringify({ generatedAt: new Date().toISOString(), documents });
+  const publicOutPath = path.join(ROOT, "public/assets/aiPdfCorpus.json");
+  const srcOutPath = path.join(ROOT, "src/data/aiPdfCorpus.json");
+  fs.mkdirSync(path.dirname(publicOutPath), { recursive: true });
+  fs.writeFileSync(publicOutPath, payload);
+  fs.writeFileSync(srcOutPath, payload);
+  const sizeMb = (fs.statSync(publicOutPath).size / (1024 * 1024)).toFixed(2);
   console.log(
-    `Generated ${outPath}: ${documents.length} PDFs, ${totalPages} pages, ${totalChars} chars (${sizeMb} MB).`,
+    `Generated ${publicOutPath} & ${srcOutPath}: ${documents.length} PDFs, ${totalPages} pages, ${totalChars} chars (${sizeMb} MB).`,
   );
 }
 

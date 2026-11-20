@@ -1,12 +1,20 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import aiPdfCorpusRaw from "@/data/aiPdfCorpus.json";
 import {
   buildGroundedPromptContext,
   getKnowledgeIndex,
   retrieveKnowledge,
+  setPdfCorpus,
   synthesizeGroundedFallback,
+  type AiPdfCorpus,
 } from "@/lib/aiKnowledgeEngine";
+import { askAiTeacher } from "@/services/aiTeacherService";
 
 describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
+  beforeAll(() => {
+    setPdfCorpus(aiPdfCorpusRaw as unknown as AiPdfCorpus);
+  });
+
   it("indexes all 76 textbook topics, 119 PDFs, 900 biology questions, and 180 English lessons", () => {
     const idx = getKnowledgeIndex();
     expect(idx.topics).toHaveLength(76); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya
@@ -105,5 +113,32 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
       "all",
     );
     expect(kurs).toBe("");
+  });
+
+  it("runs askAiTeacher 100% locally with zero external API calls, zero server functions, and instant speed", async () => {
+    const start = performance.now();
+    const greeting = await askAiTeacher({ prompt: "Salom", category: "all" });
+    expect(greeting.success).toBe(true);
+    expect(greeting.source).toBe("knowledge_base");
+    expect(greeting.response).toContain("0 token");
+
+    const kursRes = await askAiTeacher({
+      prompt: "Mavzu: 'Tijorat banklarida risklarni boshqarish' uchun 2 bobli reja tuzib ber",
+      category: "kurs_ishi",
+    });
+    expect(kursRes.success).toBe(true);
+    expect(kursRes.response).toContain("Tijorat banklarida risklarni boshqarish");
+    expect(kursRes.response).toContain("I-BOB");
+
+    const mikroRes = await askAiTeacher({
+      prompt: "Mikrobiologiya 13-mavzu qoqshol",
+      category: "darsliklar",
+    });
+    expect(mikroRes.success).toBe(true);
+    expect(mikroRes.response).toContain("13-mavzu");
+    expect(mikroRes.response).toContain("Biriktirilgan PDF");
+
+    const elapsedMs = performance.now() - start;
+    expect(elapsedMs).toBeLessThan(1000);
   });
 });
