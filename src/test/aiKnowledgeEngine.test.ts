@@ -141,4 +141,64 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
     const elapsedMs = performance.now() - start;
     expect(elapsedMs).toBeLessThan(1000);
   });
+
+  it("returns accurate topic/card matches without cross-topic mismatch, history poisoning, or off-topic leaks", async () => {
+    // 1. Word-boundary precision: "sil" must match Sil qo'zg'atuvchisi (mikro-13), NEVER "tanosil" (mikro-16)
+    const sil = await askAiTeacher({ prompt: "Sil kasalligi qo'zg'atuvchisi", category: "all" });
+    expect(sil.response).toContain("13-mavzu");
+    expect(sil.response).toContain("Sil qo‘zg‘atuvchisi");
+
+    // 2. Compound title precision: "Ochiq urug'li o'simliklar" must match bot-26 (Ochiq urug'lilar), NOT bot-15 (Yopiq urug'li)
+    const ochiq = await askAiTeacher({ prompt: "Ochiq urug'li o'simliklar", category: "all" });
+    expect(ochiq.response).toContain("26-mavzu");
+    expect(ochiq.response).toContain("Ochiq urug‘lilar");
+
+    // 3. Core cross-topic cards: Fotosintez, Mitoz/Meyoz, Viruslar vs Bakteriyalar, ATF, Qon aylanish
+    const foto = await askAiTeacher({
+      prompt: "Fotosintezning yorug'lik va qorong'ulik bosqichlari tahlili",
+      category: "all",
+    });
+    expect(foto.response).toContain("Kalvin sikli");
+    expect(foto.response).toContain("tilakoid");
+
+    const mitoz = await askAiTeacher({ prompt: "Mitoz va meyoz farqi", category: "all" });
+    expect(mitoz.response).toContain("Mitoz");
+    expect(mitoz.response).toContain("Meyoz");
+
+    const virus = await askAiTeacher({ prompt: "Viruslar va bakteriyalar farqi", category: "all" });
+    expect(virus.response).toContain("Hujayrasiz");
+    expect(virus.response).toContain("Prokariot");
+
+    const qon = await askAiTeacher({
+      prompt: "Odam anatomiyasi: Katta va kichik qon aylanish doiralari harakati",
+      category: "biologiya",
+    });
+    expect(qon.response).toContain("Chap qorincha");
+    expect(qon.response).toContain("O‘ng qorincha");
+
+    // 4. Uzbek apostrophe safety in Kurs ishi GOST prompt (must NOT treat ro'yxatini...bo'yicha as quoted topic)
+    const gost = await askAiTeacher({
+      prompt: "Foydalanilgan adabiyotlar ro'yxatini GOST talabi bo'yicha rasmiylashtirish",
+      category: "kurs_ishi",
+    });
+    expect(gost.response).toContain("GOST");
+    expect(gost.response).not.toContain("yxatini GOST talabi bo");
+
+    // 5. Anti-history-poisoning: switching subjects after greeting or Botanika must NOT bias toward Botanika
+    const krebs = await askAiTeacher({
+      prompt: "Krebs sikli nima?",
+      category: "all",
+      history: [
+        { role: "user", content: "Salom" },
+        { role: "assistant", content: "Botanika Genetika Mikrobiologiya Biokimyo" },
+      ],
+    });
+    expect(krebs.response).toContain("Biokimyo");
+    expect(krebs.response).toContain("14-mavzu");
+
+    // 6. Strict off-topic rejection: unrelated question must NOT dump a random lecture
+    const offTopic = await askAiTeacher({ prompt: "O'zbekiston poytaxti qayer?", category: "all" });
+    expect(offTopic.response).toContain("topilmadi");
+    expect(offTopic.response).not.toContain("📖 **Botanika");
+  });
 });

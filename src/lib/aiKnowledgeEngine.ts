@@ -101,6 +101,11 @@ export interface UnifiedTopicRecord {
   pdfDocs: Array<{ title: string; url: string; kind: string }>;
   normTitle: string;
   normBody: string;
+  paddedTitle: string;
+  paddedConcepts: string;
+  paddedBody: string;
+  wordCounts: Map<string, number>;
+  words: string[];
 }
 
 export interface IndexedPdfPage {
@@ -108,6 +113,8 @@ export interface IndexedPdfPage {
   page: PdfCorpusPage;
   normText: string;
   normTitle: string;
+  paddedText: string;
+  paddedTitle: string;
 }
 
 export interface IndexedBioQuestion {
@@ -115,6 +122,7 @@ export interface IndexedBioQuestion {
   variantTitle: string;
   question: BiologyQuestion;
   normText: string;
+  paddedText: string;
 }
 
 export interface RetrievalHit {
@@ -127,6 +135,7 @@ export interface RetrievalHit {
 
 export interface QueryIntent {
   subjects: CurriculumSubject[];
+  explicitSubject: boolean;
   topicNumber: number | null;
   preferPresentation: boolean;
   preferLecture: boolean;
@@ -135,6 +144,7 @@ export interface QueryIntent {
   questionNumber: number | null;
   wantsEnglish: boolean;
   wantsBiologyTests: boolean;
+  explicitTestRequest: boolean;
   wantsKursIshi: boolean;
   wantsMustaqilIsh: boolean;
   tokens: string[];
@@ -147,6 +157,7 @@ const UZBEK_STOP_WORDS = new Set([
   "bilan",
   "uchun",
   "haqida",
+  "haqidagi",
   "qanday",
   "qanaqa",
   "nima",
@@ -154,6 +165,7 @@ const UZBEK_STOP_WORDS = new Set([
   "necha",
   "nechta",
   "qaysi",
+  "qayer",
   "qayerda",
   "kim",
   "bu",
@@ -163,10 +175,14 @@ const UZBEK_STOP_WORDS = new Set([
   "siz",
   "biz",
   "ular",
+  "uning",
+  "ularning",
   "barcha",
   "hamma",
   "toliq",
   "batafsil",
+  "qisqa",
+  "qisqacha",
   "ber",
   "bering",
   "ayt",
@@ -175,11 +191,16 @@ const UZBEK_STOP_WORDS = new Set([
   "tushuntiring",
   "tushuntirib",
   "javob",
+  "javobi",
+  "javoblari",
   "savol",
   "savollar",
+  "savollari",
   "fan",
   "fani",
+  "fanida",
   "fanidan",
+  "fanining",
   "mavzu",
   "mavzusi",
   "mavzulari",
@@ -201,10 +222,17 @@ const UZBEK_STOP_WORDS = new Set([
   "bo",
   "o",
   "g",
-  "va",
+  "ta",
+  "ning",
+  "dan",
+  "ga",
+  "ni",
+  "da",
   "degani",
   "nimalar",
   "qilib",
+  "qiladi",
+  "qilinadi",
   "boyicha",
   "asosida",
   "orqali",
@@ -213,6 +241,25 @@ const UZBEK_STOP_WORDS = new Set([
   "edi",
   "bor",
   "yoq",
+  "farq",
+  "farqi",
+  "farqlari",
+  "taqqosla",
+  "solishtir",
+  "tahlil",
+  "tahlili",
+  "boladi",
+  "yetishmasa",
+  "asosiy",
+  "umumiy",
+  "zamonaviy",
+  "orni",
+  "kop",
+  "tushadigan",
+  "yozish",
+  "tuz",
+  "tuzib",
+  "otish",
 ]);
 
 export function normalizeUzbek(input: string): string {
@@ -274,6 +321,10 @@ function extractTokens(input: string): { tokens: string[]; stems: string[] } {
   return { tokens, stems };
 }
 
+function toPaddedSearchText(normText: string): string {
+  return ` ${normText.replace(/-/g, " ").replace(/\s+/g, " ").trim()} `;
+}
+
 function mapUnifiedTopic(
   subject: CurriculumSubject,
   t: BotanikaTopic | BiokimyoTopic | GenetikaTopic | MikrobiologiyaTopic,
@@ -312,6 +363,23 @@ function mapUnifiedTopic(
     ...t.keyTerms,
   ];
 
+  const normTitle = normalizeUzbek(
+    `${subject} ${t.topicLabel} ${t.code} ${t.title} ${t.comparisonTable.title}`,
+  );
+  const normConcepts = normalizeUzbek(
+    [...t.keyTerms, ...t.keyConcepts.map((k) => k.term)].join(" "),
+  );
+  const normBody = normalizeUzbek(bodyParts.join(" "));
+  const paddedTitle = toPaddedSearchText(normTitle);
+  const paddedConcepts = toPaddedSearchText(normConcepts);
+  const paddedBody = toPaddedSearchText(normBody);
+
+  const wordCounts = new Map<string, number>();
+  for (const w of paddedBody.trim().split(" ")) {
+    if (w.length < 2) continue;
+    wordCounts.set(w, (wordCounts.get(w) || 0) + 1);
+  }
+
   return {
     subject,
     id: t.id,
@@ -330,18 +398,22 @@ function mapUnifiedTopic(
     keyTerms: t.keyTerms,
     references: t.references,
     pdfDocs,
-    normTitle: normalizeUzbek(
-      `${subject} ${t.topicLabel} ${t.code} ${t.title} ${t.comparisonTable.title}`,
-    ),
-    normBody: normalizeUzbek(bodyParts.join(" ")),
+    normTitle,
+    normBody,
+    paddedTitle,
+    paddedConcepts,
+    paddedBody,
+    wordCounts,
+    words: Array.from(wordCounts.keys()),
   };
 }
 
 interface KnowledgeIndex {
   topics: UnifiedTopicRecord[];
+  topicIdf: Map<string, number>;
   pdfPages: IndexedPdfPage[];
   bioQuestions: IndexedBioQuestion[];
-  englishLessons: Array<{ lesson: VideoLesson; normText: string }>;
+  englishLessons: Array<{ lesson: VideoLesson; normText: string; paddedText: string }>;
   corpusDocCount: number;
   corpusPageCount: number;
 }
@@ -358,17 +430,43 @@ export function getKnowledgeIndex(): KnowledgeIndex {
     ...MIKROBIOLOGIYA_TOPICS.map((t) => mapUnifiedTopic("Mikrobiologiya", t)),
   ];
 
+  // Compute IDF across all 76 topics so rare scientific terms outrank generic Uzbek words
+  const docFreq = new Map<string, number>();
+  for (const topic of topics) {
+    const seen = new Set<string>();
+    for (const w of topic.words) {
+      if (!seen.has(w)) {
+        seen.add(w);
+        docFreq.set(w, (docFreq.get(w) || 0) + 1);
+      }
+      const st = stemUzbekToken(w);
+      if (st.length >= 4 && !seen.has(st)) {
+        seen.add(st);
+        docFreq.set(st, (docFreq.get(st) || 0) + 1);
+      }
+    }
+  }
+  const totalDocs = topics.length;
+  const topicIdf = new Map<string, number>();
+  for (const [term, df] of docFreq.entries()) {
+    topicIdf.set(term, Math.log((totalDocs + 1) / (df + 1)) + 1);
+  }
+
   const pdfPages: IndexedPdfPage[] = [];
   for (const doc of activePdfCorpus.documents) {
     const normTitle = normalizeUzbek(
       `${doc.subject} ${doc.topicLabel} ${doc.topicTitle} ${doc.kind}`,
     );
+    const paddedTitle = toPaddedSearchText(normTitle);
     for (const page of doc.pages) {
+      const normText = normalizeUzbek(page.t);
       pdfPages.push({
         doc,
         page,
         normTitle,
-        normText: normalizeUzbek(page.t),
+        normText,
+        paddedTitle,
+        paddedText: toPaddedSearchText(normText),
       });
     }
   }
@@ -376,24 +474,31 @@ export function getKnowledgeIndex(): KnowledgeIndex {
   const bioQuestions: IndexedBioQuestion[] = [];
   for (const variant of BIOLOGY_VARIANTS as BiologyVariant[]) {
     for (const q of variant.questions) {
+      const normText = normalizeUzbek(
+        `${variant.title} ${q.number}-savol ${q.question} ${q.options.join(" ")}`,
+      );
       bioQuestions.push({
         variantId: variant.id,
         variantTitle: variant.title,
         question: q,
-        normText: normalizeUzbek(
-          `${variant.title} ${q.number}-savol ${q.question} ${q.options.join(" ")}`,
-        ),
+        normText,
+        paddedText: toPaddedSearchText(normText),
       });
     }
   }
 
-  const englishLessons = (ENGLISH_VIDEO_LESSONS as VideoLesson[]).map((lesson) => ({
-    lesson,
-    normText: normalizeUzbek(`${lesson.code} ${lesson.title} ${lesson.category}`),
-  }));
+  const englishLessons = (ENGLISH_VIDEO_LESSONS as VideoLesson[]).map((lesson) => {
+    const normText = normalizeUzbek(`${lesson.code} ${lesson.title} ${lesson.category}`);
+    return {
+      lesson,
+      normText,
+      paddedText: toPaddedSearchText(normText),
+    };
+  });
 
   cachedIndex = {
     topics,
+    topicIdf,
     pdfPages,
     bioQuestions,
     englishLessons,
@@ -403,39 +508,26 @@ export function getKnowledgeIndex(): KnowledgeIndex {
   return cachedIndex;
 }
 
+function detectExplicitSubjects(normText: string): CurriculumSubject[] {
+  const subjects: CurriculumSubject[] = [];
+  if (/\bbotanik/i.test(normText)) subjects.push("Botanika");
+  if (/\bbiokimy/i.test(normText)) subjects.push("Biokimyo");
+  if (/\bgenetik|\bgenomik/i.test(normText)) subjects.push("Genetika");
+  if (/\bmikrobiolog|\bvirusolog|\bbakteriolog/i.test(normText)) subjects.push("Mikrobiologiya");
+  return subjects;
+}
+
 export function detectQueryIntent(
   prompt: string,
   category?: string,
   history?: Array<{ role: string; content: string }>,
 ): QueryIntent {
   const norm = normalizeUzbek(prompt);
-  const recentHistory = normalizeUzbek(
-    (history || [])
-      .slice(-2)
-      .map((h) => h.content)
-      .join(" "),
-  );
-  const combinedNorm = `${norm} ${recentHistory}`.trim();
+  const { tokens, stems } = extractTokens(prompt);
 
-  const subjects: CurriculumSubject[] = [];
-  if (/\bbotanik/i.test(norm) || (subjects.length === 0 && /\bbotanik/i.test(recentHistory))) {
-    subjects.push("Botanika");
-  }
-  if (/\bbiokimy/i.test(norm) || (subjects.length === 0 && /\bbiokimy/i.test(recentHistory))) {
-    subjects.push("Biokimyo");
-  }
-  if (
-    /\bgenetik|\bgenomik/i.test(norm) ||
-    (subjects.length === 0 && /\bgenetik/i.test(recentHistory))
-  ) {
-    subjects.push("Genetika");
-  }
-  if (
-    /\bmikrobiolog|\bvirusolog|\bbakteriolog/i.test(norm) ||
-    (subjects.length === 0 && /\bmikrobiolog|\bvirusolog/i.test(recentHistory))
-  ) {
-    subjects.push("Mikrobiologiya");
-  }
+  // Only inspect explicit subjects in the current prompt first
+  const subjects: CurriculumSubject[] = detectExplicitSubjects(norm);
+  const explicitSubject = subjects.length > 0;
 
   // Extract topic number like "14-mavzu", "mavzu 14", "m09", "9-maruza", "12 mavzu"
   let topicNumber: number | null = null;
@@ -446,6 +538,32 @@ export function detectQueryIntent(
   if (topicNumMatch && topicNumMatch[1]) {
     const parsed = Number(topicNumMatch[1]);
     if (parsed >= 1 && parsed <= 30) topicNumber = parsed;
+  }
+
+  // Inherit context ONLY from the last USER message (never assistant greetings/overviews!) and ONLY on genuine follow-up questions
+  const isFollowUpCue =
+    /\b(taqdimot\w*|slayd\w*|maruza\w*|davom\w*|uning|bunda|shu mavzu|jadval\w*|testi|savoli|formulasi)\b/i.test(
+      norm,
+    );
+  if (!explicitSubject && isFollowUpCue && history && history.length > 0) {
+    const lastUserMsg = [...history].reverse().find((h) => h.role === "user");
+    if (lastUserMsg) {
+      const prevNorm = normalizeUzbek(lastUserMsg.content);
+      const prevSubjects = detectExplicitSubjects(prevNorm);
+      if (prevSubjects.length === 1) {
+        subjects.push(prevSubjects[0]!);
+      }
+      if (topicNumber === null) {
+        const prevTopicMatch =
+          prevNorm.match(/\b(\d{1,2})\s*-?\s*(?:mavzu|maruza|dars)\b/) ||
+          prevNorm.match(/\b(?:mavzu|maruza|dars)\s*-?\s*(\d{1,2})\b/) ||
+          prevNorm.match(/\bm0?(\d{1,2})\b/);
+        if (prevTopicMatch && prevTopicMatch[1]) {
+          const parsed = Number(prevTopicMatch[1]);
+          if (parsed >= 1 && parsed <= 30) topicNumber = parsed;
+        }
+      }
+    }
   }
 
   // Variant / question number
@@ -476,10 +594,10 @@ export function detectQueryIntent(
     /\b(ingliz|english|cefr|ielts|grammar|tense|conditional|passive|present|past|future)\b/i.test(
       norm,
     );
-  const wantsBiologyTests =
-    category === "biologiya" ||
+  const explicitTestRequest =
     variantNumber !== null ||
-    /\b(milliy sertifikat|dtm|test varianti|variant)\b/i.test(norm);
+    /\b(milliy sertifikat|dtm|test varianti|variant|testlarida|test savol)\b/i.test(norm);
+  const wantsBiologyTests = category === "biologiya" || explicitTestRequest;
   const wantsKursIshi =
     category === "kurs_ishi" ||
     /\b(kurs\s+ish|kursish|titul|gost|kirish\s+konstruktor)/i.test(norm);
@@ -491,13 +609,9 @@ export function detectQueryIntent(
     subjects.push("Botanika");
   }
 
-  // Keep combined context awareness available if needed
-  void combinedNorm;
-
-  const { tokens, stems } = extractTokens(prompt);
-
   return {
     subjects,
+    explicitSubject,
     topicNumber,
     preferPresentation,
     preferLecture,
@@ -506,6 +620,7 @@ export function detectQueryIntent(
     questionNumber,
     wantsEnglish,
     wantsBiologyTests,
+    explicitTestRequest,
     wantsKursIshi,
     wantsMustaqilIsh,
     tokens,
@@ -513,54 +628,208 @@ export function detectQueryIntent(
   };
 }
 
-function scoreTextMatch(
-  normText: string,
-  normTitle: string,
+function paddedHasWordOrPrefix(
+  padded: string,
+  token: string,
+  stem: string,
+): "exact" | "prefix" | null {
+  if (padded.includes(` ${token} `)) return "exact";
+  // Only allow word-start prefix match for stems >= 4 chars (prevents "sil" matching "tanosil" or "hosil")
+  if (stem.length >= 4 && padded.includes(` ${stem}`)) return "prefix";
+  return null;
+}
+
+function getTokenWeight(token: string, stem: string, idfMap: Map<string, number>): number {
+  const exactIdf = idfMap.get(token);
+  if (exactIdf !== undefined) return exactIdf;
+  const stemIdf = idfMap.get(stem);
+  if (stemIdf !== undefined) return stemIdf;
+  // Unseen term in curriculum gets high IDF so off-topic queries reveal low coverage
+  return 4.5;
+}
+
+function countPaddedOccurrences(padded: string, needle: string, limit = 5): number {
+  let count = 0;
+  let idx = padded.indexOf(needle);
+  while (idx !== -1 && count < limit) {
+    count++;
+    idx = padded.indexOf(needle, idx + needle.length - 1);
+  }
+  return count;
+}
+
+function scoreTopicRecord(
+  topic: UnifiedTopicRecord,
   intent: QueryIntent,
+  idfMap: Map<string, number>,
+  subjectBoost: boolean,
+  topicNumMatch: boolean,
+): number {
+  // If user explicitly named a DIFFERENT subject (e.g. "Biokimyoda ..."), do not cross-match another subject
+  if (intent.explicitSubject && !subjectBoost) {
+    return 0;
+  }
+
+  // Filter out subject-name tokens when measuring content coverage
+  const subjectWords = new Set([
+    "botanika",
+    "biokimyo",
+    "biokimyoda",
+    "genetika",
+    "genomika",
+    "mikrobiologiya",
+    "mikrobiologiyada",
+    "virusologiya",
+  ]);
+  const contentTokens = intent.tokens.filter((t) => !subjectWords.has(t));
+
+  let score = 0;
+  if (subjectBoost) score += 24;
+  if (topicNumMatch) score += 65;
+
+  const normQuery = contentTokens.join(" ");
+  if (normQuery.length >= 6 && topic.paddedTitle.includes(` ${normQuery} `)) {
+    score += 75;
+  } else if (normQuery.length >= 6 && topic.paddedBody.includes(` ${normQuery} `)) {
+    score += 40;
+  }
+
+  // Reward adjacent 2-word compound phrases in title weighted by IDF (e.g. "ochiq urugli" > "urugli osimliklar")
+  for (let i = 0; i < contentTokens.length - 1; i++) {
+    const w1 = contentTokens[i]!;
+    const w2 = contentTokens[i + 1]!;
+    const s1 = stemUzbekToken(w1);
+    const s2 = stemUzbekToken(w2);
+    if (
+      topic.paddedTitle.includes(` ${w1} ${w2} `) ||
+      (s2.length >= 4 && topic.paddedTitle.includes(` ${w1} ${s2}`))
+    ) {
+      const pairWeight = getTokenWeight(w1, s1, idfMap) + getTokenWeight(w2, s2, idfMap);
+      score += pairWeight * 15;
+    }
+  }
+
+  let matchedCount = 0;
+  let titleOrConceptMatches = 0;
+  let matchedIdf = 0;
+  let totalIdf = 0;
+
+  for (const token of contentTokens) {
+    const stem = stemUzbekToken(token);
+    const weight = getTokenWeight(token, stem, idfMap);
+    totalIdf += weight;
+
+    const titleHit = paddedHasWordOrPrefix(topic.paddedTitle, token, stem);
+    const conceptHit = paddedHasWordOrPrefix(topic.paddedConcepts, token, stem);
+    const bodyHit = paddedHasWordOrPrefix(topic.paddedBody, token, stem);
+
+    if (titleHit || conceptHit || bodyHit) {
+      matchedCount++;
+      matchedIdf += weight;
+
+      if (titleHit === "exact") {
+        titleOrConceptMatches++;
+        score += weight * 11;
+      } else if (titleHit === "prefix") {
+        titleOrConceptMatches++;
+        score += weight * 8.5;
+      }
+
+      if (conceptHit === "exact") {
+        titleOrConceptMatches++;
+        score += weight * 8;
+      } else if (conceptHit === "prefix") {
+        titleOrConceptMatches++;
+        score += weight * 6;
+      }
+
+      if (bodyHit) {
+        const needle = bodyHit === "exact" ? ` ${token} ` : ` ${stem}`;
+        const occ = countPaddedOccurrences(topic.paddedBody, needle, 5);
+        score += weight * (2.5 + occ * 0.9);
+      }
+    }
+  }
+
+  // Strict precision gate when no topic number was explicitly requested:
+  // prevents off-topic questions ("O'zbekiston poytaxti qayer?") from returning random lectures
+  if (!topicNumMatch && contentTokens.length > 0) {
+    if (matchedCount === 0) return 0;
+    const idfCoverage = totalIdf > 0 ? matchedIdf / totalIdf : 0;
+
+    if (
+      contentTokens.length >= 2 &&
+      titleOrConceptMatches === 0 &&
+      idfCoverage < (subjectBoost ? 0.35 : 0.48)
+    ) {
+      return 0;
+    }
+    if (contentTokens.length === 1 && titleOrConceptMatches === 0 && score < 24) {
+      return 0;
+    }
+    if (contentTokens.length >= 2 && matchedCount >= 2) {
+      score += matchedCount * 10;
+    }
+    // Bonus for covering most of the query's high-IDF terms
+    score += idfCoverage * 24;
+  }
+
+  return score;
+}
+
+function scorePaddedTextMatch(
+  paddedText: string,
+  paddedTitle: string,
+  intent: QueryIntent,
+  idfMap: Map<string, number>,
   subjectBoost: boolean,
   topicNumMatch: boolean,
 ): number {
   let score = 0;
 
-  if (subjectBoost) score += 28;
-  if (topicNumMatch) score += 45;
+  if (subjectBoost) score += 22;
+  if (topicNumMatch) score += 55;
 
-  const normQuery = normalizeUzbek(intent.tokens.join(" "));
-  if (normQuery.length >= 6 && normText.includes(normQuery)) {
-    score += 40;
-  }
-  if (normQuery.length >= 6 && normTitle.includes(normQuery)) {
+  const normQuery = intent.tokens.join(" ");
+  if (normQuery.length >= 6 && paddedTitle.includes(` ${normQuery} `)) {
     score += 55;
+  }
+  if (normQuery.length >= 6 && paddedText.includes(` ${normQuery} `)) {
+    score += 36;
   }
 
   let matchedTokens = 0;
+  let matchedIdf = 0;
+  let totalIdf = 0;
+
   for (const token of intent.tokens) {
-    const inTitle = normTitle.includes(token);
-    const inText = normText.includes(token);
+    const stem = stemUzbekToken(token);
+    const weight = getTokenWeight(token, stem, idfMap);
+    totalIdf += weight;
+
+    const inTitle = paddedTitle ? paddedHasWordOrPrefix(paddedTitle, token, stem) : null;
+    const inText = paddedHasWordOrPrefix(paddedText, token, stem);
     if (inTitle || inText) {
       matchedTokens++;
-      if (inTitle) score += 16;
+      matchedIdf += weight;
+      if (inTitle) score += weight * (inTitle === "exact" ? 8 : 6);
       if (inText) {
-        // Count bounded occurrences up to 5 to reward dense relevance
-        const firstIdx = normText.indexOf(token);
-        let count = 0;
-        let idx = firstIdx;
-        while (idx !== -1 && count < 5) {
-          count++;
-          idx = normText.indexOf(token, idx + token.length);
-        }
-        score += 6 + count * 2;
+        const needle = inText === "exact" ? ` ${token} ` : ` ${stem}`;
+        const occ = countPaddedOccurrences(paddedText, needle, 5);
+        score += weight * (2 + occ * 0.8);
       }
     }
   }
 
-  for (const stem of intent.stems) {
-    if (normTitle.includes(stem)) score += 7;
-    if (normText.includes(stem)) score += 4;
-  }
-
-  if (intent.tokens.length > 1 && matchedTokens >= Math.min(3, intent.tokens.length)) {
-    score += matchedTokens * 8;
+  if (!topicNumMatch && intent.tokens.length > 0) {
+    if (matchedTokens === 0) return 0;
+    const coverage = totalIdf > 0 ? matchedIdf / totalIdf : 0;
+    if (intent.tokens.length >= 2 && coverage < 0.42 && matchedTokens < 2) {
+      return 0;
+    }
+    if (matchedTokens >= Math.min(2, intent.tokens.length)) {
+      score += matchedTokens * 8;
+    }
   }
 
   return score;
@@ -574,7 +843,7 @@ export function retrieveKnowledge(
   const index = getKnowledgeIndex();
   const intent = detectQueryIntent(prompt, category, history);
 
-  // 1. Score structured textbook topics (Botanika 1-30, Biokimyo 1-15, Genetika 1-15)
+  // 1. Score structured textbook topics (Botanika 1-30, Biokimyo 1-15, Genetika 1-15, Mikrobiologiya 1-16)
   const scoredTopics = index.topics
     .map((topic) => {
       const subjectBoost = intent.subjects.length > 0 && intent.subjects.includes(topic.subject);
@@ -583,61 +852,58 @@ export function retrieveKnowledge(
         topic.order === intent.topicNumber &&
         (intent.subjects.length === 0 || subjectBoost);
 
-      const score = scoreTextMatch(
-        topic.normBody,
-        topic.normTitle,
-        intent,
-        subjectBoost,
-        topicNumMatch,
-      );
+      const score = scoreTopicRecord(topic, intent, index.topicIdf, subjectBoost, topicNumMatch);
       return { topic, score };
     })
-    .filter((entry) => entry.score > 10)
+    .filter((entry) => entry.score >= 22)
     .sort((a, b) => b.score - a.score)
     .slice(0, 4);
 
-  // 2. Score all 1,988 PDF pages (lectures + presentations + 30-variant PDF)
+  // 2. Score all 2,222 PDF pages (lectures + presentations + 30-variant PDF)
   const scoredPdfPages = index.pdfPages
     .map((item) => {
       const subjectMatch =
         intent.subjects.length > 0 &&
         intent.subjects.some((s) => item.doc.subject.toLowerCase().includes(s.toLowerCase()));
 
-      // Match against PDF order OR topicLabel ("19-mavzu" has order 19 in Botanika!)
+      if (intent.explicitSubject && !subjectMatch) {
+        return { item, score: 0 };
+      }
+
       const topicNumMatch =
         intent.topicNumber !== null &&
         item.doc.order === intent.topicNumber &&
         (intent.subjects.length === 0 || subjectMatch);
 
-      let score = scoreTextMatch(
-        item.normText,
-        item.normTitle,
+      let score = scorePaddedTextMatch(
+        item.paddedText,
+        item.paddedTitle,
         intent,
+        index.topicIdf,
         subjectMatch,
         topicNumMatch,
       );
 
-      // Boost presentation slides or lecture pages if requested
+      if (score <= 0) return { item, score: 0 };
+
       const kindNorm = normalizeUzbek(item.doc.kind);
       if (intent.preferPresentation && kindNorm.includes("taqdimot")) score += 20;
       if (intent.preferLecture && kindNorm.includes("maruza")) score += 20;
 
-      // Also boost pages from the top matched textbook topic(s) so Gemini sees BOTH Ma'ruza matni AND Taqdimot
       if (scoredTopics.some((st) => st.topic.id === item.doc.topicId)) {
         score += 18;
       }
 
-      // Skip boilerplate title pages when body content pages match better unless topic explicitly requested
       if (item.page.t.length < 100 && !topicNumMatch) {
         score -= 12;
       }
 
       return { item, score };
     })
-    .filter((entry) => entry.score > 12)
+    .filter((entry) => entry.score >= 24)
     .sort((a, b) => b.score - a.score);
 
-  // Diversify top PDF pages so we capture both Taqdimot and Ma'ruza matni and avoid 10 pages from one tiny slide deck crowding out others
+  // Diversify top PDF pages so we capture both Taqdimot and Ma'ruza matni
   const selectedPdfPages: Array<{ item: IndexedPdfPage; score: number }> = [];
   const docPageCounts = new Map<string, number>();
   for (const candidate of scoredPdfPages) {
@@ -649,7 +915,7 @@ export function retrieveKnowledge(
     if (selectedPdfPages.length >= 12) break;
   }
 
-  // If user asked for a specific topic (e.g. "Genetika 9-mavzu" or "Botanika 20-mavzu"), make sure at least 2 slides from Taqdimot and 2 pages from Ma'ruza matni are included
+  // Ensure both Taqdimot and Ma'ruza matni appear when a specific topic number is requested
   if (intent.topicNumber !== null && scoredTopics.length > 0) {
     const primaryTopic = scoredTopics[0]!.topic;
     const topicDocs = index.pdfPages.filter((p) => p.doc.topicId === primaryTopic.id);
@@ -666,7 +932,6 @@ export function retrieveKnowledge(
     }
     for (const [kind, pages] of docsByKind.entries()) {
       if (!seenKinds.has(kind)) {
-        // Add substantive early pages (e.g. agenda + key content slides)
         for (const p of pages.slice(0, 3)) {
           if (
             !selectedPdfPages.some(
@@ -692,33 +957,48 @@ export function retrieveKnowledge(
       scoredBioQuestions = variantMatches
         .map((item) => ({
           item,
-          score: scoreTextMatch(item.normText, "", intent, false, false) + 50,
+          score:
+            scorePaddedTextMatch(item.paddedText, "", intent, index.topicIdf, false, false) + 50,
         }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 5);
     } else {
       scoredBioQuestions = variantMatches.slice(0, 5).map((item) => ({ item, score: 100 }));
     }
-  } else if (intent.tokens.length > 0) {
+  } else if (intent.tokens.length > 0 && !intent.explicitSubject) {
     scoredBioQuestions = index.bioQuestions
       .map((item) => ({
         item,
-        score: scoreTextMatch(item.normText, "", intent, intent.wantsBiologyTests, false),
+        score: scorePaddedTextMatch(
+          item.paddedText,
+          "",
+          intent,
+          index.topicIdf,
+          intent.explicitTestRequest,
+          false,
+        ),
       }))
-      .filter((entry) => entry.score >= (intent.wantsBiologyTests ? 20 : 38))
+      .filter((entry) => entry.score >= (intent.explicitTestRequest ? 26 : 45))
       .sort((a, b) => b.score - a.score)
       .slice(0, 4);
   }
 
   // 4. Score English video lessons (180 lessons)
   let scoredEnglish: Array<{ lesson: VideoLesson; score: number }> = [];
-  if (intent.wantsEnglish || intent.tokens.length > 0) {
+  if (intent.wantsEnglish || (!intent.explicitSubject && intent.tokens.length > 0)) {
     scoredEnglish = index.englishLessons
       .map((entry) => ({
         lesson: entry.lesson,
-        score: scoreTextMatch(entry.normText, entry.normText, intent, intent.wantsEnglish, false),
+        score: scorePaddedTextMatch(
+          entry.paddedText,
+          entry.paddedText,
+          intent,
+          index.topicIdf,
+          intent.wantsEnglish,
+          false,
+        ),
       }))
-      .filter((entry) => entry.score >= (intent.wantsEnglish ? 25 : 42))
+      .filter((entry) => entry.score >= (intent.wantsEnglish ? 26 : 55))
       .sort((a, b) => b.score - a.score)
       .slice(0, 8);
   }
@@ -840,6 +1120,204 @@ export function buildGroundedPromptContext(
   };
 }
 
+function matchCoreBiologyReferenceCard(normPrompt: string, intent: QueryIntent): string {
+  // Only apply cross-topic cards when user did NOT ask for a specific topic number or specific Milliy sertifikat variant
+  if (intent.topicNumber !== null || intent.variantNumber !== null) return "";
+
+  // 1. Fotosintez (yorug'lik va qorong'ulik bosqichlari)
+  if (/\bfotosintez/i.test(normPrompt)) {
+    return `🌿 **Fotosintezning Yorug‘lik va Qorong‘ulik Bosqichlari Tahlili**
+_Bog‘liq darsliklar: Botanika 2-mavzu (Xloroplastlar), Botanika 10-mavzu (Barg mezofilli), Biokimyo 6-mavzu (Uglevodlar)_
+
+### 1. Umumiy reaksiya tenglamasi
+\`6CO₂ + 6H₂O + quyosh nuri (xlorofill) → C₆H₁₂O₆ + 6O₂↑\`
+
+### 2. Qiyosiy jadval: Yorug‘lik vs Qorong‘ulik bosqichi
+| Mezon | Yorug‘lik bosqichi (Fotokimyoviy) | Qorong‘ulik bosqichi (Kalvin sikli) |
+| --- | --- | --- |
+| **Qayerda boradi?** | Xloroplast **tilakoid membranalarida** (granalarda) | Xloroplast **stromasida** |
+| **Yorug‘lik talabi** | Bevosita yorug‘lik energiyasi shart | Bevosita yorug‘lik shart emas (ATF va NADF·H₂ kerak) |
+| **Asosiy jarayonlar** | Xlorofillning qo‘zg‘alishi, **suv fotolizi** (\`2H₂O → 4H⁺ + 4e⁻ + O₂↑\`), fotofosforillanish | **CO₂ fiksatsiyasi** (RuBisCO fermenti orqali), qaytarilish, ribulozo-1,5-difosfat regeneratsiyasi |
+| **Hosil bo‘ladigan mahsulotlar** | **O₂** (atmosferaga chiqadi), **ATF** va **NADF·H₂** | **Glyukoza (C₆H₁₂O₆)** va boshqa organik uglevodlar (kraxmal) |
+
+> 💡 **Muhim eslatma (Milliy sertifikat uchun):** Atmosferaga ajralib chiqadigan erkin kislorod (**O₂**) aynan **suv (H₂O) fotolizidan** hosil bo‘ladi, CO₂ dan emas!`;
+  }
+
+  // 2. Mitoz va Meyoz farqi
+  if (/\bmitoz/i.test(normPrompt) && /\bmeyoz/i.test(normPrompt)) {
+    return `🧬 **Mitoz va Meyoz Bo‘linishlarining Qiyosiy Tahlili**
+_Bog‘liq darsliklar: Botanika 2–3-mavzular (Hujayra va to‘qimalar), Genetika 2 va 8-mavzular (Xromosomalar va irsiyat)_
+
+### 📊 Mitoz vs Meyoz qiyosiy jadvali
+| Xususiyat | Mitoz (Somatik bo‘linish) | Meyoz (Reduksion bo‘linish) |
+| --- | --- | --- |
+| **Qaysi hujayralarda?** | Somatik (tana) hujayralarda | Jinsiy hujayralar (gametalar) va o‘simlik sporalarida |
+| **Bo‘linishlar soni** | 1 marta bo‘linish (profaza, metafaza, anafaza, telofaza) | 2 ta ketma-ket bo‘linish (**Meyoz I** — reduksion, **Meyoz II** — ekvatsion) |
+| **Hosil bo‘ladigan hujayralar** | **2 ta** genetik bir xil qiz hujayra | **4 ta** genetik xilma-xil qiz hujayra |
+| **Xromosoma to‘plami** | Saqlanib qoladi (**2n → 2n**) | Ikki baravar kamayadi (**2n → n**) |
+| **Konyugatsiya va krossingover** | Sodir bo‘lmaydi | **Profaza I** bosqichida sodir bo‘ladi (genetik rekombinatsiya!) |
+| **Biologik ahamiyati** | O‘sish, regeneratsiya, jinssiz ko‘payish | Jinsiy ko‘payish, tur xromosoma soni doimiyligi va kombinativ o‘zgaruvchanlik |
+
+### 🔎 Bosqichlarning qisqa formulasi (DNK — c, xromosoma — n)
+- **Mitoz:** Interfaza oxiri \`2n4c\` → Metafaza \`2n4c\` → Anafaza \`4n4c\` → Telofaza (har bir hujayrada) \`2n2c\`.
+- **Meyoz I:** Profaza I / Metafaza I \`2n4c\` → Telofaza I \`1n2c\`.
+- **Meyoz II:** Anafaza II \`2n2c\` → Telofaza II (4 ta hujayrada) \`1n1c\`.`;
+  }
+
+  // 3. Odam anatomiyasi: Katta va kichik qon aylanish doiralari
+  if (
+    /\bqon\s+aylanish/i.test(normPrompt) ||
+    (/\bkatta\b/i.test(normPrompt) && /\bkichik\b/i.test(normPrompt) && /\bqon\b/i.test(normPrompt))
+  ) {
+    return `❤️ **Odam Anatomiyasi: Katta va Kichik Qon Aylanish Doiralari**
+_Bo‘lim: Biologiya (Milliy sertifikat) — Odam anatomiyasi va fiziologiyasi_
+
+Odam yuragi 4 kamerali (2 bo‘lmacha + 2 qorincha) bo‘lib, qon ikki yopiq doira bo‘ylab harakatlanadi:
+
+### 1. Katta qon aylanish doirasi (Tana doirasi — ~20–23 soniya)
+- **Boshlanishi:** **Chap qorincha** → **Aorta** (eng yirik arteriya) → arteriyalar → arteriolalar → tana a’zolari va to‘qimalari kapillyarlari.
+- **Gazlar almashinuvi:** To‘qimalarga **O₂** va oziqa moddalar berilib, **CO₂** olinadi (*arterial qon venoz qonga aylanadi*).
+- **Tugashi:** Yuqori va pastki **kovak venalar** orqali **o‘ng bo‘lmachaga** quyiladi.
+
+### 2. Kichik qon aylanish doirasi (O‘pka doirasi — ~4–5 soniya)
+- **Boshlanishi:** **O‘ng qorincha** → **o‘pka arteriyasi** (ichida **venoz qon** oqadi!) → o‘pka alveolalari kapillyarlari.
+- **Gazlar almashinuvi:** CO₂ chiqarilib, qon kislorod (**O₂**) bilan to‘yinadi (*venoz qon arterial qonga aylanadi*).
+- **Tugashi:** 4 ta **o‘pka venasi** (ichida **arterial qon** oqadi!) orqali **chap bo‘lmachaga** quyiladi.
+
+### 📊 Milliy sertifikat uchun muhim farqlar
+| Mezon | Katta doira | Kichik (o‘pka) doira |
+| --- | --- | --- |
+| **Qayerdan boshlanadi?** | Chap qorincha | O‘ng qorincha |
+| **Qayerda tugaydi?** | O‘ng bo‘lmacha | Chap bo‘lmacha |
+| **Arteriyalarida qanday qon?** | Arterial (O₂ ga boy) | **Venoz** (CO₂ ga boy) |
+| **Venalarida qanday qon?** | Venoz (CO₂ ga boy) | **Arterial** (O₂ ga boy) |`;
+  }
+
+  // 4. DNK masalalari formulalari va Chargaff qoidasi
+  if (
+    (/\bchargaff/i.test(normPrompt) ||
+      (/\bdnk\b/i.test(normPrompt) &&
+        /\b(masala|formula|qoida|foiz|uzunlik|vodorod)/i.test(normPrompt))) &&
+    !/\breplikatsiy/i.test(normPrompt)
+  ) {
+    return `🧬 **DNK Masalalarini Yechish Formulalari va Chargaff Qoidasi**
+_Bog‘liq darsliklar: Biokimyo 4–5-mavzular (Nuklein kislotalar, DNK va RNK), Genetika 3-mavzu_
+
+### 1. Chargaff qoidasi (komplementarlik qonuni)
+Qo‘sh zanjirli DNK molekulasida:
+- **A = T** (Adenin soni Timin soniga teng)
+- **G = S** (Guanin soni Sitozin soniga teng)
+- **A + G = T + S = 50%** (purin asoslari yig‘indisi pirimidin asoslari yig‘indisiga teng)
+- **A + T + G + S = 100%** (yoki jami nukleotidlar soni \`N\`)
+
+### 2. Asosiy hisoblash formulalari
+| Ko‘rsatkich | Formula | Izoh |
+| --- | --- | --- |
+| **Vodorod bog‘lari soni (H)** | \`H = 2A + 3G\` (yoki \`H = N/2 + G\`) | A=T orasida 2 ta, G≡S orasida 3 ta H-bog‘ |
+| **DNK uzunligi (L)** | \`L = (N / 2) × 0.34 nm\` | 1 juft nukleotid oralig‘i = **0.34 nm** |
+| **DNK massasi (M)** | \`M = N × 345 Da\` | 1 nukleotid o‘rtacha massasi = **345** (yoki 300) |
+| **Fosfodiefir bog‘lar** | \`N - 2\` | Har bir zanjirda \`(N/2) - 1\` ta |
+| **i-RNK / Oqsil aloqasi** | \`1 aminokislota = 3 nukleotid (i-RNK) = 6 nukleotid (DNK)\` | 1 triplet (kodon) = 3 ta nukleotid |
+
+> 📌 **Tezkor misol:** Agar DNKda \`A = 20%\` bo‘lsa: \`T = 20%\`, \`G + S = 60%\` → \`G = 30%\`, \`S = 30%\`.`;
+  }
+
+  // 5. Mendelning 1, 2 va 3-qonunlari
+  if (/\bmendel/i.test(normPrompt) && /\b(qonun|chatishtir|formula|1|2|3)/i.test(normPrompt)) {
+    return `🧬 **Mendelning 1-, 2- va 3-Qonunlari va Chatishtirish Formulalari**
+_Bog‘liq darsliklar: Genetika 1-, 2- va 4-mavzular (Genetik tahlil, allel genlarning o‘zaro ta’siri)_
+
+### 1. Birinchi qonun — Birinchi avlod duragaylarining bir xillik qonuni
+- **Chatishtirish:** \`AA × aa\` (gomozigota dominant × gomozigota retsessiv)
+- **Natija ($F_1$):** 100% bir xil **Aa** (genotipi va fenotipi bo‘yicha bir xil).
+
+### 2. Ikkinchi qonun — Belgilarning ajralish qonuni (Monoduragay)
+- **Chatishtirish:** \`Aa × Aa\`
+- **Genotip nisbati ($F_2$):** **1 AA : 2 Aa : 1 aa** (3 xil genotip)
+- **Fenotip nisbati ($F_2$):**
+  - To‘liq dominantlikda: **3 : 1** (75% dominant, 25% retsessiv)
+  - Chala dominantlikda: **1 : 2 : 1**
+
+### 3. Uchinchi qonun — Belgilarning mustaqil taqsimlanish qonuni (Diduragay)
+- **Chatishtirish:** \`AaBb × AaBb\` (har bir ota-ona 4 xil gameta: \`AB, Ab, aB, ab\`)
+- **Fenotip nisbati ($F_2$):** **9 : 3 : 3 : 1** (16 ta kombinatsiya, 4 xil fenotip, 9 xil genotip)
+- **Umumiy formulalar ($n$ ta geterozigota juftlik uchun):**
+  - Gametalar turi: \`2ⁿ\` | Fenotiplar soni: \`2ⁿ\` | Genotiplar soni: \`3ⁿ\` | Pennet kataklari: \`4ⁿ\`.`;
+  }
+
+  // 6. Viruslar va bakteriyalar farqi
+  if (/\bvirus/i.test(normPrompt) && /\bbakteriy/i.test(normPrompt)) {
+    return `🧫 **Viruslar va Bakteriyalarning Asosiy Farqlari**
+_Bog‘liq darsliklar: Mikrobiologiya 1–2-mavzular (Bakteriyalar tuzilishi), 6-mavzu (Bakteriofaglar), 7-mavzu (Antibiotiklar)_
+
+| Taqqoslash mezoni | Bakteriyalar | Viruslar |
+| --- | --- | --- |
+| **Tuzilish darajasi** | **Prokariot hujayrali** tirik organizm | **Hujayrasiz** hayot shakli (nuklein kislota + oqsil kapsid) |
+| **O‘lchami** | 0.5 – 5 mkm (yorug‘lik mikroskopida ko‘rinadi) | 20 – 300 nm (faqat elektron mikroskopda ko‘rinadi) |
+| **Genetik material** | Bir vaqtning o‘zida ham **DNK**, ham **RNK** mavjud | Faqat **DNK** YOKI faqat **RNK** bo‘ladi |
+| **Hujayra devori va ribosoma** | Peptidoglikan (murein) devor + **70S ribosomalar** bor | Hujayra devori va ribosomasi **yo‘q** |
+| **Ko‘payishi** | Mustaqil **binar (ikkiga) bo‘linish** orqali | Faqat tirik xo‘jayin hujayra ichida (**obligat ichki hujayra paraziti**) |
+| **Antibiotiklarga sezgirligi** | **Sezgir** (penitsillin, tetratsiklin va b. ta’sir qiladi) | **Ta’sir qilmaydi!** (Faqat virusga qarshi preparatlar va interferon) |
+
+> 💡 **Qiziqarli fakt (Mikrobiologiya 6-mavzu):** Bakteriyalarni zararlaydigan maxsus viruslar **bakteriofaglar** deyiladi.`;
+  }
+
+  // 7. Biokimyoda ATF tuzilishi va energetik ahamiyati
+  if (
+    /\batf\b/i.test(normPrompt) &&
+    /\b(tuzilish|energetik|ahamiyat|nima|bog|vazifa)/i.test(normPrompt)
+  ) {
+    return `🧪 **Biokimyoda ATF (Adenozintrifosfat) ning Tuzilishi va Energetik Ahamiyati**
+_Bog‘liq darsliklar: Biokimyo 4-mavzu (Nuklein kislotalar), 12-mavzu (Moddalar almashinuvi), 14-mavzu (Glikoliz va Krebs sikli)_
+
+### 1. Kimyoviy tuzilishi
+**ATF** — erkin ribonukleotid bo‘lib, 3 ta tarkibiy qismdan iborat:
+1. **Adenin** (purin azotli asosi)
+2. **Riboza** (5 uglerodli pentoza shakar)
+3. **3 ta fosfat kislota qoldig‘i** — bunda oxirgi 2 ta fosfat bog‘i **makroergik bog‘ (\`~\`)** hisoblanadi:
+   \`Adenin — Riboza — P ~ P ~ P\`
+
+### 2. Energetik ahamiyati
+- Har bir makroergik bog‘ gidrolizlanganda katta energiya ajraladi:
+  - \`ATF + H₂O → ADF + H₃PO₄ + ~30.5–40 kJ/mol\`
+  - \`ADF + H₂O → AMF + H₃PO₄ + ~30.5–40 kJ/mol\`
+- **Hujayraning universal energetik valyutasi:** Biosintez (oqsil, DNK, RNK sintezi), aktiv transport (Na⁺/K⁺-nasos), mushak qisqarishi va nerv impulsi o‘tkazilishini energiya bilan ta’minlaydi.
+
+### 3. ATF sintezlanish bosqichlari (1 mol glyukozadan)
+- **Glikoliz (anaerob bosqich, sitoplazmada):** **2 mol ATF** (Biokimyo 13–14-mavzular)
+- **Krebs sikli + Oksidlanishli fosforillanish (mitoxondriyada):** **36 mol ATF**
+- **Jami aerob parchalanishda:** **38 mol ATF** hosil bo‘ladi.`;
+  }
+
+  // 8. Milliy sertifikat Sitologiya masalalari
+  if (
+    /\bsitologiy/i.test(normPrompt) &&
+    /\b(masala|test|milliy sertifikat|formul)/i.test(normPrompt)
+  ) {
+    return `🔬 **Milliy Sertifikat Testlarida Ko‘p Tushadigan Sitologiya Masalalari va Formulalari**
+_Bog‘liq bo‘limlar: Biologiya Milliy sertifikat (30 variant · 900 savol), Botanika 2-mavzu, Biokimyo 13–14-mavzular_
+
+### 1. Organoidlar tasnifi (Testlarda eng ko‘p tushadi)
+- **Ikki membranali (yarim avtonom, o‘z DNK va 70S ribosomasi bor):** Mitoxondriya, plastidalar (xloroplast, xromoplast, leykoplast) + Yadro.
+- **Bir membranali:** Endoplazmatik to‘r (silliq va donador), Golji apparati, lizosoma, vakuola, peroksisoma.
+- **Membranasiz:** Ribosoma (80S eukariot / 70S prokariot), hujayra markazi (sentriola), sitoskelet.
+
+### 2. Energetik almashinuv (Glyukoza parchalanishi) masalalari
+- **1 mol glyukoza → Glikoliz (anaerob):** \`2 mol sut kislota + 2 mol ATF\` (200 kJ: 80 kJ ATFda, 120 kJ issiqlik).
+- **1 mol glyukoza → Kislorodli (aerob, mitoxondriya):** \`36 mol ATF\` (2600 kJ: 1440 kJ ATFda).
+- **To‘liq aerob parchalanish:** \`1 mol glyukoza + 6 O₂ → 6 CO₂ + 6 H₂O + 38 ATF\`.
+
+### 3. Oqsil biosintezi va DNK masalalari
+- \`1 aminokislota = 1 kodon (3 nukleotid i-RNK) = 6 nukleotid qo‘sh zanjirli DNK\`.
+- \`Peptid bog‘lar soni = Aminokislotalar soni - 1\` (har bir bog‘da 1 molekula \`H₂O\` ajraladi).
+- \`1 aminokislota o‘rtacha massasi = 110–120 Da\`, \`1 nukleotid = 345 Da\`.
+
+> 📌 Aniq test mashqi uchun **«Variant 1 2-savol»** kabi so‘rov yozing yoki **Biologiya (Milliy sertifikat)** bo‘limida 30 ta variantni yeching!`;
+  }
+
+  return "";
+}
+
 export function synthesizeGroundedFallback(
   prompt: string,
   category?: string,
@@ -860,8 +1338,14 @@ export function synthesizeGroundedFallback(
     return "";
   }
 
-  // 1. Biology test question exact lookup
-  if (hit.bioQuestions.length > 0 && (intent.wantsBiologyTests || hit.topics.length === 0)) {
+  // 0. Core cross-topic biology/biochemistry reference cards (Fotosintez, Mitoz/Meyoz, Qon aylanish, Chargaff/DNK, Mendel, Virus/Bakteriya, ATF)
+  const coreCard = matchCoreBiologyReferenceCard(normPrompt, intent);
+  if (coreCard) {
+    return coreCard;
+  }
+
+  // 1. Biology Milliy sertifikat exact test question lookup (ONLY when explicitly asking for variant/test/savol OR when no textbook topic matched strongly)
+  if (hit.bioQuestions.length > 0 && (intent.explicitTestRequest || hit.topics.length === 0)) {
     const lines = hit.bioQuestions.map(({ item }) => {
       const q = item.question;
       return `### 📌 ${item.variantTitle} — ${q.number}-savol\n**Savol:** ${q.question}\n\n**Variantlar:**\n${q.options.map((o) => `- ${o}`).join("\n")}\n\n✅ **Rasmiy to‘g‘ri javob:** **${q.correctAnswer}**`;
@@ -950,12 +1434,18 @@ export function synthesizeGroundedFallback(
 
     // Surface directly matched key concepts or self-check Q&A right at the top for fast precision
     const directConcepts = primary.keyConcepts.filter((c) => {
-      const cNorm = normalizeUzbek(`${c.term} ${c.definition}`);
-      return intent.tokens.some((tok) => tok.length >= 3 && cNorm.includes(tok));
+      const cPadded = toPaddedSearchText(normalizeUzbek(`${c.term} ${c.definition}`));
+      return intent.tokens.some((tok) => {
+        const st = stemUzbekToken(tok);
+        return paddedHasWordOrPrefix(cPadded, tok, st) !== null;
+      });
     });
     const directQAs = primary.selfCheckQuestions.filter((qa) => {
-      const qNorm = normalizeUzbek(`${qa.question} ${qa.answer}`);
-      return intent.tokens.some((tok) => tok.length >= 4 && qNorm.includes(tok));
+      const qPadded = toPaddedSearchText(normalizeUzbek(`${qa.question} ${qa.answer}`));
+      return intent.tokens.some((tok) => {
+        const st = stemUzbekToken(tok);
+        return tok.length >= 4 && paddedHasWordOrPrefix(qPadded, tok, st) !== null;
+      });
     });
 
     if (directConcepts.length > 0 && intent.topicNumber === null) {
@@ -981,19 +1471,22 @@ export function synthesizeGroundedFallback(
     }
 
     if (primary.sections.length > 0) {
-      // Rank sections by relevance to user's query while keeping logical order when topic number asked
       const relevantSections =
         intent.topicNumber !== null
           ? primary.sections
           : [...primary.sections].sort((a, b) => {
-              const aNorm = normalizeUzbek(
-                `${a.heading} ${a.content} ${(a.highlights || []).join(" ")}`,
+              const aPadded = toPaddedSearchText(
+                normalizeUzbek(`${a.heading} ${a.content} ${(a.highlights || []).join(" ")}`),
               );
-              const bNorm = normalizeUzbek(
-                `${b.heading} ${b.content} ${(b.highlights || []).join(" ")}`,
+              const bPadded = toPaddedSearchText(
+                normalizeUzbek(`${b.heading} ${b.content} ${(b.highlights || []).join(" ")}`),
               );
-              const aHits = intent.tokens.filter((t) => aNorm.includes(t)).length;
-              const bHits = intent.tokens.filter((t) => bNorm.includes(t)).length;
+              const aHits = intent.tokens.filter(
+                (t) => paddedHasWordOrPrefix(aPadded, t, stemUzbekToken(t)) !== null,
+              ).length;
+              const bHits = intent.tokens.filter(
+                (t) => paddedHasWordOrPrefix(bPadded, t, stemUzbekToken(t)) !== null,
+              ).length;
               return bHits - aHits;
             });
 
@@ -1021,11 +1514,13 @@ export function synthesizeGroundedFallback(
       );
     }
 
-    // Add matching PDF / Presentation excerpts (prioritize presentation if user asked for taqdimot/slayd)
     const sliceLimit = intent.preferPresentation ? 4 : 3;
-    const matchingPdfSlices = hit.pdfPages
-      .filter((p) => p.item.doc.topicId === primary.id || hit.pdfPages.indexOf(p) < sliceLimit)
+    const primaryPdfSlices = hit.pdfPages
+      .filter((p) => p.item.doc.topicId === primary.id)
       .slice(0, sliceLimit);
+    const matchingPdfSlices =
+      primaryPdfSlices.length > 0 ? primaryPdfSlices : hit.pdfPages.slice(0, sliceLimit);
+
     if (matchingPdfSlices.length > 0) {
       parts.push(`\n### 5. Biriktirilgan PDF va Taqdimot ma’lumotlari`);
       matchingPdfSlices.forEach(({ item }) => {
@@ -1050,8 +1545,8 @@ export function synthesizeGroundedFallback(
     return parts.join("\n");
   }
 
-  // 5. Direct PDF page matches even if not tied to top topic
-  if (hit.pdfPages.length > 0) {
+  // 5. Direct PDF page matches even if not tied to top topic (strict threshold so off-topic queries don't leak)
+  if (hit.pdfPages.length > 0 && hit.pdfPages[0]!.score >= 34) {
     const snippets = hit.pdfPages
       .slice(0, 4)
       .map(
@@ -1076,6 +1571,7 @@ export function synthesizeGroundedFallback(
 // 100% Offline, zero-token academic guide (no external AI API calls)
 export function generateAcademicGuide(prompt: string, category?: string): string {
   const p = prompt.toLowerCase().trim();
+  const norm = normalizeUzbek(prompt);
 
   // Greetings & polite responses
   if (/^(assalom|salom|privet|hello|hi|hayrli|xayrli)\b/i.test(p) && p.length < 45) {
@@ -1095,19 +1591,18 @@ Quyidagi fanlar bo‘yicha istalgan mavzu, atama, formula yoki test savolini yoz
     return `Arzimaydi! O‘qishingizda ulkan muvaffaqiyatlar tilayman. 🎓 Yana qaysi fan, mavzu yoki test savoli bo‘yicha yordam kerak bo‘lsa, bemalol yozing!`;
   }
 
-  // 1. Kurs ishi (with dynamic custom 2-bobli plan if a topic in quotes is provided)
+  // 1. Kurs ishi (with accurate quote detection that ignores Uzbek apostrophes like ro'yxatini / bo'yicha)
   if (
     category === "kurs_ishi" ||
     p.includes("kurs ishi") ||
     p.includes("kursishi") ||
-    p.includes("reja") ||
-    p.includes("kirish") ||
-    p.includes("adabiyotlar") ||
-    p.includes("titul") ||
-    p.includes("gost")
+    /\b(reja|kirish|adabiyotlar|titul|gost)\b/i.test(norm)
   ) {
-    const quotedTopic = prompt.match(/['"«“]([^'"»”]{4,120})['"»”]/)?.[1]?.trim();
-    if (quotedTopic) {
+    // Only capture actual quotation marks surrounded by whitespace/punctuation (never apostrophes inside Uzbek words!)
+    const quotedTopic =
+      prompt.match(/(?:^|[\s:(])['"«“]([^'"»”]{5,120})['"»”](?=$|[\s.,:;!?)])/u)?.[1]?.trim() ||
+      null;
+    if (quotedTopic && /\b(reja|mavzu|bob|tuz)\b/i.test(norm)) {
       return `📚 **"${quotedTopic}" mavzusi bo‘yicha 2 bobli standart Kurs ishi rejasi**
 
 **KIRISH** *(2–3 bet)*
@@ -1130,6 +1625,47 @@ Quyidagi fanlar bo‘yicha istalgan mavzu, atama, formula yoki test savolini yoz
 > 📌 **Texnik talab (GOST):** Times New Roman, 14 pt, 1.5 interval; hoshiyalar: chap 30 mm, o‘ng 15 mm, yuqori/pastki 20 mm. Tayyor shablonni **"Kurs ishi"** bo‘limidan yuklab olishingiz mumkin!`;
     }
 
+    if (/\b(gost|adabiyot|manba)/i.test(norm)) {
+      return `📖 **Foydalanilgan Adabiyotlar Ro‘yxatini GOST Talabi Bo‘yicha Rasmiylashtirish**
+
+Adabiyotlar ro‘yxati odatda **15–20 ta manbadan** iborat bo‘lib, quyidagi tartibda joylashtiriladi:
+1. **Qonunlar va me’yoriy hujjatlar** (O‘zbekiston Respublikasi Qonunlari, Prezident Farmonlari)
+2. **Darslik va o‘quv qo‘llanmalar** *(alifbo tartibida)*
+   - *Namuna:* \`1. Pratov O‘., Shamsuvaliyeva L., Sulaymonov E. Botanika: darslik. – Toshkent: Ta’lim nashriyoti, 2020. – 320 b.\`
+3. **Ilmiy maqolalar (jurnallardan):**
+   - *Namuna:* \`2. Karimov A.S. O‘simlik to‘qimalarining anatomik tahlili // O‘zbekiston biologiya jurnali. – 2023. – № 2. – B. 45–52.\`
+4. **Rasmiy internet manbalari:**
+   - *Namuna:* \`3. O‘zbekiston Respublikasi Oliy ta’lim vazirligi rasmiy portali – https://edu.uz (murojaat sanasi: 15.05.2025).\`
+
+> 📌 **Matn ichida havola:** Har bir iqtibos oxirida kvadrat qavsda manba raqami va beti yoziladi: \`[1, 48-b.]\`.`;
+    }
+
+    if (/\b(kirish|dolzarb|obyekt|predmet)/i.test(norm)) {
+      return `✍️ **Kurs Ishi «KIRISH» Qismini Yozish Strukturasi (2–3 bet)**
+
+Kirish qismida quyidagi **6 ta majburiy ilmiy element** ketma-ket bayon qilinadi:
+1. **Mavzuning dolzarbligi:** Nima uchun aynan bugungi kunda bu masala muhim? (qonunlar, zamonaviy statistik ko‘rsatkichlar va amaliy ehtiyoj).
+2. **Tadqiqot maqsadi:** Bitta aniq jumla (*«...ni nazariy o‘rganish, amaliy holatini tahlil qilish va takomillashtirish bo‘yicha ilmiy-amaliy takliflar ishlab chiqish»*).
+3. **Tadqiqot vazifalari (4–5 band):** Rejadagi bob va paragraflarga mos harakatlar (*o‘rganish, tasniflash, tahlil qilish, taklif ishlab chiqish*).
+4. **Tadqiqot obyekti:** Tadqiqot o‘tkazilayotgan keng soha yoki tashkilot (*masalan, tijorat banklari faoliyati / o‘simliklar dunyosi*).
+5. **Tadqiqot predmeti:** Obyekt ichida aynan o‘rganilayotgan tor jihat (*masalan, kredit risklarini boshqarish mexanizmlari*).
+6. **Tadqiqot usullari:** Qiyosiy tahlil, statistik guruhlash, induksiya-deduksiya va grafik usullar.
+
+Platformadagi **"Kurs ishi"** bo‘limidagi **Kirish Konstruktori** orqali tayyor matnni 1 daqiqada yaratishingiz mumkin!`;
+    }
+
+    if (/\b(xulosa|taklif)/i.test(norm)) {
+      return `🎯 **Kurs Ishi «XULOSA VA TAKLIFLAR» Qismini Yozish Qoidalari (2–3 bet)**
+
+1. **Nazariy xulosalar (I-bob bo‘yicha 2–3 band):** Mavzuning asosiy tushunchalari va xorijiy tajribadan chiqarilgan yakuniy ilmiy fikrlar.
+2. **Amaliy tahlil xulosalari (II-bob bo‘yicha 2–3 band):** Aniq raqamlar, foizlar va aniqlangan 2–3 ta asosiy muammo.
+3. **Amaliy taklif va tavsiyalar (3–5 ta aniq yechim):**
+   - Har bir taklif **«Muammo → Yechim mexanizmi → Kutilayotgan samara»** formulasida yozilishi shart.
+   - Masalan: raqamlashtirish, me’yoriy bazani takomillashtirish, resurs tejamkor texnologiyani joriy etish va kadrlar malakasini oshirish.
+
+> 💡 **Muhim qoida:** Xulosada yangi iqtiboslar va matnda tahlil qilinmagan raqamlar kiritilmaydi — u faqat I va II boblar natijasini umumlashtiradi.`;
+    }
+
     return `📚 **Kurs Ishini Tayyorlash Bo‘yicha Ilmiy-Metodik Tavsiyalar**
 
 Kurs ishi — talabaning o‘quv dasturi bo‘yicha mustaqil bajargan dastlabki ilmiy-tadqiqot ishi hisoblanadi.
@@ -1145,42 +1681,56 @@ Kurs ishi — talabaning o‘quv dasturi bo‘yicha mustaqil bajargan dastlabki 
    - **ILOVALAR** (Katta jadvallar, hisob-kitoblar va namunalar).
 
 2. **Texnik Talablar (GOST):**
-   - Shrift: **Times New Roman, 14 pt**.
-   - Qatorlar orasi: **1.5 interval**.
+   - Shrift: **Times New Roman, 14 pt** | Interval: **1.5** | Abzas: **1.25 sm**.
    - Hoshiyalar: Chap — 30 mm, O‘ng — 15 mm, Yuqori — 20 mm, Pastki — 20 mm.
-   - Xat boshi (abzas): **1.25 sm**.
 
-Platformamizdagi **"Kurs ishi"** bo‘limida avtomatik **Reja Generator** va **Kirish Konstruktori** mavjud bo‘lib, ulardan bepul foydalanishingiz mumkin!`;
+Platformamizdagi **"Kurs ishi"** bo‘limida avtomatik **Reja Generator** va **Kirish Konstruktori** mavjud!`;
   }
 
   // 2. Mustaqil ish
   if (
     category === "mustaqil_ish" ||
     p.includes("mustaqil ish") ||
-    p.includes("referat") ||
-    p.includes("esse") ||
-    p.includes("plagiat")
+    /\b(referat|esse|plagiat)/i.test(norm)
   ) {
-    return `📝 **Mustaqil Ishlarni Tayyorlash Mezonlari**
+    if (/\b(slayd|taqdimot|powerpoint)/i.test(norm)) {
+      return `📊 **15 Slayddan Iborat Ilmiy Taqdimot Tayyorlash Mezonlari**
 
-Mustaqil ish — talabaning o‘quv fani doirasida darsdan tashqari bajaradigan mustaqil ijodiy va amaliy faoliyati turi.
+1. **Tavsiya etilgan 15 slaydli struktura:**
+   - **1-slayd:** Titul (OTM, fakultet, mavzu, talaba F.I.Sh., sana)
+   - **2-slayd:** Reja va tadqiqot maqsadi (3–4 band)
+   - **3–6-slaydlar:** Nazariy asoslar, asosiy tushunchalar va tasnif (sxema/infografika)
+   - **7–11-slaydlar:** Asosiy tahlil, qiyosiy jadvallar, grafik va diagrammalar
+   - **12–13-slaydlar:** Muammolar va amaliy yechim/takliflar
+   - **14-slayd:** Yakuniy xulosa (3–4 lo‘nda band)
+   - **15-slayd:** Foydalanilgan adabiyotlar va «E’tiboringiz uchun rahmat!»
+2. **Dizayn oltin qoidasi (6×6 qoidasi):**
+   - Har bir slaydda **60% vizual** (jadval, sxema, rasm) va **40% matn** (ko‘pi bilan 5–6 qator).
+   - Shrift o‘lchami: sarlavha **28–36 pt**, asosiy matn kamida **18–22 pt**, kontrastli ranglar (oq/to‘q fonda tiniq matn).`;
+    }
 
-1. **Mustaqil ish shakllari:**
-   - **Referat:** Mavzu bo‘yicha 10–15 betlik ilmiy tahlil va manbalar sharhi.
-   - **Esse:** Muayyan ilmiy yoki amaliy muammo yuzasidan 3–5 betlik shaxsiy fikr va dalillar bayoni.
-   - **Taqdimot (PowerPoint):** 12–15 slayd, har bir slaydda kamida 60% vizual (diagramma, rasm, sxema) va 40% lo‘nda matn.
-   - **Keys-stadi (Case study):** Haqiqiy korxona yoki amaliy vaziyat tahlili va muammoning innovatsion yechimi.
+    if (/\b(plagiat|oziga xos|originallik)/i.test(norm)) {
+      return `🛡️ **Mustaqil Ishda Plagiatdan Qochish va Originallikni Oshirish (75%+)**
 
-2. **Antiplagiat va o‘ziga xoslikni oshirish qoidalari:**
-   - Manbalarni to‘g‘ridan-to‘g‘ri ko‘chirmasdan, o‘z so‘zingiz bilan qayta bayon qiling (parafraz).
-   - Har bir iqtibos va statistik raqamga kvadrat qavsda manba raqamini \`[1]\` ko‘rsating.
-   - O‘zingiz tuzgan qiyosiy jadval va shaxsiy xulosa qo‘shing (kamida 70–75% originallik).
+1. **Parafraz (o‘z so‘zi bilan qayta yozish):** Manbani o‘qib, kitobni yoping va asosiy g‘oyani o‘z ilmiy uslubingizda bayon qiling.
+2. **To‘g‘ri iqtibos va havola:** Aniq ta’rif yoki statistik raqamni qo‘shtirnoqqa olib, yonida \`[1]\` manba raqamini ko‘rsating.
+3. **Mualliflik tahlili qo‘shing:** 2–3 ta manbadagi ma’lumotlarni bitta **qiyosiy jadval**ga jamlang va o‘zingizning tahliliy xulosangizni yozing.
+4. **Sun’iy almashtirishlardan saqlaning:** Harflarni kirill/lotin aralashtirish yoki yashirin belgilar qo‘yish antiplagiat tizimida darhol «shubhali hujjat» sifatida aniqlanadi.`;
+    }
 
-3. **Baholash mezonlari:**
-   - Mavzuning to‘liq ochib berilganligi (30%)
-   - Shaxsiy fikr, mustaqil tahlil va kreativlik (30%)
-   - Ilmiy adabiyotlar va statistik ma’lumotlarning aniqligi (20%)
-   - Rasmiylashtirish va taqdim etish madaniyati (20%)`;
+    return `📝 **Sifatli Referat, Esse va Mustaqil Ish Tayyorlash Mezonlari**
+
+1. **Mustaqil ish shakllari va hajmi:**
+   - **Referat (10–15 bet):** Titul → Reja → Kirish (1 bet) → 2–3 ta asosiy bo‘lim → Xulosa (1 bet) → 8–10 ta adabiyot.
+   - **Ilmiy esse (3–5 bet):** Tezis (asosiy muammo) → 2–3 ta ilmiy dalil va misol → Shaxsiy tahliliy xulosa.
+   - **Taqdimot (12–15 slayd):** Kamida 60% vizual sxema/diagramma va 40% lo‘nda matn.
+   - **Keys-stadi (Case study):** Real vaziyat tahlili va amaliy yechim.
+
+2. **Baholash mezonlari (100 ball):**
+   - Mavzuning to‘liq ochib berilganligi (**30%**)
+   - Shaxsiy fikr, mustaqil tahlil va kreativlik (**30%**)
+   - Ilmiy adabiyotlar va faktlar aniqligi (**20%**)
+   - GOST bo‘yicha rasmiylashtirish (**20%**)`;
   }
 
   // 3. O'yinlar & Interaktiv ta'lim
@@ -1191,9 +1741,37 @@ Mustaqil ish — talabaning o‘quv fani doirasida darsdan tashqari bajaradigan 
     p.includes("viktorina") ||
     p.includes("zakovat")
   ) {
-    return `🎮 **Interaktiv Bilim O‘yinlari va Intellektual Viktorina**
+    if (/\b(ingliz|english|soz)\b/i.test(norm)) {
+      return `🎮 **Ingliz Tili Bo‘yicha Tezkor So‘z O‘yini va Viktorina (5 ta savol)**
 
-Mana talabalar uchun tezkor 5 ta biologik-mantiqiy blitz-savol (javoblari bilan):
+1. **Savol (Synonym Hunt):** *«Ubiquitous»* so‘zining eng yaqin ma’nodoshi qaysi? *(A) Rare  (B) Everywhere  (C) Ancient*
+   - **Javob:** **B — Everywhere** (hamma joyda uchraydigan).
+2. **Savol (Idiom Quiz):** *«Break a leg!»* iborasi nimani anglatadi?
+   - **Javob:** **«Omad tilayman!»** (Good luck — sahna va imtihon oldidan aytiladi).
+3. **Savol (Grammar Trap):** Qaysi jumla to‘g‘ri? *«I have seen him yesterday»* yoki *«I saw him yesterday»*?
+   - **Javob:** **«I saw him yesterday»** (*yesterday* aniq o‘tgan vaqt bo‘lgani uchun Past Simple ishlatiladi).
+4. **Savol (False Friends):** Ingliz tilidagi *«Actually»* so‘zi «dolzarb» deganimi?
+   - **Javob:** **Yo‘q!** *Actually* = **«Aslida»**; «dolzarb» esa *relevant / current* deyiladi.
+5. **Savol (Word Chain):** *Photosynthesis* so‘zidagi *«photo»* va *«synthesis»* ildizlari nimani anglatadi?
+   - **Javob:** *Photo* = **yorug‘lik**, *synthesis* = **birlashtirish / hosil qilish**.`;
+    }
+
+    if (/\b(zakovat|mantiq)\b/i.test(norm)) {
+      return `🧠 **Zakovat Uslubidagi 5 ta Ilmiy-Mantiqiy Savol (Javoblari Bilan)**
+
+1. **Savol:** Qaysi tirik organizm «ikki xil dunyo ittifoqi» hisoblanib, havo tozaligining eng sezgir bioindikatori sanaladi?
+   - **Javob:** **Lishayniklar** (zamburug‘ + suvo‘t simbiozi — Botanika 23-mavzu).
+2. **Savol:** 1928-yilda Aleksandr Fleming laboratoriyasida unutib qoldirilgan Petri kosachasida mog‘or zamburug‘i atrofidagi stafilokokklar o‘lib qolgan. Bu tasodif insoniyatga nimani taqdim etdi?
+   - **Javob:** Birinchi antibiotik — **Penitsillin** (*Penicillium notatum* — Mikrobiologiya 7-mavzu).
+3. **Savol:** Odam organizmidagi qaysi «arteriya» ichida venoz qon, qaysi «vena» ichida esa arterial qon oqadi?
+   - **Javob:** **O‘pka arteriyasida** venoz qon, **o‘pka venalarida** esa arterial qon oqadi.
+4. **Savol:** Nima uchun qishda daraxt barglari to‘kiladi, lekin qarag‘ay va archa yashil qoladi?
+   - **Javob:** Ignabarglar yuzasi kichik, qalin mumli kutikula bilan qoplangan va og‘izchalari chuqur joylashgani sababli suv bug‘lanishi minimal (Botanika 26-mavzu).
+5. **Savol:** Qaysi kasallik qo‘zg‘atuvchisining sporalari «baraban tayoqchasi» shaklida bo‘lib, uning toksini kuchli tirishish («sardonik kulgi») chaqiradi?
+   - **Javob:** **Qoqshol qo‘zg‘atuvchisi (*Clostridium tetani*)** — Mikrobiologiya 13-mavzu.`;
+    }
+
+    return `🎮 **Biologiya Fanidan 5 ta Intellektual Blitz-Savol (Javoblari Bilan)**
 
 1. **Savol:** Qaysi bakteriya guruhi peptidoglikanli hujayra devoriga umuman ega emasligi sababli penitsillinga 100% tabiiy chidamli?
    - **Javob:** *Mikoplazmalar (Mycoplasma va Ureaplasma)* — Mikrobiologiya 16-mavzu.
@@ -1233,20 +1811,19 @@ Mana talabalar uchun tezkor 5 ta biologik-mantiqiy blitz-savol (javoblari bilan)
 Platformamizning **"Ingliz tili"** bo‘limida siz uchun maxsus saralangan **180 ta video darslik** joylashtirilgan!`;
   }
 
-  // 5. General fallback overview
-  return `🎓 **EduUni Oflayn Tezkor Darslik va PDF Bazasi (0 token · Limitsiz)**
+  // 5. Honest off-topic / not-found fallback (never returns a wrong lecture!)
+  return `🔎 **«${prompt.trim()}» bo‘yicha darslik bazasida aniq ma’lumot topilmadi**
 
-Savolingizni biroz aniqroq yozsangiz (masalan, fan nomi, mavzu raqami yoki aniq ilmiy atamani kiritsangiz), men tashqi sun’iy intellektga ulanmasdan va hech qanday token sarflamasdan platformadagi barcha darslik va PDF ma’lumotlaridan darhol javob topib beraman:
+Men faqat **EduUni** platformasiga yuklangan rasmiy fanlar, **119 ta PDF** ma’ruza va taqdimotlar asosida oflayn (0 token) javob beraman. Noto‘g‘ri ma’lumot chiqarmaslik uchun boshqa mavzuni aralashtirmadim.
 
-- 🌿 **Botanika:** 30 ta mavzu va 42 ta PDF (1–18-mavzu taqdimotlar, 19–30-mavzu ma’ruza matnlari va taqdimotlar)
-- 🧬 **Genetika:** 15 ta mavzu va 30 ta PDF (har bir mavzu uchun ma’ruza matni va taqdimot)
-- 🧫 **Mikrobiologiya va virusologiya:** 16 ta mavzu va 16 ta PDF (1–16-mavzular uchun to‘liq ma’ruza matnlari)
-- 🧪 **Biokimyo:** 15 ta mavzu va 30 ta PDF (har bir mavzu uchun ma’ruza matni va taqdimot)
-- 🔬 **Biologiya (Milliy sertifikat):** 30 ta rasmiy variant (900 ta savol va javob kalitlari bilan)
-- 🇬🇧 **Ingliz tili:** 0 dan C1 gacha 180 ta video darslik
-- 📝 **Kurs ishi va Mustaqil ish:** Standart rejalar, GOST talablari va namunalar
-
-_Namuna savollar: «Mikrobiologiya 13-mavzu qoqshol», «Genetika 9-mavzu krossingover», «Biokimyo 14-mavzu Krebs sikli», «Variant 1 2-savol»._`;
+Quyidagi yo‘nalishlardan birini tanlab, aniq atama yoki mavzu raqamini yozing:
+- 🌿 **Botanika** (30 ta mavzu · 42 ta PDF) — masalan: *«Botanika 26-mavzu ochiq urug‘lilar»*, *«O‘tkazuvchi to‘qimalar»*
+- 🧬 **Genetika** (15 ta mavzu · 30 ta PDF) — masalan: *«Genetika 9-mavzu krossingover»*, *«Bombay fenomeni»*
+- 🧫 **Mikrobiologiya va virusologiya** (16 ta mavzu · 16 ta PDF) — masalan: *«Sil qo‘zg‘atuvchisi»*, *«Gram-musbat va gram-manfiy farqi»*
+- 🧪 **Biokimyo** (15 ta mavzu · 30 ta PDF) — masalan: *«Biokimyo 14-mavzu Krebs sikli»*, *«Vitaminlar»*
+- 🔬 **Biologiya (Milliy sertifikat)** (30 variant · 900 ta savol) — masalan: *«Variant 1 2-savol»*
+- 🇬🇧 **Ingliz tili** (180 ta video darslik) — masalan: *«Present Perfect vs Past Simple»*
+- 📝 **Kurs ishi va Mustaqil ish** — masalan: *«Mavzu: 'Ekologiya' uchun reja tuzib ber»*`;
 }
 
 // Fast-path local answer generator (0 API calls, 0 tokens, runs directly in browser)
