@@ -10,17 +10,22 @@ import {
   Dna,
   Microscope,
   FlaskConical,
+  Waves,
+  Atom,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
 import genetikaImg from "@/assets/genetika.jpg";
 import mikroImg from "@/assets/mikro.jpg";
 import biokimyoImg from "@/assets/biokimyo.jpg";
+import gidrobiologiyaImg from "@/assets/images/gidrobiologiya_card_1795159354389.jpg";
+import biotexnologiyaImg from "@/assets/images/biotexnologiya_card_1795159350578.jpg";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 
-export type SubjectKey = "botanika" | "genetika" | "mikrobiologiya" | "biokimyo";
+export type SubjectKey =
+  "botanika" | "genetika" | "mikrobiologiya" | "biokimyo" | "gidrobiologiya" | "biotexnologiya";
 
 interface DarsliklarSectionProps {
   onBack: () => void;
@@ -97,6 +102,40 @@ const SUBJECTS = [
       `12–${BIOKIMYO_TOPICS.length}-mavzular: Moddalar almashinuvi, glikoliz, Krebs sikli va oqsil-nuklein metabolizmi (PDF + ma’ruza)`,
     ],
   },
+  {
+    id: "gidrobiologiya" as SubjectKey,
+    title: "Gidrobiologiya",
+    subtitle: "Suv ekotizimlari, gidrobiontlar biologiyasi va ekologiya",
+    description:
+      "Chuchuk va sho‘r suv havzalari biologiyasi, plankton, bentos, nekton jamoalari, suv muhitining fizik-kimyoviy omillari hamda biologik mahsuldorlik bo‘yicha universitet o‘quv fani.",
+    topicsCount: 0,
+    status: "Materiallar yuklanmoqda",
+    img: gidrobiologiyaImg,
+    icon: Waves,
+    ready: false,
+    topicsPreview: [
+      "Suv muhiti xususiyatlari va gidrobiontlarning ekologik guruhlari (plankton, nekton, bentos)",
+      "Chuchuk suv havzalari, daryo va ko‘llar hamda dengiz ekotizimlari biologiyasi",
+      "Suv havzalarining o‘z-o‘zini tozalashi, bioindikatsiya va biologik mahsuldorlik",
+    ],
+  },
+  {
+    id: "biotexnologiya" as SubjectKey,
+    title: "Biotexnologiya",
+    subtitle: "Gen va hujayra muhandisligi, bioprotsesslar texnologiyasi",
+    description:
+      "Zamonaviy biotexnologiya asoslari, gen va hujayra muhandisligi, bioreaktorlar, mikrobiologik sintez, o‘simlik hujayra kulturalari hamda tibbiyot va qishloq xo‘jaligi biotexnologiyasi fani.",
+    topicsCount: 0,
+    status: "Materiallar yuklanmoqda",
+    img: biotexnologiyaImg,
+    icon: Atom,
+    ready: false,
+    topicsPreview: [
+      "Biotexnologiya asoslari, bioreaktorlar va mikroorganizmlar ishtirokidagi bioprotsesslar",
+      "Gen muhandisligi, rekombinant DNK texnologiyasi, PZR va CRISPR asoslari",
+      "Hujayra muhandisligi, o‘simlik to‘qima kulturalari (in vitro) va biofarmatsevtika",
+    ],
+  },
 ];
 
 export function DarsliklarSection({
@@ -131,7 +170,7 @@ export function DarsliklarSection({
         </div>
 
         <span className="text-xs font-semibold text-muted-foreground">
-          4 ta asosiy universitet fani
+          {SUBJECTS.length} ta asosiy universitet fani
         </span>
       </div>
 
@@ -146,13 +185,15 @@ export function DarsliklarSection({
             </div>
             <h1 className="text-2xl font-extrabold md:text-4xl">
               Darsliklar:{" "}
-              <span className="text-shine">Botanika, Genetika, Mikrobiologiya va Biokimyo</span>
+              <span className="text-shine">
+                Botanika, Genetika, Mikrobiologiya, Biokimyo, Gidrobiologiya va Biotexnologiya
+              </span>
             </h1>
           </div>
         </div>
       </section>
 
-      {/* 4 Subject Cards with Logos */}
+      {/* Subject Cards with Logos */}
       <div className="grid gap-6 md:grid-cols-2">
         {SUBJECTS.map((subj) => {
           const Icon = subj.icon;
@@ -184,6 +225,7 @@ export function DarsliklarSection({
                   <img
                     src={subj.img}
                     alt={subj.title}
+                    referrerPolicy="no-referrer"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
@@ -193,6 +235,7 @@ export function DarsliklarSection({
                       <img
                         src={subj.img}
                         alt=""
+                        referrerPolicy="no-referrer"
                         className="h-12 w-12 rounded-xl border-2 border-white/40 object-cover shadow-md"
                       />
                       <div>
@@ -212,7 +255,7 @@ export function DarsliklarSection({
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span className="flex items-center gap-1.5 font-semibold text-foreground">
                       <Layers className="h-3.5 w-3.5 text-primary" />
-                      {subj.topicsCount} ta mavzu
+                      {subj.topicsCount > 0 ? `${subj.topicsCount} ta mavzu` : "Mavzular tez kunda"}
                     </span>
                     <span
                       className={
