@@ -1,6 +1,7 @@
 import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS, type BiokimyoTopic } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS, type GenetikaTopic } from "@/data/genetikaTopics";
+import { MIKROBIOLOGIYA_TOPICS, type MikrobiologiyaTopic } from "@/data/mikrobiologiyaTopics";
 import {
   BIOLOGY_VARIANTS,
   type BiologyVariant,
@@ -34,7 +35,7 @@ export interface AiPdfCorpus {
 
 const aiPdfCorpus = aiPdfCorpusRaw as unknown as AiPdfCorpus;
 
-export type CurriculumSubject = "Botanika" | "Biokimyo" | "Genetika";
+export type CurriculumSubject = "Botanika" | "Biokimyo" | "Genetika" | "Mikrobiologiya";
 
 export interface UnifiedTopicRecord {
   subject: CurriculumSubject;
@@ -231,7 +232,7 @@ function extractTokens(input: string): { tokens: string[]; stems: string[] } {
 
 function mapUnifiedTopic(
   subject: CurriculumSubject,
-  t: BotanikaTopic | BiokimyoTopic | GenetikaTopic,
+  t: BotanikaTopic | BiokimyoTopic | GenetikaTopic | MikrobiologiyaTopic,
 ): UnifiedTopicRecord {
   const groupLabel = "semester" in t ? t.semester : t.module;
   const pdfDocs =
@@ -285,7 +286,9 @@ function mapUnifiedTopic(
     keyTerms: t.keyTerms,
     references: t.references,
     pdfDocs,
-    normTitle: normalizeUzbek(`${subject} ${t.topicLabel} ${t.code} ${t.title}`),
+    normTitle: normalizeUzbek(
+      `${subject} ${t.topicLabel} ${t.code} ${t.title} ${t.comparisonTable.title}`,
+    ),
     normBody: normalizeUzbek(bodyParts.join(" ")),
   };
 }
@@ -308,6 +311,7 @@ export function getKnowledgeIndex(): KnowledgeIndex {
     ...BOTANIKA_TOPICS.map((t) => mapUnifiedTopic("Botanika", t)),
     ...BIOKIMYO_TOPICS.map((t) => mapUnifiedTopic("Biokimyo", t)),
     ...GENETIKA_TOPICS.map((t) => mapUnifiedTopic("Genetika", t)),
+    ...MIKROBIOLOGIYA_TOPICS.map((t) => mapUnifiedTopic("Mikrobiologiya", t)),
   ];
 
   const pdfPages: IndexedPdfPage[] = [];
@@ -382,6 +386,12 @@ export function detectQueryIntent(
   ) {
     subjects.push("Genetika");
   }
+  if (
+    /\bmikrobiolog|\bvirusolog|\bbakteriolog/i.test(norm) ||
+    (subjects.length === 0 && /\bmikrobiolog|\bvirusolog/i.test(recentHistory))
+  ) {
+    subjects.push("Mikrobiologiya");
+  }
 
   // Extract topic number like "14-mavzu", "mavzu 14", "m09", "9-maruza", "12 mavzu"
   let topicNumber: number | null = null;
@@ -428,12 +438,12 @@ export function detectQueryIntent(
     /\b(milliy sertifikat|dtm|test varianti|variant)\b/i.test(norm);
   const wantsKursIshi =
     category === "kurs_ishi" ||
-    /\b(kurs ishi|kursishi|titul|gost|kirish konstruktor)\b/i.test(norm);
+    /\b(kurs\s+ish|kursish|titul|gost|kirish\s+konstruktor)/i.test(norm);
   const wantsMustaqilIsh =
-    category === "mustaqil_ish" || /\b(mustaqil ish|referat|esse|keys-?stadi)\b/i.test(norm);
+    category === "mustaqil_ish" || /\b(mustaqil\s+ish|referat|esse|keys-?stadi)/i.test(norm);
 
-  // If topicNumber >= 16 and no subject explicitly specified, it can only be Botanika (since Botanika has 1..30, others 1..15)
-  if (subjects.length === 0 && topicNumber !== null && topicNumber > 15 && topicNumber <= 30) {
+  // If topicNumber >= 17 and no subject explicitly specified, it can only be Botanika (Botanika 1..30, Mikrobiologiya 1..16, Biokimyo/Genetika 1..15)
+  if (subjects.length === 0 && topicNumber !== null && topicNumber > 16 && topicNumber <= 30) {
     subjects.push("Botanika");
   }
 
@@ -682,6 +692,7 @@ export function buildCurriculumDirectoryText(): string {
   const botList = BOTANIKA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const bioList = BIOKIMYO_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const genList = GENETIKA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
+  const mikroList = MIKROBIOLOGIYA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const engCategories = Array.from(new Set(ENGLISH_VIDEO_LESSONS.map((l) => l.category))).join(
     ", ",
   );
@@ -691,9 +702,9 @@ export function buildCurriculumDirectoryText(): string {
     `- BOTANIKA (${BOTANIKA_TOPICS.length} ta mavzu, 42 ta PDF — M01..M18 taqdimot va 19–30-mavzularda Ma’ruza matni + Taqdimot): ${botList}`,
     `- BIOKIMYO (${BIOKIMYO_TOPICS.length} ta mavzu, 30 ta PDF — har bir mavzuda Ma’ruza matni + Taqdimot): ${bioList}`,
     `- GENETIKA (${GENETIKA_TOPICS.length} ta mavzu, 30 ta PDF — har bir mavzuda Ma’ruza matni + Taqdimot): ${genList}`,
+    `- MIKROBIOLOGIYA VA VIRUSOLOGIYA (${MIKROBIOLOGIYA_TOPICS.length} ta mavzu, 16 ta PDF — 1–16-mavzular Ma’ruza matni): ${mikroList}`,
     `- BIOLOGIYA MILLIY SERTIFIKAT (Kutubxona + Test tizimi): ${BIOLOGY_VARIANTS.length} ta rasmiy variant (900 ta savol va javoblar kaliti bilan) + rasmiy PDF to‘plam.`,
     `- INGLIZ TILI: ${ENGLISH_VIDEO_LESSONS.length} ta video darslik (0 dan C1 gacha). Asosiy bo‘limlar: ${engCategories}.`,
-    `- MIKROBIOLOGIYA: Prokariotlar va eukariotlar morfologiyasi, mikroblar genetikasi, metabolizmi, antibiotiklar, tuproq va tibbiy mikrobiologiya.`,
     `- KURS ISHI VA MUSTAQIL ISH: 2 bob va 6 paragraflik standart reja, Kirish qismi 5 mezoni, GOST talablari (Times New Roman 14, 1.5 interval), Referat/Esse/Taqdimot/Keys-stadi mezonlari.`,
   ].join("\n");
 }
@@ -792,6 +803,18 @@ export function synthesizeGroundedFallback(
 ): string {
   const { hit } = buildGroundedPromptContext(prompt, category, history);
   const { intent } = hit;
+  const normPrompt = normalizeUzbek(prompt);
+
+  // Let dedicated Kurs ishi / Mustaqil ish / O'yinlar handlers answer when user explicitly asks about them without a specific science subject
+  if (
+    intent.subjects.length === 0 &&
+    (intent.wantsKursIshi ||
+      intent.wantsMustaqilIsh ||
+      category === "oyinlar" ||
+      /\b(oyin|viktorina|zakovat)\b/i.test(normPrompt))
+  ) {
+    return "";
+  }
 
   // 1. Biology test question exact lookup
   if (hit.bioQuestions.length > 0 && (intent.wantsBiologyTests || hit.topics.length === 0)) {
@@ -802,39 +825,136 @@ export function synthesizeGroundedFallback(
     return `🧬 **Biologiya (Milliy sertifikat) Test Bazasi Bo‘yicha Aniq Javob**\n\n${lines.join("\n\n---\n\n")}`;
   }
 
-  // 2. Curriculum catalog request
-  if (intent.wantsCatalog && intent.subjects.length > 0) {
-    const blocks = intent.subjects.map((subj) => {
-      const list =
-        subj === "Botanika"
-          ? BOTANIKA_TOPICS
-          : subj === "Biokimyo"
-            ? BIOKIMYO_TOPICS
-            : GENETIKA_TOPICS;
-      const items = list
-        .map(
-          (t) =>
-            `${t.order}. **${t.topicLabel}:** ${t.title} _(${t.pdfDocuments?.map((d) => d.kind).join(" + ") || "PDF Taqdimot"})_`,
-        )
-        .join("\n");
-      return `### 📚 ${subj} fanidagi barcha ${list.length} ta mavzu\n${items}`;
-    });
-    return blocks.join("\n\n");
+  // 2. English grammar / CEFR / video lessons lookup when English intent is active and no biology subject matched
+  if (intent.wantsEnglish && intent.subjects.length === 0) {
+    const grammarBlocks: string[] = [];
+    if (/present perfect|past simple/i.test(normPrompt)) {
+      grammarBlocks.push(
+        `### 📘 Present Perfect vs Past Simple\n- **Present Perfect (have/has + V3):** Vaqti aniq ko‘rsatilmagan, natijasi hozirgi zamon bilan bog‘liq harakatlar (*I have finished my coursework* — Natija: hozir tayyor). Kalit so‘zlar: *already, just, yet, ever, never, since, for*.\n- **Past Simple (V2 / did):** O‘tmishda aniq vaqtda tugagan harakatlar (*I finished it yesterday*). Kalit so‘zlar: *yesterday, ago, last week, in 2024*.`,
+      );
+    } else if (/conditional|shart mayl/i.test(normPrompt)) {
+      grammarBlocks.push(
+        `### 📘 Conditionals (0, 1, 2, 3 Shart mayllari)\n- **0-Conditional (Umumiy fakt):** If + Present Simple, Present Simple (*If you heat ice, it melts*).\n- **1-Conditional (Real kelajak):** If + Present Simple, will + V1 (*If you study, you will pass*).\n- **2-Conditional (Noreal hozir/kelajak):** If + Past Simple, would + V1 (*If I had time, I would travel*).\n- **3-Conditional (O‘tmishdagi afsus):** If + Past Perfect, would have + V3 (*If she had known, she would have come*).`,
+      );
+    } else if (/passive|majhul/i.test(normPrompt)) {
+      grammarBlocks.push(
+        `### 📘 Passive Voice (Majhul nisbat)\n- **Umumiy formula:** \`to be (tegishli zamonda) + V3 (Past Participle)\`\n- **Present Simple Passive:** *The report is written every week.*\n- **Past Simple Passive:** *Penicillin was discovered by Fleming in 1928.*\n- **Future Simple Passive:** *The exam will be held tomorrow.*\n- **Present Perfect Passive:** *All 119 PDFs have been indexed.*`,
+      );
+    } else if (/c1|ielts|b2|cefr/i.test(normPrompt)) {
+      grammarBlocks.push(
+        `### 📘 B2 dan C1 (IELTS / CEFR) darajasiga o‘tish strategiyasi\n1. **Akademik leksika va kollokatsiyalar:** Oddiy fe’llar o‘rniga akademik ekvivalentlar (*carry out research, draw a conclusion, play a pivotal role*).\n2. **Murakkab grammatika:** Inversion (*Not only did..., Rarely have...*), Cleft sentences, Mixed Conditionals va Participle clauses.\n3. **Speaking & Writing:** Har bir fikrni *Claim → Explanation → Example → Result* strukturasi bilan asoslash.`,
+      );
+    }
+
+    if (hit.englishLessons.length > 0 || grammarBlocks.length > 0) {
+      const sections: string[] = [`🇬🇧 **Ingliz Tili Bo‘limi Bo‘yicha Tezkor Qo‘llanma**`];
+      if (grammarBlocks.length > 0) sections.push(grammarBlocks.join("\n\n"));
+      if (hit.englishLessons.length > 0) {
+        const lessonsText = hit.englishLessons
+          .slice(0, 6)
+          .map(({ lesson }) => `- **${lesson.code}-dars (${lesson.category}):** ${lesson.title}`)
+          .join("\n");
+        sections.push(`### 🎬 Platformadagi mos video darsliklar\n${lessonsText}`);
+      }
+      sections.push(
+        `_Barcha 180 ta video darslikni platformaning **"Ingliz tili"** bo‘limida bepul ko‘rishingiz mumkin._`,
+      );
+      return sections.join("\n\n");
+    }
+    return "";
   }
 
-  // 3. Matched Textbook Topic + PDF / Taqdimot excerpts
+  // 3. Curriculum catalog request
+  if (intent.wantsCatalog) {
+    const targetSubjects: CurriculumSubject[] =
+      intent.subjects.length > 0
+        ? intent.subjects
+        : ["Botanika", "Genetika", "Mikrobiologiya", "Biokimyo"];
+    if (intent.subjects.length > 0) {
+      const blocks = targetSubjects.map((subj) => {
+        const list =
+          subj === "Botanika"
+            ? BOTANIKA_TOPICS
+            : subj === "Biokimyo"
+              ? BIOKIMYO_TOPICS
+              : subj === "Genetika"
+                ? GENETIKA_TOPICS
+                : MIKROBIOLOGIYA_TOPICS;
+        const items = list
+          .map(
+            (t) =>
+              `${t.order}. **${t.topicLabel}:** ${t.title} _(${t.pdfDocuments?.map((d) => d.kind).join(" + ") || "PDF Taqdimot"})_`,
+          )
+          .join("\n");
+        return `### 📚 ${subj} fanidagi barcha ${list.length} ta mavzu\n${items}`;
+      });
+      return blocks.join("\n\n");
+    }
+  }
+
+  // 4. Matched Textbook Topic + Targeted Concept/Q&A/Table/PDF Synthesis
   if (hit.topics.length > 0) {
     const primary = hit.topics[0]!.topic;
     const parts: string[] = [];
+    const wantsTests = /\b(test|savol|savollar|nazorat|mashq|masala)\b/i.test(normPrompt);
+    const wantsComparison = /\b(farq|farqi|farqlari|taqqosla|jadval|solishtir)\b/i.test(normPrompt);
 
     parts.push(`📖 **${primary.subject} · ${primary.topicLabel}: ${primary.title}**`);
-    parts.push(`_${primary.groupLabel} · ${primary.references}_`);
+    parts.push(
+      `_${primary.groupLabel} · Manba: ${primary.references}${primary.pdfDocs.length > 0 ? ` · ${primary.pdfDocs.map((d) => d.kind).join(" + ")}` : ""}_`,
+    );
+
+    // Surface directly matched key concepts or self-check Q&A right at the top for fast precision
+    const directConcepts = primary.keyConcepts.filter((c) => {
+      const cNorm = normalizeUzbek(`${c.term} ${c.definition}`);
+      return intent.tokens.some((tok) => tok.length >= 3 && cNorm.includes(tok));
+    });
+    const directQAs = primary.selfCheckQuestions.filter((qa) => {
+      const qNorm = normalizeUzbek(`${qa.question} ${qa.answer}`);
+      return intent.tokens.some((tok) => tok.length >= 4 && qNorm.includes(tok));
+    });
+
+    if (directConcepts.length > 0 && intent.topicNumber === null) {
+      parts.push(
+        `\n### ⚡ Savolingizga aniq qisqa javob\n` +
+          directConcepts
+            .slice(0, 3)
+            .map((c) => `- **${c.term}:** ${c.definition}`)
+            .join("\n"),
+      );
+    }
+
     parts.push(`\n### 1. Umumiy nazariy tahlil\n${primary.overview}`);
     parts.push(`\n> 💡 **Muhim xulosa:** ${primary.studyNotes}`);
 
+    // If user asked for differences/comparison, place comparison table right away
+    if (wantsComparison && primary.comparisonTable.rows.length > 0) {
+      parts.push(`\n### 📊 ${primary.comparisonTable.title}`);
+      const header = `| ${primary.comparisonTable.columns.join(" | ")} |`;
+      const sep = `| ${primary.comparisonTable.columns.map(() => "---").join(" | ")} |`;
+      const rows = primary.comparisonTable.rows.map((r) => `| ${r.join(" | ")} |`).join("\n");
+      parts.push(`${header}\n${sep}\n${rows}`);
+    }
+
     if (primary.sections.length > 0) {
+      // Rank sections by relevance to user's query while keeping logical order when topic number asked
+      const relevantSections =
+        intent.topicNumber !== null
+          ? primary.sections
+          : [...primary.sections].sort((a, b) => {
+              const aNorm = normalizeUzbek(
+                `${a.heading} ${a.content} ${(a.highlights || []).join(" ")}`,
+              );
+              const bNorm = normalizeUzbek(
+                `${b.heading} ${b.content} ${(b.highlights || []).join(" ")}`,
+              );
+              const aHits = intent.tokens.filter((t) => aNorm.includes(t)).length;
+              const bHits = intent.tokens.filter((t) => bNorm.includes(t)).length;
+              return bHits - aHits;
+            });
+
       parts.push(`\n### 2. Mavzuning asosiy bo‘limlari`);
-      primary.sections.forEach((sec) => {
+      relevantSections.forEach((sec) => {
         parts.push(`**${sec.heading}**\n${sec.content}`);
         if (sec.highlights && sec.highlights.length > 0) {
           parts.push(sec.highlights.map((h) => `- ${h}`).join("\n"));
@@ -842,7 +962,7 @@ export function synthesizeGroundedFallback(
       });
     }
 
-    if (primary.comparisonTable.rows.length > 0) {
+    if (!wantsComparison && primary.comparisonTable.rows.length > 0) {
       parts.push(`\n### 3. ${primary.comparisonTable.title}`);
       const header = `| ${primary.comparisonTable.columns.join(" | ")} |`;
       const sep = `| ${primary.comparisonTable.columns.map(() => "---").join(" | ")} |`;
@@ -857,29 +977,36 @@ export function synthesizeGroundedFallback(
       );
     }
 
-    // Add matching PDF / Presentation excerpts if present
+    // Add matching PDF / Presentation excerpts (prioritize presentation if user asked for taqdimot/slayd)
+    const sliceLimit = intent.preferPresentation ? 4 : 3;
     const matchingPdfSlices = hit.pdfPages
-      .filter((p) => p.item.doc.topicId === primary.id || hit.pdfPages.indexOf(p) < 3)
-      .slice(0, 3);
+      .filter((p) => p.item.doc.topicId === primary.id || hit.pdfPages.indexOf(p) < sliceLimit)
+      .slice(0, sliceLimit);
     if (matchingPdfSlices.length > 0) {
-      parts.push(`\n### 5. Biriktirilgan PDF va Taqdimot slaydlari ma’lumotlari`);
+      parts.push(`\n### 5. Biriktirilgan PDF va Taqdimot ma’lumotlari`);
       matchingPdfSlices.forEach(({ item }) => {
         parts.push(
-          `- **[${item.doc.subject} · ${item.doc.topicLabel} · ${item.doc.kind}, ${item.page.p}-bet/slayd]:** ${item.page.t.slice(0, 480)}${item.page.t.length > 480 ? "..." : ""}`,
+          `- **[${item.doc.subject} · ${item.doc.topicLabel} · ${item.doc.kind}, ${item.page.p}-bet/slayd]:** ${item.page.t.slice(0, 520)}${item.page.t.length > 520 ? "..." : ""}`,
         );
       });
     }
 
     if (primary.selfCheckQuestions.length > 0) {
-      parts.push(`\n### 6. Nazorat savoli va yechimi`);
-      const sq = primary.selfCheckQuestions[0]!;
-      parts.push(`- **Savol:** ${sq.question}\n- **Javob:** ${sq.answer}`);
+      const qaList = wantsTests
+        ? primary.selfCheckQuestions
+        : directQAs.length > 0
+          ? directQAs.slice(0, 2)
+          : primary.selfCheckQuestions.slice(0, 2);
+      parts.push(`\n### 6. Nazorat savollari va yechimlari`);
+      qaList.forEach((sq, i) => {
+        parts.push(`${i + 1}. **Savol:** ${sq.question}\n   **Javob:** ${sq.answer}`);
+      });
     }
 
     return parts.join("\n");
   }
 
-  // 4. Direct PDF page matches even if not tied to top topic
+  // 5. Direct PDF page matches even if not tied to top topic
   if (hit.pdfPages.length > 0) {
     const snippets = hit.pdfPages
       .slice(0, 4)
@@ -891,8 +1018,8 @@ export function synthesizeGroundedFallback(
     return `📚 **Darslik va Taqdimot PDF Hujjatlaridan Topilgan Ma’lumotlar**\n\n${snippets}`;
   }
 
-  // 5. English video lessons match
-  if (hit.englishLessons.length > 0 && intent.wantsEnglish) {
+  // 6. English video lessons match
+  if (hit.englishLessons.length > 0) {
     const lessonsText = hit.englishLessons
       .map(({ lesson }) => `- **${lesson.code}-dars (${lesson.category}):** ${lesson.title}`)
       .join("\n");

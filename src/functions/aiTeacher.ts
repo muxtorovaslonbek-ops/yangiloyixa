@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 export interface ChatMessage {
   id: string;
@@ -22,11 +21,29 @@ export interface AskAiTeacherOutput {
   error?: string;
 }
 
-// Fallback academic guide for general methodology / non-topic questions when offline
-function generateAcademicFallback(prompt: string, category?: string): string {
-  const p = prompt.toLowerCase();
+// Local instant academic guide (zero API quota usage)
+function generateAcademicGuide(prompt: string, category?: string): string {
+  const p = prompt.toLowerCase().trim();
 
-  // 1. Kurs ishi
+  // Greetings & polite responses
+  if (/^(assalom|salom|privet|hello|hi|hayrli|xayrli)\b/i.test(p) && p.length < 45) {
+    return `Assalomu alaykum! 👋 Men **EduUni Tezkor AI Ustozi**man — hech qanday limit sarflamasdan, soniyalar ichida platformadagi barcha rasmiy darsliklar va **119 ta PDF** asosida javob beraman.
+
+Quyidagi fanlar bo‘yicha istalgan mavzu, atama, formula yoki test savolini yozing:
+- 🌿 **Botanika** (30 ta mavzu · 42 ta PDF)
+- 🧬 **Genetika** (15 ta mavzu · 30 ta PDF)
+- 🧫 **Mikrobiologiya va virusologiya** (16 ta mavzu · 16 ta PDF)
+- 🧪 **Biokimyo** (15 ta mavzu · 30 ta PDF)
+- 🔬 **Biologiya Milliy sertifikat** (30 variant · 900 ta savol)
+- 🇬🇧 **Ingliz tili** (180 ta video darslik · 0 dan C1 gacha)
+- 📝 **Kurs ishi va Mustaqil ish** (reja, kirish, GOST talablari)`;
+  }
+
+  if (/^(rahmat|raxmat|tashakkur|ok|tushundim|zo‘r|zor)\b/i.test(p) && p.length < 45) {
+    return `Arzimaydi! O‘qishingizda ulkan muvaffaqiyatlar tilayman. 🎓 Yana qaysi fan, mavzu yoki test savoli bo‘yicha yordam kerak bo‘lsa, bemalol yozing!`;
+  }
+
+  // 1. Kurs ishi (with dynamic custom 2-bobli plan if a topic in quotes is provided)
   if (
     category === "kurs_ishi" ||
     p.includes("kurs ishi") ||
@@ -34,8 +51,33 @@ function generateAcademicFallback(prompt: string, category?: string): string {
     p.includes("reja") ||
     p.includes("kirish") ||
     p.includes("adabiyotlar") ||
-    p.includes("titul")
+    p.includes("titul") ||
+    p.includes("gost")
   ) {
+    const quotedTopic = prompt.match(/['"«“]([^'"»”]{4,120})['"»”]/)?.[1]?.trim();
+    if (quotedTopic) {
+      return `📚 **"${quotedTopic}" mavzusi bo‘yicha 2 bobli standart Kurs ishi rejasi**
+
+**KIRISH** *(2–3 bet)*
+- Mavzuning dolzarbligi, tadqiqot maqsadi, vazifalari, obyekti, predmeti va metodlari.
+
+**I-BOB. "${quotedTopic}" mavzusining nazariy-metodologik asoslari** *(10–14 bet)*
+- **1.1.** Mavzuning ilmiy mohiyati, asosiy tushunchalari va tasnifi
+- **1.2.** Zamonaviy nazariy yondashuvlar va ilmiy maktablar tahlili
+- **1.3.** Xorijiy va mahalliy tajribaning qiyosiy o‘rganilishi
+
+**II-BOB. "${quotedTopic}" bo‘yicha amaliy tahlil va takomillashtirish yo‘llari** *(10–14 bet)*
+- **2.1.** Hozirgi holatning statistik va qiyosiy tahlili (jadvallar va diagrammalar)
+- **2.2.** Mavjud muammolar va samaradorlikka ta’sir etuvchi omillar
+- **2.3.** Muammolarni bartaraf etish bo‘yicha ilmiy-amaliy taklif va tavsiyalar
+
+**XULOSA VA TAKLIFLAR** *(2–3 bet)*
+**FOYDALANILGAN ADABIYOTLAR RO‘YXATI** *(15–20 ta rasmiy manba, GOST bo‘yicha)*
+**ILOVALAR**
+
+> 📌 **Texnik talab (GOST):** Times New Roman, 14 pt, 1.5 interval; hoshiyalar: chap 30 mm, o‘ng 15 mm, yuqori/pastki 20 mm. Tayyor shablonni **"Kurs ishi"** bo‘limidan yuklab olishingiz mumkin!`;
+    }
+
     return `📚 **Kurs Ishini Tayyorlash Bo‘yicha Ilmiy-Metodik Tavsiyalar**
 
 Kurs ishi — talabaning o‘quv dasturi bo‘yicha mustaqil bajargan dastlabki ilmiy-tadqiqot ishi hisoblanadi.
@@ -64,7 +106,8 @@ Platformamizdagi **"Kurs ishi"** bo‘limida avtomatik **Reja Generator** va **K
     category === "mustaqil_ish" ||
     p.includes("mustaqil ish") ||
     p.includes("referat") ||
-    p.includes("esse")
+    p.includes("esse") ||
+    p.includes("plagiat")
   ) {
     return `📝 **Mustaqil Ishlarni Tayyorlash Mezonlari**
 
@@ -76,7 +119,12 @@ Mustaqil ish — talabaning o‘quv fani doirasida darsdan tashqari bajaradigan 
    - **Taqdimot (PowerPoint):** 12–15 slayd, har bir slaydda kamida 60% vizual (diagramma, rasm, sxema) va 40% lo‘nda matn.
    - **Keys-stadi (Case study):** Haqiqiy korxona yoki amaliy vaziyat tahlili va muammoning innovatsion yechimi.
 
-2. **Baholash mezonlari:**
+2. **Antiplagiat va o‘ziga xoslikni oshirish qoidalari:**
+   - Manbalarni to‘g‘ridan-to‘g‘ri ko‘chirmasdan, o‘z so‘zingiz bilan qayta bayon qiling (parafraz).
+   - Har bir iqtibos va statistik raqamga kvadrat qavsda manba raqamini `[1]` ko‘rsating.
+   - O‘zingiz tuzgan qiyosiy jadval va shaxsiy xulosa qo‘shing (kamida 70–75% originallik).
+
+3. **Baholash mezonlari:**
    - Mavzuning to‘liq ochib berilganligi (30%)
    - Shaxsiy fikr, mustaqil tahlil va kreativlik (30%)
    - Ilmiy adabiyotlar va statistik ma’lumotlarning aniqligi (20%)
@@ -88,17 +136,23 @@ Mustaqil ish — talabaning o‘quv fani doirasida darsdan tashqari bajaradigan 
     category === "oyinlar" ||
     p.includes("o‘yin") ||
     p.includes("oyin") ||
-    p.includes("viktorina")
+    p.includes("viktorina") ||
+    p.includes("zakovat")
   ) {
-    return `🎮 **Interaktiv Bilim O‘yinlari va Gamifikatsiya**
+    return `🎮 **Interaktiv Bilim O‘yinlari va Intellektual Viktorina**
 
-Zamonaviy ta’limda "Gamification" (o‘yinlashtirish) talabaning bilimlarni mustahkamlash va eslab qolish samaradorligini 60–70% ga oshiradi.
+Mana talabalar uchun tezkor 5 ta biologik-mantiqiy blitz-savol (javoblari bilan):
 
-1. **Platformamizdagi O‘yin formatlari:**
-   - **"Blitz-viktorina":** Har bir savolga 30 soniya vaqt beriladigan tezkor fan savollari.
-   - **"Biologiya & Kimyo labirinti":** Reaksiyalar va genetik zanjirlarni to‘g‘ri ketma-ketlikda yig‘ish.
-   - **"So‘zlar jangi (English Vocabulary Quest)":** Inglizcha so‘z va iboralarni darajalar bo‘yicha topish.
-   - **"Kurs ishi simulyatori":** Reja tuzish va ilmiy atamalarni joy-joyiga qo‘yish o‘yini.`;
+1. **Savol:** Qaysi bakteriya guruhi peptidoglikanli hujayra devoriga umuman ega emasligi sababli penitsillinga 100% tabiiy chidamli?
+   - **Javob:** *Mikoplazmalar (Mycoplasma va Ureaplasma)* — Mikrobiologiya 16-mavzu.
+2. **Savol:** 1 mol glyukoza aerob nafas olishda 38 ATF bersa, spirtli yoki sut kislotali bijg‘ishda nechta ATF hosil qiladi?
+   - **Javob:** *Atigi 2 ATF* (substrat fosforillanishi) — Biokimyo 14-mavzu / Mikrobiologiya 5-mavzu.
+3. **Savol:** Nima uchun qon guruhi tekshirilganda ota-onasi A va B bo‘lgan oilada O(I) guruhli bola tug‘ilishi hamda «Bombay fenomeni» kuzatilishi mumkin?
+   - **Javob:** Ota-ona geterozigota ($I^A i_0 \\times I^B i_0$) bo‘lishi yoki *hh* retsessiv epistazi (Bombay fenomeni) tufayli H-antigen sintezlanmasligi mumkin — Genetika 4–5-mavzular.
+4. **Savol:** Qaysi qizil suvo‘tlardan mikrobiologik oziqa muhitlarni qotiruvchi agar-agar olinadi?
+   - **Javob:** *Gelidium, Gracilaria va Ahnfeltia* — Botanika 21-mavzu / Mikrobiologiya 4-mavzu.
+5. **Savol:** Fermentativ reaksiyada tezlik maksimal tezlikning yarmiga ($V_{max}/2$) teng bo‘lgandagi substrat konsentratsiyasi nima deb ataladi?
+   - **Javob:** *Mixaelis doimiysi ($K_m$)* — Biokimyo 9-mavzu.`;
   }
 
   // 4. Ingliz tili general guide
@@ -128,119 +182,40 @@ Platformamizning **"Ingliz tili"** bo‘limida siz uchun maxsus saralangan **180
   }
 
   // 5. General fallback overview
-  return `🎓 **EduUni AI Ustozi — Darsliklar va Fanlar Bazasi**
+  return `🎓 **EduUni AI Ustozi — Limitsiz Tezkor Darslik va PDF Bazasi**
 
-Savolingizni aniqroq yozsangiz (masalan, fan nomi, mavzu raqami yoki aniq ilmiy atamani kiritsangiz), men platformaga yuklangan barcha rasmiy darsliklar, ma’ruza matnlari va PDF taqdimotlar asosida batafsil javob beraman:
+Savolingizni biroz aniqroq yozsangiz (masalan, fan nomi, mavzu raqami yoki aniq ilmiy atamani kiritsangiz), men hech qanday limit sarflamasdan platformaga yuklangan barcha rasmiy darsliklar, ma’ruza matnlari va PDF taqdimotlar asosida darhol javob beraman:
 
 - 🌿 **Botanika:** 30 ta mavzu va 42 ta PDF (1–18-mavzu taqdimotlar, 19–30-mavzu ma’ruza matnlari va taqdimotlar)
 - 🧬 **Genetika:** 15 ta mavzu va 30 ta PDF (har bir mavzu uchun ma’ruza matni va taqdimot)
+- 🧫 **Mikrobiologiya va virusologiya:** 16 ta mavzu va 16 ta PDF (1–16-mavzular uchun to‘liq ma’ruza matnlari)
 - 🧪 **Biokimyo:** 15 ta mavzu va 30 ta PDF (har bir mavzu uchun ma’ruza matni va taqdimot)
 - 🔬 **Biologiya (Milliy sertifikat):** 30 ta rasmiy variant (900 ta savol va javob kalitlari bilan)
 - 🇬🇧 **Ingliz tili:** 0 dan C1 gacha 180 ta video darslik
-- 📝 **Kurs ishi va Mustaqil ish:** Standart rejalar, GOST talablari va namunalar`;
+- 📝 **Kurs ishi va Mustaqil ish:** Standart rejalar, GOST talablari va namunalar
+
+_Namuna savollar: «Mikrobiologiya 13-mavzu qoqshol», «Genetika 9-mavzu krossingover», «Biokimyo 14-mavzu Krebs sikli», «Variant 1 2-savol»._`;
 }
 
 export const askAiTeacherServerFn = createServerFn({ method: "POST" })
   .validator((data: AskAiTeacherInput) => data)
   .handler(async ({ data }): Promise<AskAiTeacherOutput> => {
-    const apiKey = process.env["GEMINI_API_KEY"];
+    // Purely local, zero-quota, instant grounded knowledge engine (no external LLM API calls)
+    const { synthesizeGroundedFallback } = await import("@/lib/aiKnowledgeEngine");
 
-    // Dynamically import server knowledge engine so client bundle never includes PDF/test corpora
-    const { buildGroundedPromptContext, synthesizeGroundedFallback } =
-      await import("@/lib/aiKnowledgeEngine");
-
-    const { contextText } = buildGroundedPromptContext(data.prompt, data.category, data.history);
-
-    const systemInstruction = `Siz 'EduUni' raqamli universitet ta'limi platformasining rasmiy bosh sun'iy intellekt ustozi (AI Teacher)siz.
-Siz platformaga yuklangan BARCHA darsliklar, PDF ma'ruza matnlari, PDF taqdimotlar (slaydlar), Milliy sertifikat test variantlari va o'quv qo'llanmalarni to'liq o'qigan mutaxassissiz:
-1. BOTANIKA: 30 ta mavzu va 42 ta rasmiy PDF (M01–M18 taqdimotlar hamda 19–30-mavzular uchun ma'ruza matnlari va taqdimotlar).
-2. BIOKIMYO: 15 ta mavzu va 30 ta rasmiy PDF (1–15-mavzular uchun ma'ruza matnlari va taqdimotlar).
-3. GENETIKA: 15 ta mavzu va 30 ta rasmiy PDF (1–15-mavzular uchun ma'ruza matnlari va taqdimotlar).
-4. BIOLOGIYA (MILLIY SERTIFIKAT VA KUTUBXONA): 30 ta rasmiy test varianti (900 ta savol, variantlar va rasmiy javob kaliti) + rasmiy PDF to'plam.
-5. INGLIZ TILI: 0 dan C1 gacha 180 ta video darslik ro'yxati va grammatik qoidalar.
-6. KURS ISHI, MUSTAQIL ISH, MIKROBIOLOGIYA VA O'YINLAR.
-
-QAT'IY QOIDALAR:
-- Avvalo quyida sizga taqdim etilgan [DARSLIK MAVZUSI], [PDF VA TAQDIMOTLARDAN OLINGAN ANIQ MATNLAR] va [MILLIY SERTIFIKAT TEST BAZASI] ma'lumotlariga tayaning. Darslik, ma'ruza matni va taqdimot slaydlaridagi raqamlar, qonunlar, formulalar, tasniflar, jadvallar va atamalarni xatosiz keltiring.
-- Javob berayotganda qaysi fan, mavzu va manbadan (masalan: "Genetika · 9-mavzu · Taqdimot" yoki "Biokimyo · 14-mavzu · Ma'ruza matni") foydalanganingizni ko'rsating.
-- Agar foydalanuvchi savoli darsliklardagi mavzu yoki testga tegishli bo'lsa, taqdimot va PDF matnlaridagi barcha muhim tafsilotlarni qoldirmasdan, izchil va tushunarli bayon qiling.
-- Agar savol kengroq akademik, hisob-kitob (masala yechish) yoki metodik izoh talab qilsa, darslik asoslarini chuqur ilmiy bilim bilan to'ldirib, bosqichma-bosqich tushuntiring.
-- Javoblarni chiroyli Markdown formatida (sarlavhalar, ro'yxatlar, qalin atamalar, kerak bo'lsa jadvallar va formulalar) taqdim eting.
-- Asosan o'zbek tilida javob bering (agar foydalanuvchi inglizcha so'rasa, inglizcha/o'zbekcha tushuntiring).`;
-
-    // Try Gemini API if key is available
-    if (apiKey) {
-      try {
-        const ai = new GoogleGenAI({
-          apiKey,
-          httpOptions: {
-            headers: {
-              "User-Agent": "aistudio-build",
-            },
-            timeout: 45000,
-          },
-        });
-
-        // Format conversation history if provided (limit to last 6 turns)
-        const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
-        if (data.history && data.history.length > 0) {
-          data.history.slice(-6).forEach((item) => {
-            contents.push({
-              role: item.role === "assistant" || item.role === "model" ? "model" : "user",
-              parts: [{ text: item.content }],
-            });
-          });
-        }
-
-        // Attach grounded textbook, presentation & PDF context alongside the student's question
-        contents.push({
-          role: "user",
-          parts: [
-            {
-              text: `PLATFORMADAGI TEKSHIRILGAN DARSLIK, TAQDIMOT VA PDF MA'LUMOTLARI:\n${contextText}\n\n---\nTanlangan bo‘lim: ${data.category || "Barcha mavzular"}\nTalaba savoli: ${data.prompt}`,
-            },
-          ],
-        });
-
-        const response = await ai.models.generateContent({
-          model: "gemini-4-hydrogen",
-          contents,
-          config: {
-            systemInstruction,
-            thinkingConfig: {
-              thinkingLevel: ThinkingLevel.MEDIUM,
-            },
-          },
-        });
-
-        const textOutput = response.text;
-        if (textOutput && textOutput.trim().length > 0) {
-          return {
-            success: true,
-            response: textOutput,
-            source: "gemini",
-          };
-        }
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        console.warn("Gemini API call failed, falling back to grounded knowledge engine:", msg);
-      }
-    }
-
-    // Fallback to grounded textbook/PDF knowledge synthesis first, then general guide
-    const groundedFallback = synthesizeGroundedFallback(data.prompt, data.category, data.history);
-    if (groundedFallback && groundedFallback.trim().length > 0) {
+    const groundedResponse = synthesizeGroundedFallback(data.prompt, data.category, data.history);
+    if (groundedResponse && groundedResponse.trim().length > 0) {
       return {
         success: true,
-        response: groundedFallback,
+        response: groundedResponse,
         source: "knowledge_base",
       };
     }
 
-    const fallbackResponse = generateAcademicFallback(data.prompt, data.category);
+    const guideResponse = generateAcademicGuide(data.prompt, data.category);
     return {
       success: true,
-      response: fallbackResponse,
+      response: guideResponse,
       source: "knowledge_base",
     };
   });

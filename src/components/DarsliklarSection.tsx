@@ -18,6 +18,7 @@ import biokimyoImg from "@/assets/biokimyo.jpg";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
+import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 
 export type SubjectKey = "botanika" | "genetika" | "mikrobiologiya" | "biokimyo";
 
@@ -25,6 +26,7 @@ interface DarsliklarSectionProps {
   onBack: () => void;
   onOpenBotanika: () => void;
   onOpenGenetika: () => void;
+  onOpenMikrobiologiya: () => void;
   onOpenBiokimyo: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
@@ -66,18 +68,17 @@ const SUBJECTS = [
   {
     id: "mikrobiologiya" as SubjectKey,
     title: "Mikrobiologiya",
-    subtitle: "Mikroorganizmlar biologiyasi va ekologiyasi",
-    description:
-      "Bakteriyalar, viruslar, zamburug‘lar tuzilishi, oziqlanishi, moddalar almashinuvi, antibiotiklar va immunologiya asoslari.",
-    topicsCount: 20,
-    status: "Tayanch darslik & AI yordam",
+    subtitle: "Mikroorganizmlar biologiyasi, virusologiya va xususiy bakteriologiya",
+    description: `Mikrobiologiya va virusologiya, bakteriyalar morfologiyasi, ekologiya, oziqa muhitlar, bijg‘ish, bakteriofaglar, antibiotiklar va patogen qo‘zg‘atuvchilar bo‘yicha barcha ${MIKROBIOLOGIYA_TOPICS.length} ta mavzu (1-mavzudan ${MIKROBIOLOGIYA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    topicsCount: MIKROBIOLOGIYA_TOPICS.length,
+    status: "To‘liq ishga tushirilgan",
     img: mikroImg,
     icon: Microscope,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Prokariot va eukariot mikroorganizmlar morfologiyasi",
-      "Mikroblar genetikasi, metabolizmi va kultivatsiyasi",
-      "Tuproq, suv va tibbiy mikrobiologiya asoslari",
+      "1–7-mavzular: Kirish, bakteriyalar tuzilishi, ekologiya, oziqa muhitlar, bijg‘ish, faglar va antibiotiklar (PDF + ma’ruza)",
+      "8–11-mavzular: Patogen kokklar (stafilokokk, streptokokk, neysseriya) va enterobakteriyalar (PDF + ma’ruza)",
+      `12–${MIKROBIOLOGIYA_TOPICS.length}-mavzular: Vabo, toun, sil, qoqshol, botulizm, spiroxetalar, rikketsiyalar, xlamidiya va mikoplazmalar (PDF + ma’ruza)`,
     ],
   },
   {
@@ -102,6 +103,7 @@ export function DarsliklarSection({
   onBack,
   onOpenBotanika,
   onOpenGenetika,
+  onOpenMikrobiologiya,
   onOpenBiokimyo,
   onAskAi,
   initialSubject = "botanika",
@@ -164,6 +166,8 @@ export function DarsliklarSection({
                   onOpenBotanika();
                 } else if (subj.id === "genetika") {
                   onOpenGenetika();
+                } else if (subj.id === "mikrobiologiya") {
+                  onOpenMikrobiologiya();
                 } else if (subj.id === "biokimyo") {
                   onOpenBiokimyo();
                 }
@@ -238,7 +242,10 @@ export function DarsliklarSection({
 
               {/* Footer Action */}
               <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-5 py-3.5">
-                {subj.id === "botanika" || subj.id === "genetika" || subj.id === "biokimyo" ? (
+                {subj.id === "botanika" ||
+                subj.id === "genetika" ||
+                subj.id === "mikrobiologiya" ||
+                subj.id === "biokimyo" ? (
                   <button
                     type="button"
                     onClick={(e) => {
@@ -247,6 +254,8 @@ export function DarsliklarSection({
                         onOpenBotanika();
                       } else if (subj.id === "genetika") {
                         onOpenGenetika();
+                      } else if (subj.id === "mikrobiologiya") {
+                        onOpenMikrobiologiya();
                       } else {
                         onOpenBiokimyo();
                       }

@@ -3,6 +3,7 @@ import { searchAppContent } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
+import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -137,6 +138,34 @@ describe("searchAppContent", () => {
       expect(topic.pdfDocuments).toHaveLength(2);
       expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
       expect(topic.pdfDocuments?.[1]?.kind).toBe("Taqdimot");
+      topic.pdfDocuments?.forEach((doc) => {
+        expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      });
+    });
+  });
+
+  it("finds Mikrobiologiya sequential topics (1 through 16) and verifies matched PDFs", () => {
+    const botulizmResults = searchAppContent("botulotoksin");
+    expect(botulizmResults.some((r) => r.id === "mikro-14" && r.category === "Darsliklar")).toBe(
+      true,
+    );
+
+    const fagResults = searchAppContent("bakteriofag");
+    expect(fagResults.some((r) => r.id === "mikro-6" && r.category === "Darsliklar")).toBe(true);
+
+    expect(MIKROBIOLOGIYA_TOPICS).toHaveLength(16);
+    MIKROBIOLOGIYA_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+      expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      expect(topic.pdfDocuments).toBeDefined();
+      expect(topic.pdfDocuments?.length).toBeGreaterThanOrEqual(1);
+      expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
       topic.pdfDocuments?.forEach((doc) => {
         expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
       });

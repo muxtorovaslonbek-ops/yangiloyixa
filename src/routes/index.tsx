@@ -45,6 +45,7 @@ import { MustaqilIshSection } from "@/components/MustaqilIshSection";
 import { DarsliklarSection, type SubjectKey } from "@/components/DarsliklarSection";
 import { BotanikaSection } from "@/components/BotanikaSection";
 import { GenetikaSection } from "@/components/GenetikaSection";
+import { MikrobiologiyaSection } from "@/components/MikrobiologiyaSection";
 import { BiokimyoSection } from "@/components/BiokimyoSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
@@ -52,6 +53,7 @@ import { KutubxonaSection } from "@/components/KutubxonaSection";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
+import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import {
   getDefaultStudyProgress,
@@ -119,7 +121,7 @@ const features = [
 const list = [
   { t: "Botanika", n: BOTANIKA_TOPICS.length, p: 72, img: botanika },
   { t: "Genetika", n: GENETIKA_TOPICS.length, p: 60, img: genetika },
-  { t: "Mikrobiologiya", n: 20, p: 48, img: mikro },
+  { t: "Mikrobiologiya", n: MIKROBIOLOGIYA_TOPICS.length, p: 48, img: mikro },
   { t: "Biokimyo", n: BIOKIMYO_TOPICS.length, p: 35, img: biokimyo },
 ];
 
@@ -150,6 +152,7 @@ function Index() {
   const [open, setOpen] = useState(false);
   const [botanikaFullscreen, setBotanikaFullscreen] = useState(false);
   const [genetikaFullscreen, setGenetikaFullscreen] = useState(false);
+  const [mikrobiologiyaFullscreen, setMikrobiologiyaFullscreen] = useState(false);
   const [biokimyoFullscreen, setBiokimyoFullscreen] = useState(false);
   const [selectedDarslikSubject, setSelectedDarslikSubject] = useState<SubjectKey>("botanika");
   const [searchQuery, setSearchQuery] = useState("");
@@ -171,7 +174,13 @@ function Index() {
       window.removeEventListener("storage", syncProgress);
       window.removeEventListener("focus", syncProgress);
     };
-  }, [active, botanikaFullscreen, genetikaFullscreen, biokimyoFullscreen]);
+  }, [
+    active,
+    botanikaFullscreen,
+    genetikaFullscreen,
+    mikrobiologiyaFullscreen,
+    biokimyoFullscreen,
+  ]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -214,6 +223,9 @@ function Index() {
     } else if (item.id === "course-genetika" || item.id.startsWith("genetika-")) {
       setActive(1);
       setGenetikaFullscreen(true);
+    } else if (item.id === "course-mikro" || item.id.startsWith("mikro-")) {
+      setActive(1);
+      setMikrobiologiyaFullscreen(true);
     } else if (item.id === "course-biokimyo" || item.id.startsWith("biokimyo-")) {
       setActive(1);
       setBiokimyoFullscreen(true);
@@ -228,6 +240,7 @@ function Index() {
     setAiPromptForTeacher(queryText);
     setBotanikaFullscreen(false);
     setGenetikaFullscreen(false);
+    setMikrobiologiyaFullscreen(false);
     setBiokimyoFullscreen(false);
     setActive(7);
     setIsSearchOpen(false);
@@ -521,6 +534,7 @@ function Index() {
             }}
             onOpenBotanika={() => setBotanikaFullscreen(true)}
             onOpenGenetika={() => setGenetikaFullscreen(true)}
+            onOpenMikrobiologiya={() => setMikrobiologiyaFullscreen(true)}
             onOpenBiokimyo={() => setBiokimyoFullscreen(true)}
             onAskAi={handleAskAiTeacher}
           />
@@ -835,6 +849,8 @@ function Index() {
                           setBotanikaFullscreen(true);
                         } else if (key === "genetika") {
                           setGenetikaFullscreen(true);
+                        } else if (key === "mikrobiologiya") {
+                          setMikrobiologiyaFullscreen(true);
                         } else if (key === "biokimyo") {
                           setBiokimyoFullscreen(true);
                         } else {
@@ -1028,6 +1044,16 @@ function Index() {
           onBack={() => setGenetikaFullscreen(false)}
           onAskAi={(prompt) => {
             setGenetikaFullscreen(false);
+            handleAskAiTeacher(prompt);
+          }}
+        />
+      )}
+
+      {mikrobiologiyaFullscreen && (
+        <MikrobiologiyaSection
+          onBack={() => setMikrobiologiyaFullscreen(false)}
+          onAskAi={(prompt) => {
+            setMikrobiologiyaFullscreen(false);
             handleAskAiTeacher(prompt);
           }}
         />

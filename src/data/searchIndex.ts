@@ -3,6 +3,7 @@ import { BIOLOGY_VARIANTS } from "./biologyVariantsData";
 import { BOTANIKA_TOPICS } from "./botanikaTopics";
 import { BIOKIMYO_TOPICS } from "./biokimyoTopics";
 import { GENETIKA_TOPICS } from "./genetikaTopics";
+import { MIKROBIOLOGIYA_TOPICS } from "./mikrobiologiyaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -44,11 +45,10 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
   {
     id: "course-mikro",
     title: "Mikrobiologiya fani",
-    description:
-      "Bakteriyalar, viruslar, zamburug'lar fiziologiyasi va antibiotiklar bo‘yicha 20 ta mavzu.",
+    description: `Mikrobiologiya va virusologiya, bakteriyalar morfologiyasi, ekologiya, oziqa muhitlar, bijg‘ish, bakteriofaglar, antibiotiklar va patogen qo‘zg‘atuvchilar bo‘yicha ${MIKROBIOLOGIYA_TOPICS.length} ta mavzu.`,
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: "20 ta mavzu",
+    badge: `${MIKROBIOLOGIYA_TOPICS.length} ta mavzu`,
   },
   {
     id: "course-biokimyo",
@@ -338,11 +338,30 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 7. Mikrobiologiya Topics Matches (limit to top 8)
+  const mikrobiologiyaMatches: SearchResultItem[] = [];
+  for (const topic of MIKROBIOLOGIYA_TOPICS) {
+    const combined =
+      `mikrobiologiya virusologiya darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      mikrobiologiyaMatches.push({
+        id: topic.id,
+        title: `Mikrobiologiya ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (mikrobiologiyaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
   const results = [
     ...directoryMatches,
     ...botanikaMatches,
     ...genetikaMatches,
+    ...mikrobiologiyaMatches,
     ...biokimyoMatches,
     ...videoMatches,
     ...biologyMatches,

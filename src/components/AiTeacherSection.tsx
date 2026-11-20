@@ -183,17 +183,15 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
     const cacheKey = `${selectedCategory}:${text.toLowerCase().trim()}`;
     if (responseCache.current.has(cacheKey)) {
       const cached = responseCache.current.get(cacheKey)!;
-      setTimeout(() => {
-        const assistantMsg: Message = {
-          id: `assistant-${Date.now()}`,
-          role: "assistant",
-          content: cached.content,
-          timestamp: new Date().toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit" }),
-          source: cached.source,
-        };
-        setMessages((prev) => [...prev, assistantMsg]);
-        setIsLoading(false);
-      }, 150);
+      const assistantMsg: Message = {
+        id: `assistant-${Date.now()}`,
+        role: "assistant",
+        content: cached.content,
+        timestamp: new Date().toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit" }),
+        source: cached.source,
+      };
+      setMessages((prev) => [...prev, assistantMsg]);
+      setIsLoading(false);
       return;
     }
 
@@ -305,18 +303,18 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
               Universitet Fanlari Bo‘yicha Barcha Savollaringizga Ilmiy Javoblar
             </h2>
             <p className="mt-2 text-xs text-indigo-100/90 md:text-sm">
-              Platformaga yuklangan barcha darsliklar, 103 ta rasmiy PDF ma’ruza va taqdimotlar,
+              Platformaga yuklangan barcha 76 ta mavzu, 119 ta rasmiy PDF ma’ruza va taqdimotlar,
               Kurs ishi, Mustaqil ish, Ingliz tili hamda Biologiya Milliy sertifikat testlari
-              asosida aniq ilmiy javob oling.
+              asosida limitsiz va tezkor ilmiy javob oling.
             </p>
           </div>
 
           <div className="shrink-0 rounded-2xl bg-white/10 p-4 backdrop-blur-md text-xs space-y-1.5 border border-white/10">
             <div className="flex items-center gap-2 text-emerald-300 font-bold">
-              <Zap className="h-4 w-4" /> Real-time Gemini 4 Hydrogen
+              <Zap className="h-4 w-4" /> Tezkor · Limitsiz AI Baza
             </div>
             <div className="text-[11px] text-indigo-100">
-              Barcha darslik, taqdimot va PDF hujjatlar asosida
+              Hech qanday limit sarflamaydi · 119 ta PDF
             </div>
           </div>
         </div>
@@ -400,7 +398,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
                     <span>{msg.timestamp}</span>
                     {msg.source && (
                       <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
-                        {msg.source === "gemini" ? "Gemini 4 Hydrogen" : "Darslik & PDF Bazasi"}
+                        Darslik & PDF Bazasi (Limitsiz)
                       </span>
                     )}
                   </div>

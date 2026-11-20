@@ -6,12 +6,12 @@ import {
   synthesizeGroundedFallback,
 } from "@/lib/aiKnowledgeEngine";
 
-describe("aiKnowledgeEngine (full textbooks, presentations & 103 PDFs)", () => {
-  it("indexes all 60 textbook topics, 103 PDFs, 900 biology questions, and 180 English lessons", () => {
+describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
+  it("indexes all 76 textbook topics, 119 PDFs, 900 biology questions, and 180 English lessons", () => {
     const idx = getKnowledgeIndex();
-    expect(idx.topics).toHaveLength(60); // 30 Botanika + 15 Biokimyo + 15 Genetika
-    expect(idx.corpusDocCount).toBe(103); // 42 Botanika + 30 Biokimyo + 30 Genetika + 1 Kutubxona
-    expect(idx.corpusPageCount).toBeGreaterThan(1900);
+    expect(idx.topics).toHaveLength(76); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya
+    expect(idx.corpusDocCount).toBe(119); // 42 Botanika + 30 Biokimyo + 30 Genetika + 16 Mikrobiologiya + 1 Kutubxona
+    expect(idx.corpusPageCount).toBeGreaterThan(2100);
     expect(idx.bioQuestions).toHaveLength(900);
     expect(idx.englishLessons).toHaveLength(180);
   });
@@ -51,6 +51,17 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 103 PDFs)", () => {
     expect(bombay).toContain("Bombay");
   });
 
+  it("retrieves Mikrobiologiya topics and all 16 lecture PDFs accurately", () => {
+    const hit = retrieveKnowledge("Mikrobiologiya 13-mavzu qoqshol tetanospazmin va Sil-Nilsen");
+    expect(hit.topics[0]?.topic.subject).toBe("Mikrobiologiya");
+    expect(hit.topics[0]?.topic.id).toBe("mikro-13");
+    expect(hit.pdfPages.some((p) => p.item.doc.topicId === "mikro-13")).toBe(true);
+
+    const catalog = synthesizeGroundedFallback("Mikrobiologiya fanida nechta mavzu bor?");
+    expect(catalog).toContain("16 ta mavzu");
+    expect(catalog).toContain("16-mavzu");
+  });
+
   it("retrieves exact Biology Milliy sertifikat variant questions and official answers", () => {
     const answer = synthesizeGroundedFallback("Variant 1 2-savolni tushuntirib ber", "biologiya");
     expect(answer).toContain("Variant 1");
@@ -72,5 +83,27 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 103 PDFs)", () => {
     ]);
     expect(hit.topics[0]?.topic.subject).toBe("Genetika");
     expect(hit.topics[0]?.topic.id).toBe("genetika-14");
+  });
+
+  it("answers comparison, English grammar, and Kurs ishi routing instantly without API calls", () => {
+    const gram = synthesizeGroundedFallback(
+      "Mikrobiologiyada gram-musbat va gram-manfiy bakteriyalar farqi",
+      "darsliklar",
+    );
+    expect(gram).toContain("Gram-musbat");
+    expect(gram).toContain("Peptidoglikan");
+
+    const eng = synthesizeGroundedFallback(
+      "Present Perfect va Past Simple o'rtasidagi asosiy farqlar",
+      "ingliz_tili",
+    );
+    expect(eng).toContain("Present Perfect");
+    expect(eng).toContain("Past Simple");
+
+    const kurs = synthesizeGroundedFallback(
+      "Universitetda kurs ishini qanday a'lo bahoga yozish mumkin?",
+      "all",
+    );
+    expect(kurs).toBe("");
   });
 });
