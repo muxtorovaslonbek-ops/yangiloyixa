@@ -24,6 +24,7 @@ import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
+import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
 
 export type SubjectKey =
   "botanika" | "genetika" | "mikrobiologiya" | "biokimyo" | "gidrobiologiya" | "biotexnologiya";
@@ -35,6 +36,7 @@ interface DarsliklarSectionProps {
   onOpenMikrobiologiya: () => void;
   onOpenBiokimyo: () => void;
   onOpenGidrobiologiya: () => void;
+  onOpenBiotexnologiya: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
 }
@@ -124,17 +126,16 @@ const SUBJECTS = [
     id: "biotexnologiya" as SubjectKey,
     title: "Biotexnologiya",
     subtitle: "Gen va hujayra muhandisligi, bioprotsesslar texnologiyasi",
-    description:
-      "Zamonaviy biotexnologiya asoslari, gen va hujayra muhandisligi, bioreaktorlar, mikrobiologik sintez, o‘simlik hujayra kulturalari hamda tibbiyot va qishloq xo‘jaligi biotexnologiyasi fani.",
-    topicsCount: 0,
-    status: "Materiallar yuklanmoqda",
+    description: `Biotexnologiya asoslari, gen muhandisligi fermentlari, rekombinant DNK, transgen ekinlar, mikrobiologik sintez, antibiotiklar, organik kislotalar, enzimatik muhandislik, immobilizatsiya, biosensorlar, bioreaktorlar, agro-, tibbiyot va ekologik biotexnologiya bo‘yicha barcha ${BIOTEXNOLOGIYA_TOPICS.length} ta mavzu (1-mavzudan ${BIOTEXNOLOGIYA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    topicsCount: BIOTEXNOLOGIYA_TOPICS.length,
+    status: "To‘liq ishga tushirilgan",
     img: biotexnologiyaImg,
     icon: Atom,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Biotexnologiya asoslari, bioreaktorlar va mikroorganizmlar ishtirokidagi bioprotsesslar",
-      "Gen muhandisligi, rekombinant DNK texnologiyasi, PZR va CRISPR asoslari",
-      "Hujayra muhandisligi, o‘simlik to‘qima kulturalari (in vitro) va biofarmatsevtika",
+      "1–10-mavzular: Kirish, hujayralar, markaziy dogma, gen muhandisligi, vektorlar, transgenika va CRISPR (PDF + ma’ruza)",
+      "11–17-mavzular: Mikrobiologik sintez, antibiotiklar, organik kislotalar, fermentlar, immobilizatsiya va bioreaktorlar (PDF + ma’ruza)",
+      `18–${BIOTEXNOLOGIYA_TOPICS.length}-mavzular: O‘simlik in vitro, agrobiotexnologiya, tibbiyot, ekologik biotexnologiya va soha kelajagi (PDF + ma’ruza)`,
     ],
   },
 ];
@@ -146,6 +147,7 @@ export function DarsliklarSection({
   onOpenMikrobiologiya,
   onOpenBiokimyo,
   onOpenGidrobiologiya,
+  onOpenBiotexnologiya,
   onAskAi,
   initialSubject = "botanika",
 }: DarsliklarSectionProps) {
@@ -215,6 +217,8 @@ export function DarsliklarSection({
                   onOpenBiokimyo();
                 } else if (subj.id === "gidrobiologiya") {
                   onOpenGidrobiologiya();
+                } else if (subj.id === "biotexnologiya") {
+                  onOpenBiotexnologiya();
                 }
               }}
               className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
@@ -293,7 +297,8 @@ export function DarsliklarSection({
                 subj.id === "genetika" ||
                 subj.id === "mikrobiologiya" ||
                 subj.id === "biokimyo" ||
-                subj.id === "gidrobiologiya" ? (
+                subj.id === "gidrobiologiya" ||
+                subj.id === "biotexnologiya" ? (
                   <button
                     type="button"
                     onClick={(e) => {
@@ -306,8 +311,10 @@ export function DarsliklarSection({
                         onOpenMikrobiologiya();
                       } else if (subj.id === "biokimyo") {
                         onOpenBiokimyo();
-                      } else {
+                      } else if (subj.id === "gidrobiologiya") {
                         onOpenGidrobiologiya();
+                      } else {
+                        onOpenBiotexnologiya();
                       }
                     }}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"

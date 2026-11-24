@@ -5,6 +5,7 @@ import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
+import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -182,6 +183,34 @@ describe("searchAppContent", () => {
 
     expect(GIDROBIOLOGIYA_TOPICS).toHaveLength(11);
     GIDROBIOLOGIYA_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+      expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      expect(topic.pdfDocuments).toBeDefined();
+      expect(topic.pdfDocuments?.length).toBeGreaterThanOrEqual(1);
+      expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
+      topic.pdfDocuments?.forEach((doc) => {
+        expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      });
+    });
+  });
+
+  it("finds Biotexnologiya sequential topics (1 through 22) and verifies matched PDFs", () => {
+    const immobResults = searchAppContent("immobilizatsiya");
+    expect(immobResults.some((r) => r.id === "biotex-16" && r.category === "Darsliklar")).toBe(
+      true,
+    );
+
+    const bioResults = searchAppContent("bioremediatsiya");
+    expect(bioResults.some((r) => r.id === "biotex-21" && r.category === "Darsliklar")).toBe(true);
+
+    expect(BIOTEXNOLOGIYA_TOPICS).toHaveLength(22);
+    BIOTEXNOLOGIYA_TOPICS.forEach((topic, idx) => {
       expect(topic.order).toBe(idx + 1);
       expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
       expect(topic.overview.length).toBeGreaterThan(100);

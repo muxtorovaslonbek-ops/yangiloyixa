@@ -10,16 +10,16 @@ import {
 } from "@/lib/aiKnowledgeEngine";
 import { askAiTeacher } from "@/services/aiTeacherService";
 
-describe("aiKnowledgeEngine (full textbooks, presentations & 130 PDFs)", () => {
+describe("aiKnowledgeEngine (full textbooks, presentations & 152 PDFs)", () => {
   beforeAll(() => {
     setPdfCorpus(aiPdfCorpusRaw as unknown as AiPdfCorpus);
   });
 
-  it("indexes all 87 textbook topics, 130 PDFs, 900 biology questions, and 180 English lessons", () => {
+  it("indexes all 109 textbook topics, 152 PDFs, 900 biology questions, and 180 English lessons", () => {
     const idx = getKnowledgeIndex();
-    expect(idx.topics).toHaveLength(87); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya
-    expect(idx.corpusDocCount).toBe(130); // 42 Botanika + 30 Biokimyo + 30 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya + 1 Kutubxona
-    expect(idx.corpusPageCount).toBeGreaterThan(2250);
+    expect(idx.topics).toHaveLength(109); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya + 22 Biotexnologiya
+    expect(idx.corpusDocCount).toBe(152); // 42 Botanika + 30 Biokimyo + 30 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya + 22 Biotexnologiya + 1 Kutubxona
+    expect(idx.corpusPageCount).toBeGreaterThan(2500);
     expect(idx.bioQuestions).toHaveLength(900);
     expect(idx.englishLessons).toHaveLength(180);
   });
@@ -81,6 +81,19 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 130 PDFs)", () => {
     const catalog = synthesizeGroundedFallback("Gidrobiologiya fanida nechta mavzu bor?");
     expect(catalog).toContain("11 ta mavzu");
     expect(catalog).toContain("11-mavzu");
+  });
+
+  it("retrieves Biotexnologiya topics and all 22 lecture PDFs accurately", () => {
+    const hit = retrieveKnowledge(
+      "Biotexnologiya 16-mavzu immobilizatsiya kalsiy alginat va glutar aldegid",
+    );
+    expect(hit.topics[0]?.topic.subject).toBe("Biotexnologiya");
+    expect(hit.topics[0]?.topic.id).toBe("biotex-16");
+    expect(hit.pdfPages.some((p) => p.item.doc.topicId === "biotex-16")).toBe(true);
+
+    const catalog = synthesizeGroundedFallback("Biotexnologiya fanida nechta mavzu bor?");
+    expect(catalog).toContain("22 ta mavzu");
+    expect(catalog).toContain("22-mavzu");
   });
 
   it("retrieves exact Biology Milliy sertifikat variant questions and official answers", () => {

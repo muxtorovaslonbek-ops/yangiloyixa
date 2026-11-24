@@ -5,6 +5,7 @@ import { BIOKIMYO_TOPICS } from "./biokimyoTopics";
 import { GENETIKA_TOPICS } from "./genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "./mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "./gidrobiologiyaTopics";
+import { BIOTEXNOLOGIYA_TOPICS } from "./biotexnologiyaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -66,6 +67,14 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     category: "Darsliklar",
     targetActiveTab: 1,
     badge: `${GIDROBIOLOGIYA_TOPICS.length} ta mavzu`,
+  },
+  {
+    id: "course-biotex",
+    title: "Biotexnologiya fani",
+    description: `Gen muhandisligi, rekombinant DNK, transgen ekinlar, mikrobiologik sintez, antibiotiklar, organik kislotalar, fermentlar, immobilizatsiya, biosensorlar, bioreaktorlar, agro-, tibbiyot va ekologik biotexnologiya bo‘yicha ${BIOTEXNOLOGIYA_TOPICS.length} ta mavzu.`,
+    category: "Darsliklar",
+    targetActiveTab: 1,
+    badge: `${BIOTEXNOLOGIYA_TOPICS.length} ta mavzu`,
   },
 
   // 2. Kurs ishi bo'limi
@@ -383,6 +392,24 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 9. Biotexnologiya Topics Matches (limit to top 8)
+  const biotexnologiyaMatches: SearchResultItem[] = [];
+  for (const topic of BIOTEXNOLOGIYA_TOPICS) {
+    const combined =
+      `biotexnologiya gen muhandisligi bioprotsess darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      biotexnologiyaMatches.push({
+        id: topic.id,
+        title: `Biotexnologiya ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (biotexnologiyaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
   const results = [
     ...directoryMatches,
@@ -391,6 +418,7 @@ export function searchAppContent(query: string): SearchResultItem[] {
     ...mikrobiologiyaMatches,
     ...biokimyoMatches,
     ...gidrobiologiyaMatches,
+    ...biotexnologiyaMatches,
     ...videoMatches,
     ...biologyMatches,
   ];

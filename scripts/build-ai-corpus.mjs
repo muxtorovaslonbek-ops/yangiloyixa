@@ -17,6 +17,7 @@ function cleanPdfPageText(raw) {
     /Genetika va genomika asoslari\s*[•·]\s*Ma[’'ʻ`]ruzalar kursi/gi,
     /Mikrobiologiya va virusologiya\s*[•·]\s*\d{1,2}-mavzu/gi,
     /Gidrobiologiya\s*[•·]\s*\d{1,2}-mavzu/gi,
+    /Biotexnologiya\s*[•·]\s*\d{1,2}-mavzu/gi,
     /Biologiya ta[’'ʻ`]lim yo[‘'ʻ`]nalishi\s*[•·]?\s*(I|II|III|IV)\s*semestr/gi,
     /Biologiya ta[’'ʻ`]lim yo[‘'ʻ`]nalishi bakalavriat talabalari uchun/gi,
     /Oliy ta[’'ʻ`]lim muassasalarining biologiya ta[’'ʻ`]lim yo[‘'ʻ`]nalishi\s*[•·]?\s*(I|II|III|IV)?\s*semestr/gi,
@@ -39,6 +40,8 @@ function collectPdfMetadata() {
     { file: "src/data/genetikaTopics.ts", subject: "Genetika" },
     { file: "src/data/mikrobiologiyaTopics.ts", subject: "Mikrobiologiya" },
     { file: "src/data/gidrobiologiyaTopics.ts", subject: "Gidrobiologiya" },
+    { file: "src/data/biotexnologiyaTopicsPart1.ts", subject: "Biotexnologiya" },
+    { file: "src/data/biotexnologiyaTopicsPart2.ts", subject: "Biotexnologiya" },
   ];
 
   for (const cfg of subjectConfigs) {
