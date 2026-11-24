@@ -10,16 +10,16 @@ import {
 } from "@/lib/aiKnowledgeEngine";
 import { askAiTeacher } from "@/services/aiTeacherService";
 
-describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
+describe("aiKnowledgeEngine (full textbooks, presentations & 130 PDFs)", () => {
   beforeAll(() => {
     setPdfCorpus(aiPdfCorpusRaw as unknown as AiPdfCorpus);
   });
 
-  it("indexes all 76 textbook topics, 119 PDFs, 900 biology questions, and 180 English lessons", () => {
+  it("indexes all 87 textbook topics, 130 PDFs, 900 biology questions, and 180 English lessons", () => {
     const idx = getKnowledgeIndex();
-    expect(idx.topics).toHaveLength(76); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya
-    expect(idx.corpusDocCount).toBe(119); // 42 Botanika + 30 Biokimyo + 30 Genetika + 16 Mikrobiologiya + 1 Kutubxona
-    expect(idx.corpusPageCount).toBeGreaterThan(2100);
+    expect(idx.topics).toHaveLength(87); // 30 Botanika + 15 Biokimyo + 15 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya
+    expect(idx.corpusDocCount).toBe(130); // 42 Botanika + 30 Biokimyo + 30 Genetika + 16 Mikrobiologiya + 11 Gidrobiologiya + 1 Kutubxona
+    expect(idx.corpusPageCount).toBeGreaterThan(2250);
     expect(idx.bioQuestions).toHaveLength(900);
     expect(idx.englishLessons).toHaveLength(180);
   });
@@ -68,6 +68,19 @@ describe("aiKnowledgeEngine (full textbooks, presentations & 119 PDFs)", () => {
     const catalog = synthesizeGroundedFallback("Mikrobiologiya fanida nechta mavzu bor?");
     expect(catalog).toContain("16 ta mavzu");
     expect(catalog).toContain("16-mavzu");
+  });
+
+  it("retrieves Gidrobiologiya topics and all 11 lecture PDFs accurately", () => {
+    const hit = retrieveKnowledge(
+      "Gidrobiologiya 9-mavzu evtrofikatsiya Karlson TSI va biomanipulyatsiya",
+    );
+    expect(hit.topics[0]?.topic.subject).toBe("Gidrobiologiya");
+    expect(hit.topics[0]?.topic.id).toBe("gidro-9");
+    expect(hit.pdfPages.some((p) => p.item.doc.topicId === "gidro-9")).toBe(true);
+
+    const catalog = synthesizeGroundedFallback("Gidrobiologiya fanida nechta mavzu bor?");
+    expect(catalog).toContain("11 ta mavzu");
+    expect(catalog).toContain("11-mavzu");
   });
 
   it("retrieves exact Biology Milliy sertifikat variant questions and official answers", () => {

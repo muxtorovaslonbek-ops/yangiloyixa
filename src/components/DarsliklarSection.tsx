@@ -23,6 +23,7 @@ import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
+import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 
 export type SubjectKey =
   "botanika" | "genetika" | "mikrobiologiya" | "biokimyo" | "gidrobiologiya" | "biotexnologiya";
@@ -33,6 +34,7 @@ interface DarsliklarSectionProps {
   onOpenGenetika: () => void;
   onOpenMikrobiologiya: () => void;
   onOpenBiokimyo: () => void;
+  onOpenGidrobiologiya: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
 }
@@ -106,17 +108,16 @@ const SUBJECTS = [
     id: "gidrobiologiya" as SubjectKey,
     title: "Gidrobiologiya",
     subtitle: "Suv ekotizimlari, gidrobiontlar biologiyasi va ekologiya",
-    description:
-      "Chuchuk va sho‘r suv havzalari biologiyasi, plankton, bentos, nekton jamoalari, suv muhitining fizik-kimyoviy omillari hamda biologik mahsuldorlik bo‘yicha universitet o‘quv fani.",
-    topicsCount: 0,
-    status: "Materiallar yuklanmoqda",
+    description: `Suv muhiti xususiyatlari, plankton, nekton, bentos, makrofitlar, fitoplankton, baliqlar ekologiyasi, oziq zanjirlari, biologik mahsuldorlik, evtrofikatsiya va monitoring bo‘yicha barcha ${GIDROBIOLOGIYA_TOPICS.length} ta mavzu (1-mavzudan ${GIDROBIOLOGIYA_TOPICS.length}-mavzugacha) PDF ma’ruza matnlari va nazariy konspektlar ko‘rinishida.`,
+    topicsCount: GIDROBIOLOGIYA_TOPICS.length,
+    status: "To‘liq ishga tushirilgan",
     img: gidrobiologiyaImg,
     icon: Waves,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Suv muhiti xususiyatlari va gidrobiontlarning ekologik guruhlari (plankton, nekton, bentos)",
-      "Chuchuk suv havzalari, daryo va ko‘llar hamda dengiz ekotizimlari biologiyasi",
-      "Suv havzalarining o‘z-o‘zini tozalashi, bioindikatsiya va biologik mahsuldorlik",
+      "1–4-mavzular: Kirish, suv muhiti xususiyatlari, gidrobiontlar va makrofitlar (PDF + ma’ruza)",
+      "5–8-mavzular: Fitoplankton, baliqlar ekologiyasi, oziq zanjirlari va mahsuldorlik (PDF + ma’ruza)",
+      `9–${GIDROBIOLOGIYA_TOPICS.length}-mavzular: Evtrofikatsiya, biologik monitoring, bioresurslar va zamonaviy muammolar (PDF + ma’ruza)`,
     ],
   },
   {
@@ -144,6 +145,7 @@ export function DarsliklarSection({
   onOpenGenetika,
   onOpenMikrobiologiya,
   onOpenBiokimyo,
+  onOpenGidrobiologiya,
   onAskAi,
   initialSubject = "botanika",
 }: DarsliklarSectionProps) {
@@ -211,6 +213,8 @@ export function DarsliklarSection({
                   onOpenMikrobiologiya();
                 } else if (subj.id === "biokimyo") {
                   onOpenBiokimyo();
+                } else if (subj.id === "gidrobiologiya") {
+                  onOpenGidrobiologiya();
                 }
               }}
               className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
@@ -288,7 +292,8 @@ export function DarsliklarSection({
                 {subj.id === "botanika" ||
                 subj.id === "genetika" ||
                 subj.id === "mikrobiologiya" ||
-                subj.id === "biokimyo" ? (
+                subj.id === "biokimyo" ||
+                subj.id === "gidrobiologiya" ? (
                   <button
                     type="button"
                     onClick={(e) => {
@@ -299,8 +304,10 @@ export function DarsliklarSection({
                         onOpenGenetika();
                       } else if (subj.id === "mikrobiologiya") {
                         onOpenMikrobiologiya();
-                      } else {
+                      } else if (subj.id === "biokimyo") {
                         onOpenBiokimyo();
+                      } else {
+                        onOpenGidrobiologiya();
                       }
                     }}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"

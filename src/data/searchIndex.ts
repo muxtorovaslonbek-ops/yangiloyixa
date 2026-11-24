@@ -4,6 +4,7 @@ import { BOTANIKA_TOPICS } from "./botanikaTopics";
 import { BIOKIMYO_TOPICS } from "./biokimyoTopics";
 import { GENETIKA_TOPICS } from "./genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "./mikrobiologiyaTopics";
+import { GIDROBIOLOGIYA_TOPICS } from "./gidrobiologiyaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -57,6 +58,14 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     category: "Darsliklar",
     targetActiveTab: 1,
     badge: `${BIOKIMYO_TOPICS.length} ta mavzu`,
+  },
+  {
+    id: "course-gidro",
+    title: "Gidrobiologiya fani",
+    description: `Suv muhiti xususiyatlari, plankton, nekton, bentos, makrofitlar, fitoplankton, baliqlar ekologiyasi, oziq zanjirlari, biologik mahsuldorlik, evtrofikatsiya va monitoring bo‘yicha ${GIDROBIOLOGIYA_TOPICS.length} ta mavzu.`,
+    category: "Darsliklar",
+    targetActiveTab: 1,
+    badge: `${GIDROBIOLOGIYA_TOPICS.length} ta mavzu`,
   },
 
   // 2. Kurs ishi bo'limi
@@ -356,6 +365,24 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 8. Gidrobiologiya Topics Matches (limit to top 8)
+  const gidrobiologiyaMatches: SearchResultItem[] = [];
+  for (const topic of GIDROBIOLOGIYA_TOPICS) {
+    const combined =
+      `gidrobiologiya suv ekotizimi darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      gidrobiologiyaMatches.push({
+        id: topic.id,
+        title: `Gidrobiologiya ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (gidrobiologiyaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
   const results = [
     ...directoryMatches,
@@ -363,6 +390,7 @@ export function searchAppContent(query: string): SearchResultItem[] {
     ...genetikaMatches,
     ...mikrobiologiyaMatches,
     ...biokimyoMatches,
+    ...gidrobiologiyaMatches,
     ...videoMatches,
     ...biologyMatches,
   ];

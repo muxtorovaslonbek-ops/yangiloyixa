@@ -133,7 +133,7 @@ export function AiTeacherSection({
         content: `Assalomu alaykum! Men **EduUni AI Ustozi**man — sizning barcha fanlar bo'yicha shaxsiy ilmiy maslahatchingizman. 🎓
 
 Quyidagi barcha yo'nalishlar bo'yicha savollaringizga ilmiy asosda to'liq javob bera olaman:
-- 📖 **Darsliklar** (Botanika, Genetika, Mikrobiologiya, Biokimyo va b.)
+- 📖 **Darsliklar** (Botanika, Genetika, Mikrobiologiya, Biokimyo, Gidrobiologiya va b.)
 - 📝 **Kurs ishi** (Reja tuzish, kirish qismi, tahlil, xulosa, adabiyotlar)
 - 📑 **Mustaqil ish** (Referat, esse, taqdimot talablari)
 - 🎮 **O'yinlar** (Intellektual viktorinalar va bilim o'yinlari)
@@ -148,7 +148,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
 
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
-  // Preload static 119-PDF corpus into browser RAM immediately so every query answers in <10ms with 0 tokens
+  // Preload static 130-PDF corpus into browser RAM immediately so every query answers in <10ms with 0 tokens
   useEffect(() => {
     void ensurePdfCorpusLoaded();
   }, []);
@@ -305,7 +305,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
               Universitet Fanlari Bo‘yicha Barcha Savollaringizga Ilmiy Javoblar
             </h2>
             <p className="mt-2 text-xs text-indigo-100/90 md:text-sm">
-              Platformaga yuklangan barcha 76 ta mavzu, 119 ta rasmiy PDF ma’ruza va taqdimotlar,
+              Platformaga yuklangan barcha 87 ta mavzu, 130 ta rasmiy PDF ma’ruza va taqdimotlar,
               Kurs ishi, Mustaqil ish, Ingliz tili hamda Biologiya Milliy sertifikat testlari
               asosida limitsiz va tezkor ilmiy javob oling.
             </p>
@@ -316,7 +316,7 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
               <Zap className="h-4 w-4" /> Oflayn Tezkor Baza · 0 Token
             </div>
             <div className="text-[11px] text-indigo-100">
-              Tashqi AI ulanmagan · 119 ta PDF · Vercel tayyor
+              Tashqi AI ulanmagan · 130 ta PDF · Vercel tayyor
             </div>
           </div>
         </div>

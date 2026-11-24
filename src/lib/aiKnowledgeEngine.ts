@@ -2,6 +2,7 @@ import { BOTANIKA_TOPICS, type BotanikaTopic } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS, type BiokimyoTopic } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS, type GenetikaTopic } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS, type MikrobiologiyaTopic } from "@/data/mikrobiologiyaTopics";
+import { GIDROBIOLOGIYA_TOPICS, type GidrobiologiyaTopic } from "@/data/gidrobiologiyaTopics";
 import {
   BIOLOGY_VARIANTS,
   type BiologyVariant,
@@ -79,7 +80,8 @@ export function ensurePdfCorpusLoaded(): Promise<boolean> {
   return Promise.resolve(false);
 }
 
-export type CurriculumSubject = "Botanika" | "Biokimyo" | "Genetika" | "Mikrobiologiya";
+export type CurriculumSubject =
+  "Botanika" | "Biokimyo" | "Genetika" | "Mikrobiologiya" | "Gidrobiologiya";
 
 export interface UnifiedTopicRecord {
   subject: CurriculumSubject;
@@ -327,7 +329,7 @@ function toPaddedSearchText(normText: string): string {
 
 function mapUnifiedTopic(
   subject: CurriculumSubject,
-  t: BotanikaTopic | BiokimyoTopic | GenetikaTopic | MikrobiologiyaTopic,
+  t: BotanikaTopic | BiokimyoTopic | GenetikaTopic | MikrobiologiyaTopic | GidrobiologiyaTopic,
 ): UnifiedTopicRecord {
   const groupLabel = "semester" in t ? t.semester : t.module;
   const pdfDocs =
@@ -428,9 +430,10 @@ export function getKnowledgeIndex(): KnowledgeIndex {
     ...BIOKIMYO_TOPICS.map((t) => mapUnifiedTopic("Biokimyo", t)),
     ...GENETIKA_TOPICS.map((t) => mapUnifiedTopic("Genetika", t)),
     ...MIKROBIOLOGIYA_TOPICS.map((t) => mapUnifiedTopic("Mikrobiologiya", t)),
+    ...GIDROBIOLOGIYA_TOPICS.map((t) => mapUnifiedTopic("Gidrobiologiya", t)),
   ];
 
-  // Compute IDF across all 76 topics so rare scientific terms outrank generic Uzbek words
+  // Compute IDF across all 87 topics so rare scientific terms outrank generic Uzbek words
   const docFreq = new Map<string, number>();
   for (const topic of topics) {
     const seen = new Set<string>();
@@ -514,6 +517,7 @@ function detectExplicitSubjects(normText: string): CurriculumSubject[] {
   if (/\bbiokimy/i.test(normText)) subjects.push("Biokimyo");
   if (/\bgenetik|\bgenomik/i.test(normText)) subjects.push("Genetika");
   if (/\bmikrobiolog|\bvirusolog|\bbakteriolog/i.test(normText)) subjects.push("Mikrobiologiya");
+  if (/\bgidrobiolog|\blimnolog|\bpotamolog/i.test(normText)) subjects.push("Gidrobiologiya");
   return subjects;
 }
 
@@ -680,6 +684,8 @@ function scoreTopicRecord(
     "mikrobiologiya",
     "mikrobiologiyada",
     "virusologiya",
+    "gidrobiologiya",
+    "gidrobiologiyada",
   ]);
   const contentTokens = intent.tokens.filter((t) => !subjectWords.has(t));
 
@@ -1017,6 +1023,7 @@ export function buildCurriculumDirectoryText(): string {
   const bioList = BIOKIMYO_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const genList = GENETIKA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const mikroList = MIKROBIOLOGIYA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
+  const gidroList = GIDROBIOLOGIYA_TOPICS.map((t) => `${t.order}. ${t.title}`).join(" | ");
   const engCategories = Array.from(new Set(ENGLISH_VIDEO_LESSONS.map((l) => l.category))).join(
     ", ",
   );
@@ -1027,6 +1034,7 @@ export function buildCurriculumDirectoryText(): string {
     `- BIOKIMYO (${BIOKIMYO_TOPICS.length} ta mavzu, 30 ta PDF — har bir mavzuda Ma’ruza matni + Taqdimot): ${bioList}`,
     `- GENETIKA (${GENETIKA_TOPICS.length} ta mavzu, 30 ta PDF — har bir mavzuda Ma’ruza matni + Taqdimot): ${genList}`,
     `- MIKROBIOLOGIYA VA VIRUSOLOGIYA (${MIKROBIOLOGIYA_TOPICS.length} ta mavzu, 16 ta PDF — 1–16-mavzular Ma’ruza matni): ${mikroList}`,
+    `- GIDROBIOLOGIYA (${GIDROBIOLOGIYA_TOPICS.length} ta mavzu, 11 ta PDF — 1–11-mavzular Ma’ruza matni): ${gidroList}`,
     `- BIOLOGIYA MILLIY SERTIFIKAT (Kutubxona + Test tizimi): ${BIOLOGY_VARIANTS.length} ta rasmiy variant (900 ta savol va javoblar kaliti bilan) + rasmiy PDF to‘plam.`,
     `- INGLIZ TILI: ${ENGLISH_VIDEO_LESSONS.length} ta video darslik (0 dan C1 gacha). Asosiy bo‘limlar: ${engCategories}.`,
     `- KURS ISHI VA MUSTAQIL ISH: 2 bob va 6 paragraflik standart reja, Kirish qismi 5 mezoni, GOST talablari (Times New Roman 14, 1.5 interval), Referat/Esse/Taqdimot/Keys-stadi mezonlari.`,
@@ -1397,7 +1405,7 @@ export function synthesizeGroundedFallback(
     const targetSubjects: CurriculumSubject[] =
       intent.subjects.length > 0
         ? intent.subjects
-        : ["Botanika", "Genetika", "Mikrobiologiya", "Biokimyo"];
+        : ["Botanika", "Genetika", "Mikrobiologiya", "Biokimyo", "Gidrobiologiya"];
     if (intent.subjects.length > 0) {
       const blocks = targetSubjects.map((subj) => {
         const list =
@@ -1407,7 +1415,9 @@ export function synthesizeGroundedFallback(
               ? BIOKIMYO_TOPICS
               : subj === "Genetika"
                 ? GENETIKA_TOPICS
-                : MIKROBIOLOGIYA_TOPICS;
+                : subj === "Mikrobiologiya"
+                  ? MIKROBIOLOGIYA_TOPICS
+                  : GIDROBIOLOGIYA_TOPICS;
         const items = list
           .map(
             (t) =>
@@ -1582,6 +1592,7 @@ Quyidagi fanlar bo‘yicha istalgan mavzu, atama, formula yoki test savolini yoz
 - 🧬 **Genetika** (15 ta mavzu · 30 ta PDF)
 - 🧫 **Mikrobiologiya va virusologiya** (16 ta mavzu · 16 ta PDF)
 - 🧪 **Biokimyo** (15 ta mavzu · 30 ta PDF)
+- 🌊 **Gidrobiologiya** (11 ta mavzu · 11 ta PDF)
 - 🔬 **Biologiya Milliy sertifikat** (30 variant · 900 ta savol)
 - 🇬🇧 **Ingliz tili** (180 ta video darslik · 0 dan C1 gacha)
 - 📝 **Kurs ishi va Mustaqil ish** (reja, kirish, GOST talablari)`;
@@ -1814,13 +1825,14 @@ Platformamizning **"Ingliz tili"** bo‘limida siz uchun maxsus saralangan **180
   // 5. Honest off-topic / not-found fallback (never returns a wrong lecture!)
   return `🔎 **«${prompt.trim()}» bo‘yicha darslik bazasida aniq ma’lumot topilmadi**
 
-Men faqat **EduUni** platformasiga yuklangan rasmiy fanlar, **119 ta PDF** ma’ruza va taqdimotlar asosida oflayn (0 token) javob beraman. Noto‘g‘ri ma’lumot chiqarmaslik uchun boshqa mavzuni aralashtirmadim.
+Men faqat **EduUni** platformasiga yuklangan rasmiy fanlar, **130 ta PDF** ma’ruza va taqdimotlar asosida oflayn (0 token) javob beraman. Noto‘g‘ri ma’lumot chiqarmaslik uchun boshqa mavzuni aralashtirmadim.
 
 Quyidagi yo‘nalishlardan birini tanlab, aniq atama yoki mavzu raqamini yozing:
 - 🌿 **Botanika** (30 ta mavzu · 42 ta PDF) — masalan: *«Botanika 26-mavzu ochiq urug‘lilar»*, *«O‘tkazuvchi to‘qimalar»*
 - 🧬 **Genetika** (15 ta mavzu · 30 ta PDF) — masalan: *«Genetika 9-mavzu krossingover»*, *«Bombay fenomeni»*
 - 🧫 **Mikrobiologiya va virusologiya** (16 ta mavzu · 16 ta PDF) — masalan: *«Sil qo‘zg‘atuvchisi»*, *«Gram-musbat va gram-manfiy farqi»*
 - 🧪 **Biokimyo** (15 ta mavzu · 30 ta PDF) — masalan: *«Biokimyo 14-mavzu Krebs sikli»*, *«Vitaminlar»*
+- 🌊 **Gidrobiologiya** (11 ta mavzu · 11 ta PDF) — masalan: *«Gidrobiologiya 9-mavzu evtrofikatsiya»*, *«Mikrob halqasi»*
 - 🔬 **Biologiya (Milliy sertifikat)** (30 variant · 900 ta savol) — masalan: *«Variant 1 2-savol»*
 - 🇬🇧 **Ingliz tili** (180 ta video darslik) — masalan: *«Present Perfect vs Past Simple»*
 - 📝 **Kurs ishi va Mustaqil ish** — masalan: *«Mavzu: 'Ekologiya' uchun reja tuzib ber»*`;

@@ -4,6 +4,7 @@ import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
+import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -155,6 +156,32 @@ describe("searchAppContent", () => {
 
     expect(MIKROBIOLOGIYA_TOPICS).toHaveLength(16);
     MIKROBIOLOGIYA_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+      expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      expect(topic.pdfDocuments).toBeDefined();
+      expect(topic.pdfDocuments?.length).toBeGreaterThanOrEqual(1);
+      expect(topic.pdfDocuments?.[0]?.kind).toBe("Ma’ruza matni");
+      topic.pdfDocuments?.forEach((doc) => {
+        expect(doc.url).toMatch(/^\/assets\/aistudio\/\d{2}-mavzu_.*\.pdf$/);
+      });
+    });
+  });
+
+  it("finds Gidrobiologiya sequential topics (1 through 11) and verifies matched PDFs", () => {
+    const evtroResults = searchAppContent("evtrofikatsiya");
+    expect(evtroResults.some((r) => r.id === "gidro-9" && r.category === "Darsliklar")).toBe(true);
+
+    const makroResults = searchAppContent("aerenxima");
+    expect(makroResults.some((r) => r.id === "gidro-4" && r.category === "Darsliklar")).toBe(true);
+
+    expect(GIDROBIOLOGIYA_TOPICS).toHaveLength(11);
+    GIDROBIOLOGIYA_TOPICS.forEach((topic, idx) => {
       expect(topic.order).toBe(idx + 1);
       expect(topic.topicLabel).toBe(`${idx + 1}-mavzu`);
       expect(topic.overview.length).toBeGreaterThan(100);
