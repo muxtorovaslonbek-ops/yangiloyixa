@@ -81,17 +81,41 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
         </div>
       </section>
 
-      {/* Project Owner & Developer Section */}
+      {/* Scientific Advisor, Project Owner & Developer Section */}
       <section className="mx-auto max-w-6xl space-y-6">
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-primary">Loyiha mualliflari</p>
           <h2 className="text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-            Loyiha egasi va dasturchi
+            Ilmiy rahbar, loyiha egasi va dasturchi
           </h2>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {/* 1-rasm: Loyiha egasi */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {/* 1-rasm: Ilmiy rahbar */}
+          <article className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-transform duration-300 hover:-translate-y-1">
+            <div className="relative h-80 w-full overflow-hidden bg-white sm:h-96">
+              <img
+                src="/assets/aistudio/0000_58d9b195.jpg"
+                alt="Salimova Sarvinoz Farhodovna"
+                referrerPolicy="no-referrer"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+
+            <div className="flex flex-1 flex-col justify-between space-y-4 border-t border-border/70 p-6 md:p-7">
+              <div className="space-y-2.5">
+                <p className="text-xs font-bold text-primary">Ilmiy rahbar</p>
+                <h3 className="text-xl font-extrabold leading-snug text-foreground">
+                  Salimova Sarvinoz Farhodovna
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Buxoro davlat universiteti professori, p.f.d. (DSc)
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* 2-rasm: Loyiha egasi */}
           <article className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-transform duration-300 hover:-translate-y-1">
             <div className="relative h-80 w-full overflow-hidden bg-muted sm:h-96">
               <img
