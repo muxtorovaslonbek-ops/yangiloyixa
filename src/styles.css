@@ -418,6 +418,16 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   overflow-x: clip;
+  max-width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+}
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
 }
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,

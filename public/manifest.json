@@ -1,0 +1,35 @@
+{
+  "id": "/",
+  "name": "EduUni — Universitet ta’limini oson o‘zlashtiring",
+  "short_name": "EduUni",
+  "description": "Darsliklar, kurs ishi, mustaqil ish, kutubxona, ingliz tili, biologiya va oflayn AI Ustoz — universitet talabalari uchun raqamli ta’lim ilovasi.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "uz",
+  "dir": "ltr",
+  "theme_color": "#172554",
+  "background_color": "#0f172a",
+  "categories": ["education", "books", "productivity"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

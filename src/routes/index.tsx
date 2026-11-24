@@ -52,6 +52,11 @@ import { BiotexnologiyaSection } from "@/components/BiotexnologiyaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { KutubxonaSection } from "@/components/KutubxonaSection";
+import {
+  PWAInstallBanner,
+  PWAInstallButton,
+  OfflineIndicator,
+} from "@/components/PWAInstallPrompt";
 import { searchAppContent, type SearchResultItem } from "@/data/searchIndex";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
@@ -415,6 +420,10 @@ function Index() {
               </button>
             );
           })}
+
+          <div className="pt-3">
+            <PWAInstallButton variant="sidebar" onInstalledOrOpened={() => setOpen(false)} />
+          </div>
         </nav>
       </aside>
       {open && (
@@ -425,7 +434,7 @@ function Index() {
         />
       )}
 
-      <main className="min-w-0 lg:pl-64">
+      <main className="min-w-0 pb-24 lg:pb-0 lg:pl-64">
         <header className="sticky top-0 z-20 flex items-center gap-2.5 bg-background/85 px-3 py-3 backdrop-blur-xl sm:gap-4 sm:px-4 sm:py-4 md:px-8">
           <button
             type="button"
@@ -579,7 +588,8 @@ function Index() {
               </div>
             )}
           </div>
-          <div className="ml-auto flex shrink-0 items-center gap-2.5 sm:gap-5">
+          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-4">
+            <PWAInstallButton variant="header" />
             <button
               type="button"
               className="relative grid h-9 w-9 place-items-center rounded-xl transition-transform hover:rotate-12 sm:h-auto sm:w-auto"
@@ -1102,6 +1112,61 @@ function Index() {
           </div>
         )}
       </main>
+
+      {/* Mobile Native-Style Bottom Navigation Bar */}
+      {!(
+        botanikaFullscreen ||
+        biokimyoFullscreen ||
+        genetikaFullscreen ||
+        mikrobiologiyaFullscreen ||
+        gidrobiologiyaFullscreen ||
+        biotexnologiyaFullscreen
+      ) && (
+        <>
+          <PWAInstallBanner />
+          <OfflineIndicator />
+          <nav
+            aria-label="Mobil navigatsiya"
+            className="fixed inset-x-0 bottom-0 z-30 border-t border-border/90 bg-card/95 px-2 pt-1.5 pb-[calc(0.45rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.22)] backdrop-blur-xl lg:hidden"
+          >
+            <div className="mx-auto grid max-w-lg grid-cols-5 gap-1">
+              {[
+                { label: "Asosiy", icon: Home, tab: 0 },
+                { label: "Darsliklar", icon: BookOpen, tab: 1 },
+                { label: "Kutubxona", icon: Library, tab: 4 },
+                { label: "AI Ustoz", icon: Sparkles, tab: 7 },
+                { label: "Menyu", icon: Menu, tab: -1 },
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = item.tab === -1 ? open : active === item.tab;
+                return (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={() => {
+                      if (item.tab === -1) {
+                        setOpen((prev) => !prev);
+                      } else {
+                        setActive(item.tab);
+                        setOpen(false);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className={`flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 text-[10px] font-bold transition-all active:scale-95 ${
+                      isActive
+                        ? "bg-primary/12 text-primary"
+                        : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className={`h-5 w-5 ${isActive ? "stroke-[2.4]" : "stroke-[2]"}`} />
+                    <span className="truncate leading-none">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
+        </>
+      )}
 
       {botanikaFullscreen && (
         <BotanikaSection

@@ -264,22 +264,26 @@ export function DarsliklarSection({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
-                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-3 text-white">
-                    <div className="flex items-center gap-3">
+                  <div className="absolute bottom-3.5 left-4 right-4 flex items-end justify-between gap-2.5 text-white sm:bottom-4 sm:left-5 sm:right-5 sm:gap-3">
+                    <div className="flex min-w-0 flex-1 items-center gap-3">
                       <img
                         src={subj.img}
                         alt=""
                         referrerPolicy="no-referrer"
-                        className="h-12 w-12 rounded-xl border-2 border-white/40 object-cover shadow-md"
+                        className="h-11 w-11 shrink-0 rounded-xl border-2 border-white/40 object-cover shadow-md sm:h-12 sm:w-12"
                       />
-                      <div>
-                        <h2 className="text-xl font-extrabold tracking-tight">{subj.title}</h2>
-                        <p className="text-xs text-white/80">{subj.subtitle}</p>
+                      <div className="min-w-0 flex-1">
+                        <h2 className="truncate text-lg font-extrabold tracking-tight sm:text-xl">
+                          {subj.title}
+                        </h2>
+                        <p className="line-clamp-2 text-[11px] leading-snug text-white/85 sm:text-xs">
+                          {subj.subtitle}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 backdrop-blur-md">
-                      <Icon className="h-5 w-5 text-cyan" />
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/15 backdrop-blur-md sm:h-10 sm:w-10">
+                      <Icon className="h-4 w-4 text-cyan sm:h-5 sm:w-5" />
                     </div>
                   </div>
                 </div>
