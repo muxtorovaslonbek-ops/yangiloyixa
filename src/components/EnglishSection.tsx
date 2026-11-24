@@ -550,13 +550,13 @@ export function EnglishSection({ onBack }: Props) {
   };
 
   return (
-    <div className="space-y-6 px-4 pb-16 md:px-8">
+    <div className="space-y-5 px-3 pb-16 sm:space-y-6 sm:px-4 md:px-8">
       {/* Top Header & Breadcrumb */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-4 pt-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-3.5 pt-2 sm:gap-4 sm:pb-4">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-all hover:bg-muted hover:shadow-sm"
+            className="flex min-h-[40px] items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:bg-muted hover:shadow-sm sm:px-4 sm:text-sm"
           >
             <ArrowLeft className="h-4 w-4 text-primary" />
             <span>Bosh sahifaga qaytish</span>
@@ -579,27 +579,27 @@ export function EnglishSection({ onBack }: Props) {
       </div>
 
       {/* Hero Banner for English */}
-      <div className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-5 text-navy-foreground shadow-card sm:p-6 md:p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-sidebar-grad p-4 text-navy-foreground shadow-card sm:rounded-3xl sm:p-6 md:p-8">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/30 blob" />
-        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-2xl space-y-3">
+        <div className="relative z-10 flex flex-col gap-5 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl space-y-2.5 sm:space-y-3">
             <div className="flex items-center gap-3">
               <img src={icEn} alt="Ingliz tili" className="h-10 w-10 object-contain drop-shadow" />
               <span className="rounded-md bg-navy-foreground/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan">
                 Universitet talabalari uchun
               </span>
             </div>
-            <h1 className="text-2xl font-extrabold md:text-4xl">
+            <h1 className="text-xl font-extrabold leading-snug sm:text-2xl md:text-4xl">
               Ingliz tili: <span className="text-shine">0 dan C1 gacha</span> bosqichma-bosqich
             </h1>
-            <p className="text-sm leading-relaxed text-navy-foreground/80 md:text-base">
+            <p className="text-xs leading-relaxed text-navy-foreground/80 sm:text-sm md:text-base">
               Grammatika, ilmiy va akademik so'zlar, interaktiv diktantlar hamda xalqaro CEFR va
               IELTS imtihonlariga samarali tayyorgarlik platformasi.
             </p>
           </div>
 
           {/* Quick CEFR selector bar & Dynamic Video-Based Level */}
-          <div className="flex flex-col gap-3 rounded-2xl bg-navy-foreground/10 p-4.5 backdrop-blur-md border border-navy-foreground/15 shadow-inner">
+          <div className="flex flex-col gap-3 rounded-2xl border border-navy-foreground/15 bg-navy-foreground/10 p-3.5 shadow-inner backdrop-blur-md sm:p-4.5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-bold uppercase tracking-wider text-cyan">
                 Darajani tanlang (CEFR):
@@ -740,13 +740,13 @@ export function EnglishSection({ onBack }: Props) {
 
       {/* TAB 1: GRAMMAR LESSONS */}
       {activeTab === "lessons" && (
-        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+        <div className="grid gap-5 sm:gap-6 lg:grid-cols-[320px_1fr]">
           {/* Lessons list */}
           <div className="space-y-3">
             <h3 className="flex items-center gap-2 text-base font-bold text-foreground">
               <GraduationCap className="h-5 w-5 text-primary" /> Mavzular ro'yxati
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-2.5 sm:space-y-2">
               {GRAMMAR_LESSONS.map((lesson) => {
                 const isSelected = activeLessonId === lesson.id;
                 return (
@@ -757,14 +757,14 @@ export function EnglishSection({ onBack }: Props) {
                       setLessonAnswer(null);
                       setLessonFeedback(null);
                     }}
-                    className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left transition-all ${
+                    className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left shadow-sm transition-all active:scale-[0.99] ${
                       isSelected
-                        ? "border-primary bg-primary/5 shadow-sm"
+                        ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                         : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
                     }`}
                   >
                     <div className="flex w-full items-center justify-between gap-2">
-                      <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+                      <span className="rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
                         {lesson.level}
                       </span>
                       <ChevronRight
@@ -772,7 +772,7 @@ export function EnglishSection({ onBack }: Props) {
                       />
                     </div>
                     <h4 className="mt-2 text-sm font-bold text-foreground">{lesson.title}</h4>
-                    <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                    <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground sm:line-clamp-1">
                       {lesson.topicUz}
                     </p>
                   </button>
@@ -782,29 +782,29 @@ export function EnglishSection({ onBack }: Props) {
           </div>
 
           {/* Active Lesson Content */}
-          <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-card">
+          <div className="space-y-5 rounded-2xl border border-border bg-card p-4 shadow-card sm:space-y-6 sm:rounded-3xl sm:p-6">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-md bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
                   {currentLesson.level} daraja
                 </span>
                 <span className="text-xs text-muted-foreground">Akademik grammatika kursi</span>
               </div>
-              <h2 className="mt-2 text-2xl font-extrabold text-foreground">
+              <h2 className="mt-2 text-xl font-extrabold text-foreground sm:text-2xl">
                 {currentLesson.title}
               </h2>
               <p className="text-sm font-medium text-muted-foreground">{currentLesson.topicUz}</p>
             </div>
 
             {/* Formula / Rule Box */}
-            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3.5 sm:p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-primary">
                 Qoida va formula:
               </p>
-              <div className="mt-2 rounded-xl bg-card p-3 font-mono text-sm font-semibold text-foreground shadow-sm">
+              <div className="mt-2 overflow-x-auto break-words rounded-xl bg-card p-3 font-mono text-xs font-semibold text-foreground shadow-sm sm:text-sm">
                 {currentLesson.formula}
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/90">
+              <p className="mt-3 text-xs leading-relaxed text-foreground/90 sm:text-sm">
                 {currentLesson.ruleUz}
               </p>
             </div>
@@ -814,19 +814,19 @@ export function EnglishSection({ onBack }: Props) {
               <h4 className="text-sm font-bold text-foreground">
                 Misollar (Tinglash va o'rganish):
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-2.5 sm:space-y-2">
                 {currentLesson.examples.map((ex) => (
                   <div
                     key={ex.en}
-                    className="flex flex-col gap-2 rounded-2xl border border-border bg-muted/40 p-3.5 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex flex-col gap-2.5 rounded-2xl border border-border bg-muted/40 p-3.5 sm:flex-row sm:items-center sm:justify-between"
                   >
-                    <div>
-                      <p className="font-semibold text-foreground">{ex.en}</p>
-                      <p className="text-xs text-muted-foreground">{ex.uz}</p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground">{ex.en}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{ex.uz}</p>
                     </div>
                     <button
                       onClick={() => speak(ex.en)}
-                      className="flex shrink-0 items-center gap-1.5 self-start rounded-xl bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground sm:self-auto"
+                      className="flex min-h-[36px] shrink-0 items-center gap-1.5 self-start rounded-xl bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground sm:self-auto"
                       title="Talaffuzni eshitish"
                     >
                       <Volume2 className="h-3.5 w-3.5" />
@@ -838,15 +838,16 @@ export function EnglishSection({ onBack }: Props) {
             </div>
 
             {/* Mini practice check */}
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-5">
               <h4 className="flex items-center gap-2 text-sm font-bold text-foreground">
-                <HelpCircle className="h-4 w-4 text-cyan" /> Bilimni sinab ko'ring (Tezkor mashq):
+                <HelpCircle className="h-4 w-4 shrink-0 text-cyan" /> Bilimni sinab ko'ring (Tezkor
+                mashq):
               </h4>
               <p className="mt-2 text-sm font-medium text-foreground">
                 {currentLesson.practice.question}
               </p>
 
-              <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="mt-3 grid grid-cols-1 gap-2 min-[360px]:grid-cols-2 sm:grid-cols-4">
                 {currentLesson.practice.options.map((opt, idx) => {
                   const isChosen = lessonAnswer === idx;
                   const isCorrect = idx === currentLesson.practice.correctIndex;
@@ -857,7 +858,7 @@ export function EnglishSection({ onBack }: Props) {
                         setLessonAnswer(idx);
                         setLessonFeedback(isCorrect);
                       }}
-                      className={`rounded-xl border p-2.5 text-center text-sm font-bold transition-all ${
+                      className={`min-h-[44px] rounded-xl border p-2.5 text-center text-sm font-bold transition-all active:scale-[0.98] ${
                         isChosen
                           ? isCorrect
                             ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -922,9 +923,9 @@ export function EnglishSection({ onBack }: Props) {
           <div className="mx-auto max-w-xl">
             <div
               onClick={() => setIsFlipped(!isFlipped)}
-              className="group relative flex min-h-[300px] cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border-2 border-border bg-card p-8 shadow-card transition-all duration-300 hover:border-primary/50 hover:shadow-glow"
+              className="group relative flex min-h-[280px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border-2 border-border bg-card p-5 shadow-card transition-all duration-300 active:scale-[0.99] hover:border-primary/50 hover:shadow-glow sm:min-h-[300px] sm:rounded-3xl sm:p-8"
             >
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span className="rounded-md bg-primary/10 px-2.5 py-1 font-bold text-primary">
                   {currentCard.level} · {currentCard.category}
                 </span>
@@ -935,17 +936,19 @@ export function EnglishSection({ onBack }: Props) {
 
               {!isFlipped ? (
                 /* Front Side: English */
-                <div className="my-auto text-center space-y-3">
-                  <h2 className="text-4xl font-extrabold tracking-tight text-foreground">
+                <div className="my-auto space-y-3 py-4 text-center">
+                  <h2 className="break-words text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
                     {currentCard.en}
                   </h2>
-                  <p className="font-mono text-base text-primary">{currentCard.phonetic}</p>
+                  <p className="font-mono text-sm text-primary sm:text-base">
+                    {currentCard.phonetic}
+                  </p>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       speak(currentCard.en);
                     }}
-                    className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+                    className="inline-flex min-h-[40px] items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
                   >
                     <Volume2 className="h-4 w-4" /> Talaffuzni eshitish
                   </button>
@@ -955,8 +958,10 @@ export function EnglishSection({ onBack }: Props) {
                 </div>
               ) : (
                 /* Back Side: Uzbek */
-                <div className="my-auto text-center space-y-3">
-                  <h2 className="text-3xl font-extrabold text-cyan">{currentCard.uz}</h2>
+                <div className="my-auto space-y-3 py-4 text-center">
+                  <h2 className="break-words text-2xl font-extrabold text-cyan sm:text-3xl">
+                    {currentCard.uz}
+                  </h2>
                   <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     O'zbekcha tarjimasi
                   </p>
@@ -967,20 +972,20 @@ export function EnglishSection({ onBack }: Props) {
                 </div>
               )}
 
-              <div className="flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3.5 text-xs text-muted-foreground sm:pt-4">
                 <span>Holat: {!isFlipped ? "Inglizcha (Front)" : "O'zbekcha (Back)"}</span>
-                <span className="text-primary font-bold">EduUni Flashcard</span>
+                <span className="font-bold text-primary">EduUni Flashcard</span>
               </div>
             </div>
 
             {/* Controls */}
-            <div className="mt-6 flex items-center justify-center gap-4">
+            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-6 sm:flex sm:items-center sm:justify-center sm:gap-4">
               <button
                 onClick={() => {
                   setIsFlipped(false);
                   setCardIndex((prev) => (prev > 0 ? prev - 1 : filteredFlashcards.length - 1));
                 }}
-                className="rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:bg-muted"
+                className="min-h-[44px] rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground transition-all active:scale-[0.98] hover:bg-muted sm:px-5 sm:text-sm"
               >
                 Oldingisi
               </button>
@@ -991,7 +996,7 @@ export function EnglishSection({ onBack }: Props) {
                   setIsFlipped(false);
                   setCardIndex((prev) => prev + 1);
                 }}
-                className="flex items-center gap-2 rounded-xl bg-primary-grad px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-glow transition-all hover:scale-105"
+                className="order-first col-span-2 flex min-h-[46px] items-center justify-center gap-2 rounded-xl bg-primary-grad px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-glow transition-all active:scale-[0.98] hover:scale-105 sm:order-none sm:px-6"
               >
                 <Check className="h-4 w-4" /> O'rgandim! Keyingisi
               </button>
@@ -1001,7 +1006,7 @@ export function EnglishSection({ onBack }: Props) {
                   setIsFlipped(false);
                   setCardIndex((prev) => prev + 1);
                 }}
-                className="rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:bg-muted"
+                className="min-h-[44px] rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground transition-all active:scale-[0.98] hover:bg-muted sm:px-5 sm:text-sm"
               >
                 Keyingisi
               </button>
@@ -1012,21 +1017,23 @@ export function EnglishSection({ onBack }: Props) {
 
       {/* TAB 3: LISTENING & DICTATION */}
       {activeTab === "listening" && (
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-card">
+        <div className="grid gap-5 sm:gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="space-y-5 rounded-2xl border border-border bg-card p-4 shadow-card sm:space-y-6 sm:rounded-3xl sm:p-6">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
                   {currentListening.level}
                 </span>
                 <span className="text-xs text-muted-foreground">Audio diktant mashqi</span>
               </div>
-              <h3 className="mt-1 text-xl font-bold text-foreground">{currentListening.title}</h3>
+              <h3 className="mt-1 text-lg font-bold text-foreground sm:text-xl">
+                {currentListening.title}
+              </h3>
               <p className="text-xs text-muted-foreground">{currentListening.contextUz}</p>
             </div>
 
             {/* Audio player card */}
-            <div className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-sidebar-grad p-8 text-center text-navy-foreground shadow-inner">
+            <div className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-sidebar-grad p-5 text-center text-navy-foreground shadow-inner sm:p-8">
               <button
                 onClick={() => speak(currentListening.targetSentence)}
                 className="group flex h-20 w-20 items-center justify-center rounded-full bg-cyan text-navy shadow-glow transition-all duration-300 hover:scale-110"
@@ -1129,7 +1136,7 @@ export function EnglishSection({ onBack }: Props) {
           {/* Listening Playlist */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-foreground">Boshqa mashqlar</h4>
-            <div className="space-y-2">
+            <div className="space-y-2.5 sm:space-y-2">
               {LISTENING_EXERCISES.map((item, idx) => (
                 <button
                   key={item.id}
@@ -1138,17 +1145,17 @@ export function EnglishSection({ onBack }: Props) {
                     setUserDictation("");
                     setDictationChecked(false);
                   }}
-                  className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left transition-all ${
+                  className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left shadow-sm transition-all active:scale-[0.99] ${
                     activeListeningIndex === idx
-                      ? "border-primary bg-primary/5 shadow-sm"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                       : "border-border bg-card hover:bg-muted/50"
                   }`}
                 >
                   <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
                     {item.level}
                   </span>
-                  <p className="mt-1 text-sm font-bold text-foreground">{item.title}</p>
-                  <p className="text-xs text-muted-foreground">{item.contextUz}</p>
+                  <p className="mt-1.5 text-sm font-bold text-foreground">{item.title}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{item.contextUz}</p>
                 </button>
               ))}
             </div>
@@ -1158,9 +1165,9 @@ export function EnglishSection({ onBack }: Props) {
 
       {/* TAB 4: PLACEMENT & CEFR TEST */}
       {activeTab === "test" && (
-        <div className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-card md:p-8">
+        <div className="space-y-5 rounded-2xl border border-border bg-card p-4 shadow-card sm:space-y-6 sm:rounded-3xl sm:p-6 md:p-8">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-md bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
                 CEFR Test
               </span>
@@ -1168,7 +1175,7 @@ export function EnglishSection({ onBack }: Props) {
                 Universitet talabalari uchun diagnostik test
               </span>
             </div>
-            <h3 className="mt-2 text-2xl font-extrabold text-foreground">
+            <h3 className="mt-2 text-xl font-extrabold text-foreground sm:text-2xl">
               Ingliz tili darajasini aniqlash testi
             </h3>
             <p className="text-xs text-muted-foreground">
@@ -1177,11 +1184,14 @@ export function EnglishSection({ onBack }: Props) {
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {QUIZ_QUESTIONS.map((q, idx) => {
               const selectedOpt = quizAnswers[q.id];
               return (
-                <div key={q.id} className="rounded-2xl border border-border bg-muted/20 p-5">
+                <div
+                  key={q.id}
+                  className="rounded-2xl border border-border bg-muted/20 p-4 shadow-sm sm:p-5"
+                >
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span className="font-bold text-primary">
                       Savol #{idx + 1} ({q.level})
@@ -1201,7 +1211,7 @@ export function EnglishSection({ onBack }: Props) {
                     {q.question}
                   </h4>
 
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {q.options.map((opt, optIdx) => {
                       const isChosen = selectedOpt === optIdx;
                       const isCorrect = optIdx === q.correct;
@@ -1210,10 +1220,10 @@ export function EnglishSection({ onBack }: Props) {
                           key={opt}
                           disabled={quizSubmitted}
                           onClick={() => setQuizAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
-                          className={`flex items-center gap-3 rounded-xl border p-3 text-left text-xs font-semibold transition-all md:text-sm ${
+                          className={`flex min-h-[44px] items-center gap-3 rounded-xl border p-3 text-left text-xs font-semibold transition-all active:scale-[0.99] md:text-sm ${
                             quizSubmitted
                               ? isCorrect
-                                ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold"
+                                ? "border-emerald-500 bg-emerald-500/10 font-bold text-emerald-700 dark:text-emerald-300"
                                 : isChosen
                                   ? "border-destructive bg-destructive/10 text-destructive"
                                   : "border-border bg-card opacity-60"
@@ -1232,7 +1242,7 @@ export function EnglishSection({ onBack }: Props) {
                   </div>
 
                   {quizSubmitted && (
-                    <p className="mt-3 text-xs text-muted-foreground border-t border-border pt-2">
+                    <p className="mt-3 border-t border-border pt-2 text-xs text-muted-foreground">
                       <strong className="text-foreground">Izoh: </strong>
                       {q.explanationUz}
                     </p>
@@ -1243,19 +1253,19 @@ export function EnglishSection({ onBack }: Props) {
           </div>
 
           {!quizSubmitted ? (
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end pt-2 sm:pt-4">
               <button
                 onClick={() => setQuizSubmitted(true)}
                 disabled={Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length}
-                className="rounded-full bg-primary-grad px-8 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-all hover:scale-105 disabled:opacity-50"
+                className="min-h-[46px] w-full rounded-full bg-primary-grad px-8 py-3 text-sm font-bold text-primary-foreground shadow-glow transition-all hover:scale-105 disabled:opacity-50 sm:w-auto"
               >
                 Natijani hisoblash ({Object.keys(quizAnswers).length}/{QUIZ_QUESTIONS.length})
               </button>
             </div>
           ) : (
-            <div className="rounded-3xl bg-sidebar-grad p-6 text-center text-navy-foreground shadow-card">
-              <Award className="mx-auto h-12 w-12 text-cyan float" />
-              <h4 className="mt-3 text-2xl font-extrabold">
+            <div className="rounded-2xl bg-sidebar-grad p-5 text-center text-navy-foreground shadow-card sm:rounded-3xl sm:p-6">
+              <Award className="float mx-auto h-12 w-12 text-cyan" />
+              <h4 className="mt-3 text-xl font-extrabold sm:text-2xl">
                 Sizning natijangiz: {calculateScore()} / {QUIZ_QUESTIONS.length}
               </h4>
               <p className="mt-1 text-sm text-cyan">
@@ -1268,7 +1278,7 @@ export function EnglishSection({ onBack }: Props) {
                   setQuizAnswers({});
                   setQuizSubmitted(false);
                 }}
-                className="mt-5 rounded-full bg-card px-6 py-2.5 text-xs font-bold text-primary shadow-card transition-all hover:scale-105"
+                className="mt-5 min-h-[42px] rounded-full bg-card px-6 py-2.5 text-xs font-bold text-primary shadow-card transition-all hover:scale-105"
               >
                 Testni qayta topshirish
               </button>
@@ -1279,18 +1289,18 @@ export function EnglishSection({ onBack }: Props) {
 
       {/* TAB 5: SPEAKING & UNIVERSITY DIALOGUES */}
       {activeTab === "speaking" && (
-        <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
+        <div className="grid gap-5 sm:gap-6 lg:grid-cols-[300px_1fr]">
           {/* Dialogue switcher */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-foreground">Universitet vaziyatlari</h4>
-            <div className="space-y-2">
+            <div className="space-y-2.5 sm:space-y-2">
               {DIALOGUES.map((dlg) => (
                 <button
                   key={dlg.id}
                   onClick={() => setActiveDialogueId(dlg.id)}
-                  className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left transition-all ${
+                  className={`flex w-full flex-col items-start rounded-2xl border p-4 text-left shadow-sm transition-all active:scale-[0.99] ${
                     activeDialogueId === dlg.id
-                      ? "border-primary bg-primary/5 shadow-sm"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                       : "border-border bg-card hover:bg-muted/50"
                   }`}
                 >
@@ -1302,15 +1312,17 @@ export function EnglishSection({ onBack }: Props) {
           </div>
 
           {/* Dialogue Lines */}
-          <div className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-card">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+          <div className="space-y-4 rounded-2xl border border-border bg-card p-4 shadow-card sm:rounded-3xl sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4 sm:gap-4">
               <div>
-                <h3 className="text-xl font-bold text-foreground">{currentDialogue.title}</h3>
+                <h3 className="text-lg font-bold text-foreground sm:text-xl">
+                  {currentDialogue.title}
+                </h3>
                 <p className="text-xs text-muted-foreground">{currentDialogue.desc}</p>
               </div>
               <button
                 onClick={() => setShowUzTranslation(!showUzTranslation)}
-                className="rounded-xl border border-border bg-muted/50 px-3 py-1.5 text-xs font-semibold text-foreground transition-all hover:bg-muted"
+                className="min-h-[38px] rounded-xl border border-border bg-muted/50 px-3 py-1.5 text-xs font-semibold text-foreground transition-all hover:bg-muted"
               >
                 {showUzTranslation
                   ? "O'zbekcha tarjimani yashirish"
@@ -1318,19 +1330,19 @@ export function EnglishSection({ onBack }: Props) {
               </button>
             </div>
 
-            <div className="space-y-4 pt-2">
+            <div className="space-y-3 pt-1 sm:space-y-4 sm:pt-2">
               {currentDialogue.lines.map((line) => (
                 <div
                   key={line.en}
-                  className="rounded-2xl border border-border/80 bg-muted/20 p-4 transition-all hover:border-primary/40 hover:bg-muted/40"
+                  className="rounded-2xl border border-border/80 bg-muted/20 p-3.5 transition-all hover:border-primary/40 hover:bg-muted/40 sm:p-4"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs uppercase tracking-wider text-primary">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
                       {line.speaker}
                     </span>
                     <button
                       onClick={() => speak(line.en)}
-                      className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+                      className="flex min-h-[34px] items-center gap-1.5 rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
                       title="Audio talaffuz"
                     >
                       <Volume2 className="h-3.5 w-3.5" />

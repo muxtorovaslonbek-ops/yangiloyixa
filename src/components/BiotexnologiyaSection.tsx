@@ -163,28 +163,28 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
     <div className="fixed inset-0 z-50 overflow-y-auto bg-background text-foreground">
       {/* Sticky Full-Window Header */}
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3.5 md:px-8">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2.5 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3.5 md:px-8">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={onBack}
-              className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-bold text-foreground transition-all hover:bg-muted md:text-sm"
+              className="flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-foreground transition-all hover:bg-muted sm:gap-2 sm:px-4 md:text-sm"
             >
               <ArrowLeft className="h-4 w-4 text-primary" />
               <span>Darsliklarga qaytish</span>
             </button>
 
-            <div className="flex items-center gap-2.5 border-l border-border pl-3">
+            <div className="hidden min-w-0 items-center gap-2.5 border-l border-border pl-3 sm:flex">
               <img
                 src={biotexnologiyaImg}
                 alt="Biotexnologiya logosi"
-                className="h-9 w-9 rounded-lg object-cover shadow-sm"
+                className="h-9 w-9 shrink-0 rounded-lg object-cover shadow-sm"
               />
-              <div>
-                <h1 className="text-sm font-extrabold leading-tight md:text-base">
+              <div className="min-w-0">
+                <h1 className="truncate text-sm font-extrabold leading-tight md:text-base">
                   Biotexnologiya fani
                 </h1>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="truncate text-[11px] text-muted-foreground">
                   O‘quv dasturi mavzulari · 1–{BIOTEXNOLOGIYA_TOPICS.length}-mavzular (
                   {BIOTEXNOLOGIYA_TOPICS.length} ta mavzu)
                 </p>
@@ -192,10 +192,12 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 text-xs">
-              <BookmarkCheck className="h-4 w-4 text-emerald-500" />
-              <span className="font-semibold text-muted-foreground">O‘zlashtirildi:</span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs sm:gap-2 sm:px-3.5 sm:py-2">
+              <BookmarkCheck className="h-4 w-4 shrink-0 text-emerald-500" />
+              <span className="hidden font-semibold text-muted-foreground sm:inline">
+                O‘zlashtirildi:
+              </span>
               <span className="font-extrabold text-primary tabular-nums">
                 {completedIds.size} / {BIOTEXNOLOGIYA_TOPICS.length} ({progressPercent}%)
               </span>
@@ -205,23 +207,23 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
       </header>
 
       {/* Main Full-Window Workspace */}
-      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-8">
+      <div className="mx-auto max-w-7xl space-y-5 px-3 py-4 sm:space-y-6 sm:px-4 sm:py-6 md:px-8">
         {/* Hero Banner */}
-        <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-8">
+        <section className="relative overflow-hidden rounded-2xl bg-sidebar-grad p-4 text-navy-foreground shadow-card sm:rounded-3xl sm:p-6 md:p-8">
           <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/20 blob" />
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="relative z-10 flex flex-col gap-5 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:gap-4">
               <img
                 src={biotexnologiyaImg}
                 alt="Biotexnologiya"
-                className="h-20 w-20 shrink-0 rounded-2xl border-2 border-cyan/40 object-cover shadow-glow md:h-24 md:w-24"
+                className="h-16 w-16 shrink-0 rounded-2xl border-2 border-cyan/40 object-cover shadow-glow sm:h-20 sm:w-20 md:h-24 md:w-24"
               />
               <div className="max-w-2xl space-y-2">
                 <div className="flex items-center gap-2 text-xs font-semibold text-cyan">
-                  <Atom className="h-4 w-4" />
+                  <Atom className="h-4 w-4 shrink-0" />
                   <span>Navoiy Davlat Universiteti · To‘liq ma’ruzalar to‘plami</span>
                 </div>
-                <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+                <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl md:text-3xl">
                   Biotexnologiya: Gen muhandisligi, bioprotsesslar va zamonaviy tatbiqlar
                 </h2>
                 <p className="text-xs leading-relaxed text-navy-foreground/85 md:text-sm">
@@ -254,8 +256,8 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
         </section>
 
         {/* Search & Module Filters */}
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm sm:gap-4 sm:p-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
             {[
               { id: "all", label: `Barcha mavzular (${BIOTEXNOLOGIYA_TOPICS.length})` },
               {
@@ -276,7 +278,7 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
                 key={tab.id}
                 type="button"
                 onClick={() => setModuleFilter(tab.id as typeof moduleFilter)}
-                className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                   moduleFilter === tab.id
                     ? "bg-primary font-bold text-primary-foreground shadow-sm"
                     : "bg-muted text-muted-foreground hover:text-foreground"
@@ -294,7 +296,7 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`Mavzu raqami (1–${BIOTEXNOLOGIYA_TOPICS.length}) yoki nomi...`}
-              className="w-full rounded-xl border border-border bg-muted/40 py-2 pl-9 pr-8 text-xs outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-xl border border-border bg-muted/40 py-2.5 pl-9 pr-8 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 sm:py-2 sm:text-xs"
             />
             {searchQuery && (
               <button
@@ -310,7 +312,7 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
 
         {/* RECTANGULAR TOPIC CARDS GRID */}
         {filteredTopics.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {filteredTopics.map((topic) => {
               const isDone = completedIds.has(topic.id);
               const topicDocs = getTopicPdfDocuments(topic);
@@ -318,7 +320,7 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
                 <div
                   key={topic.id}
                   onClick={() => setSelectedTopicId(topic.id)}
-                  className={`group flex cursor-pointer flex-col justify-between rounded-2xl border bg-card p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
+                  className={`group flex cursor-pointer flex-col justify-between rounded-2xl border bg-card p-4 shadow-card transition-all duration-300 active:scale-[0.99] sm:p-5 sm:hover:-translate-y-1 sm:hover:shadow-glow ${
                     isDone ? "border-emerald-500/40" : "border-border hover:border-primary/50"
                   }`}
                 >
@@ -359,19 +361,19 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
                     </div>
 
                     {/* Topic Title */}
-                    <h3 className="mt-3.5 text-base font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+                    <h3 className="mt-3 text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:mt-3.5 sm:text-base">
                       {topic.title}
                     </h3>
 
                     {/* Overview Summary Preview */}
-                    <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                    <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:mt-2">
                       {topic.overview}
                     </p>
                   </div>
 
                   {/* Card Footer */}
-                  <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs">
-                    <span className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2.5 border-t border-border/60 pt-3 text-xs sm:mt-5 sm:pt-3.5">
+                    <span className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-muted-foreground">
                       <span>
                         {topic.sections.length} ta bo‘lim · {topic.selfCheckQuestions.length} ta
                         savol
@@ -384,7 +386,7 @@ export function BiotexnologiyaSection({ onBack, onAskAi }: BiotexnologiyaSection
                       )}
                     </span>
 
-                    <span className="flex items-center gap-1.5 font-bold text-primary transition-transform group-hover:translate-x-0.5">
+                    <span className="flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1.5 font-bold text-primary transition-transform group-hover:translate-x-0.5 sm:bg-transparent sm:p-0">
                       <BookOpen className="h-3.5 w-3.5" />
                       <span>Mavzuni ochish</span>
                       <Maximize2 className="h-3 w-3" />

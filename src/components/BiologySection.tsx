@@ -245,7 +245,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
   const currentResult = storedResults[activeVariant.id];
 
   return (
-    <div className="space-y-6 px-4 pb-16 md:px-8">
+    <div className="space-y-5 px-3 pb-16 sm:space-y-6 sm:px-4 md:px-8">
       {/* Top Breadcrumb & Controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground sm:text-sm">
@@ -373,7 +373,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
           </div>
 
           {/* Variants Grid */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
             {filteredVariants.map((variant) => {
               const res = storedResults[variant.id];
               const grade = res ? getCertificateGrade(res.percentage) : null;
@@ -381,11 +381,11 @@ export function BiologySection({ onBack }: BiologySectionProps) {
               return (
                 <div
                   key={variant.id}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-xl"
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card p-4 shadow-card transition-all duration-300 active:scale-[0.99] sm:rounded-3xl sm:p-5 sm:hover:-translate-y-1 sm:hover:border-emerald-500/50 sm:hover:shadow-xl"
                 >
                   <div>
                     {/* Top status */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
                         <BookOpen className="h-3.5 w-3.5" />
                         Variant {variant.id}
@@ -405,29 +405,33 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                       )}
                     </div>
 
-                    <h3 className="mt-3 text-lg font-bold leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                    <h3 className="mt-3 text-base font-bold leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 sm:text-lg">
                       {variant.title}
                     </h3>
-                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                       {variant.subtitle}
                     </p>
 
                     {/* Features pill list */}
-                    <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-                      <span className="rounded-lg bg-muted px-2 py-1 font-medium">30 ta savol</span>
-                      <span className="rounded-lg bg-muted px-2 py-1 font-medium">1 soat vaqt</span>
+                    <div className="mt-3.5 flex flex-wrap gap-2 text-[11px] text-muted-foreground sm:mt-4">
+                      <span className="rounded-lg bg-muted px-2.5 py-1 font-medium">
+                        30 ta savol
+                      </span>
+                      <span className="rounded-lg bg-muted px-2.5 py-1 font-medium">
+                        1 soat vaqt
+                      </span>
                       {res && (
-                        <span className="rounded-lg bg-emerald-500/10 px-2 py-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                        <span className="rounded-lg bg-emerald-500/10 px-2.5 py-1 font-semibold text-emerald-600 dark:text-emerald-400">
                           {grade?.grade} daraja
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="mt-5 border-t border-border/60 pt-4">
+                  <div className="mt-4 border-t border-border/60 pt-3.5 sm:mt-5 sm:pt-4">
                     <button
                       onClick={() => handleStartVariant(variant.id)}
-                      className="group/btn flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:bg-primary/90 hover:scale-[1.02]"
+                      className="group/btn flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all active:scale-[0.98] hover:bg-primary/90 sm:rounded-2xl sm:hover:scale-[1.02]"
                     >
                       <Play className="h-3.5 w-3.5 fill-current" />
                       {res ? "Qaytadan ishlash" : "Testni boshlash (1 soat)"}
@@ -491,52 +495,54 @@ export function BiologySection({ onBack }: BiologySectionProps) {
       {/* VIEW 2: ACTIVE TEST RUNNER WITH 1-HOUR TIMER */}
       {/* ========================================================= */}
       {view === "test" && currentQuestion && (
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           {/* Top Sticky Test Bar */}
-          <div className="sticky top-20 z-30 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card/95 p-4 shadow-lg backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-                <Award className="h-5 w-5" />
+          <div className="sticky top-16 z-30 flex flex-wrap items-center justify-between gap-2.5 rounded-2xl border border-border bg-card/95 p-3 shadow-lg backdrop-blur-md sm:top-20 sm:gap-4 sm:rounded-3xl sm:p-4">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 sm:h-10 sm:w-10 sm:rounded-2xl">
+                <Award className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-extrabold">{activeVariant.title}</h3>
-                <p className="text-xs text-muted-foreground">
+                <h3 className="text-xs font-extrabold sm:text-sm">{activeVariant.title}</h3>
+                <p className="text-[11px] text-muted-foreground sm:text-xs">
                   {answeredCount} / {activeVariant.questions.length} savol belgilandi
                 </p>
               </div>
             </div>
 
             {/* Timer & Controls */}
-            <div className="flex items-center gap-3">
-              <div
-                className={`flex items-center gap-2 rounded-2xl border px-4 py-2 font-mono text-base font-extrabold transition-colors ${
-                  timeLeft <= 300
-                    ? "animate-pulse border-rose-500 bg-rose-50 text-rose-600 dark:bg-rose-950/40"
-                    : timeLeft <= 900
-                      ? "border-amber-500 bg-amber-50 text-amber-600 dark:bg-amber-950/40"
-                      : "border-primary/40 bg-primary/10 text-primary"
-                }`}
-              >
-                <Timer className="h-4 w-4" />
-                <span>{formatTime(timeLeft)}</span>
-                {timeLeft <= 300 && (
-                  <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-rose-500">
-                    Oxirgi 5 daqiqa!
-                  </span>
-                )}
+            <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end sm:gap-3">
+              <div className="flex items-center gap-2">
+                <div
+                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-mono text-sm font-extrabold transition-colors sm:gap-2 sm:rounded-2xl sm:px-4 sm:py-2 sm:text-base ${
+                    timeLeft <= 300
+                      ? "animate-pulse border-rose-500 bg-rose-50 text-rose-600 dark:bg-rose-950/40"
+                      : timeLeft <= 900
+                        ? "border-amber-500 bg-amber-50 text-amber-600 dark:bg-amber-950/40"
+                        : "border-primary/40 bg-primary/10 text-primary"
+                  }`}
+                >
+                  <Timer className="h-4 w-4 shrink-0" />
+                  <span>{formatTime(timeLeft)}</span>
+                  {timeLeft <= 300 && (
+                    <span className="hidden font-sans text-[10px] font-bold uppercase tracking-wider text-rose-500 sm:inline">
+                      Oxirgi 5 daqiqa!
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setIsTimerRunning((prev) => !prev)}
+                  title={isTimerRunning ? "Vaqtni to'xtatib turish" : "Davom ettirish"}
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-muted hover:text-foreground sm:h-10 sm:w-10 sm:rounded-2xl"
+                >
+                  {isTimerRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                </button>
               </div>
 
               <button
-                onClick={() => setIsTimerRunning((prev) => !prev)}
-                title={isTimerRunning ? "Vaqtni to'xtatib turish" : "Davom ettirish"}
-                className="grid h-10 w-10 place-items-center rounded-2xl border border-border bg-card text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
-              >
-                {isTimerRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              </button>
-
-              <button
                 onClick={() => setShowConfirmFinish(true)}
-                className="flex items-center gap-1.5 rounded-2xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-glow transition-all hover:bg-emerald-500 hover:scale-105"
+                className="flex min-h-[38px] items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-glow transition-all hover:bg-emerald-500 sm:rounded-2xl sm:px-4 sm:hover:scale-105"
               >
                 <Check className="h-4 w-4" />
                 <span>Testni yakunlash</span>
@@ -545,10 +551,10 @@ export function BiologySection({ onBack }: BiologySectionProps) {
           </div>
 
           {/* Question Grid Navigator (1 to 30) */}
-          <div className="rounded-3xl border border-border bg-card p-4 shadow-sm">
-            <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
+          <div className="rounded-2xl border border-border bg-card p-3.5 shadow-sm sm:rounded-3xl sm:p-4">
+            <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
               <span className="font-semibold text-foreground">Savollar xaritasi:</span>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="flex items-center gap-1">
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Belgilangan
                 </span>
@@ -561,7 +567,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
               </div>
             </div>
 
-            <div className="grid grid-cols-6 gap-2 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-30">
+            <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-10 sm:gap-2 md:grid-cols-15 lg:grid-cols-30">
               {activeVariant.questions.map((q, idx) => {
                 const isCurrent = idx === currentQuestionIndex;
                 const isAnswered = !!userAnswers[q.id];
@@ -591,13 +597,13 @@ export function BiologySection({ onBack }: BiologySectionProps) {
           </div>
 
           {/* Active Question Box */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-card md:p-8">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-4">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-card sm:rounded-3xl sm:p-6 md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border/80 pb-3.5 sm:gap-3 sm:pb-4">
               <div className="flex items-center gap-3">
-                <span className="rounded-2xl bg-primary/10 px-3.5 py-1.5 text-xs font-extrabold text-primary">
+                <span className="rounded-xl bg-primary/10 px-3 py-1.5 text-xs font-extrabold text-primary sm:rounded-2xl sm:px-3.5">
                   Savol {currentQuestionIndex + 1} / {activeVariant.questions.length}
                 </span>
-                <span className="text-xs text-muted-foreground">
+                <span className="hidden text-xs text-muted-foreground sm:inline">
                   (Klaviaturadagi 1-4 yoki A-D orqali ham tanlashingiz mumkin)
                 </span>
               </div>
@@ -609,7 +615,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                     [currentQuestion.id]: !prev[currentQuestion.id],
                   }))
                 }
-                className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
+                className={`flex min-h-[36px] items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
                   flaggedQuestions[currentQuestion.id]
                     ? "border-amber-500 bg-amber-50 text-amber-600 dark:bg-amber-950/40"
                     : "border-border text-muted-foreground hover:bg-muted"
@@ -623,8 +629,8 @@ export function BiologySection({ onBack }: BiologySectionProps) {
             </div>
 
             {/* Question Text */}
-            <div className="my-6">
-              <h3 className="text-lg font-bold leading-relaxed md:text-xl text-foreground">
+            <div className="my-4 sm:my-6">
+              <h3 className="text-base font-bold leading-relaxed text-foreground sm:text-lg md:text-xl">
                 {currentQuestion.question}
               </h3>
             </div>
@@ -668,16 +674,16 @@ export function BiologySection({ onBack }: BiologySectionProps) {
             </div>
 
             {/* Navigation buttons */}
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border/80 pt-6">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border/80 pt-5 sm:mt-8 sm:gap-4 sm:pt-6">
               <button
                 disabled={currentQuestionIndex === 0}
                 onClick={() => setCurrentQuestionIndex((prev) => prev - 1)}
-                className="flex items-center gap-2 rounded-2xl border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground transition-all hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+                className="flex min-h-[42px] items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-bold text-foreground transition-all hover:bg-muted disabled:pointer-events-none disabled:opacity-40 sm:rounded-2xl sm:px-5"
               >
                 <ArrowLeft className="h-4 w-4" /> Oldingi savol
               </button>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 {userAnswers[currentQuestion.id] && (
                   <button
                     onClick={() => {
@@ -696,14 +702,14 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                 {currentQuestionIndex < activeVariant.questions.length - 1 ? (
                   <button
                     onClick={() => setCurrentQuestionIndex((prev) => prev + 1)}
-                    className="flex items-center gap-2 rounded-2xl bg-primary px-6 py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:bg-primary/90 hover:scale-105"
+                    className="flex min-h-[42px] items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:bg-primary/90 sm:rounded-2xl sm:px-6 sm:hover:scale-105"
                   >
                     Keyingi savol <ArrowRight className="h-4 w-4" />
                   </button>
                 ) : (
                   <button
                     onClick={() => setShowConfirmFinish(true)}
-                    className="flex items-center gap-2 rounded-2xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-glow transition-all hover:bg-emerald-500 hover:scale-105"
+                    className="flex min-h-[42px] items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-glow transition-all hover:bg-emerald-500 sm:rounded-2xl sm:px-6 sm:hover:scale-105"
                   >
                     <Check className="h-4 w-4" /> Natijani ko'rish
                   </button>
@@ -718,9 +724,9 @@ export function BiologySection({ onBack }: BiologySectionProps) {
       {/* VIEW 3: RESULTS AND QUESTION-BY-QUESTION REVIEW */}
       {/* ========================================================= */}
       {view === "result" && currentResult && (
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Main Results Card */}
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-xl md:p-10">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xl sm:rounded-3xl sm:p-8 md:p-10">
             <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
 
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
@@ -830,10 +836,10 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                 <Filter className="h-5 w-5 text-primary" /> Savollar tahlili
               </h3>
 
-              <div className="flex items-center gap-2 overflow-x-auto">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1">
                 <button
                   onClick={() => setReviewFilter("all")}
-                  className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:py-1.5 ${
                     reviewFilter === "all"
                       ? "bg-primary text-primary-foreground shadow-glow"
                       : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -843,7 +849,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                 </button>
                 <button
                   onClick={() => setReviewFilter("correct")}
-                  className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:py-1.5 ${
                     reviewFilter === "correct"
                       ? "bg-emerald-600 text-white shadow-glow"
                       : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -853,7 +859,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                 </button>
                 <button
                   onClick={() => setReviewFilter("incorrect")}
-                  className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:py-1.5 ${
                     reviewFilter === "incorrect"
                       ? "bg-rose-600 text-white shadow-glow"
                       : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -863,7 +869,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                 </button>
                 <button
                   onClick={() => setReviewFilter("skipped")}
-                  className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:py-1.5 ${
                     reviewFilter === "skipped"
                       ? "bg-muted text-foreground"
                       : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -874,7 +880,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               {activeVariant.questions
                 .filter((q) => {
                   const userAns = userAnswers[q.id];
@@ -893,9 +899,9 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                   return (
                     <div
                       key={q.id}
-                      className="rounded-3xl border border-border bg-card p-6 shadow-sm"
+                      className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:rounded-3xl sm:p-6"
                     >
-                      <div className="flex items-center justify-between gap-3 border-b border-border/60 pb-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
                         <span className="text-xs font-extrabold text-muted-foreground">
                           Savol {idx + 1}
                         </span>
@@ -915,11 +921,11 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                         )}
                       </div>
 
-                      <h4 className="mt-4 text-base font-bold leading-relaxed text-foreground">
+                      <h4 className="mt-3.5 text-sm font-bold leading-relaxed text-foreground sm:mt-4 sm:text-base">
                         {q.question}
                       </h4>
 
-                      <div className="mt-4 space-y-2">
+                      <div className="mt-3.5 space-y-2 sm:mt-4">
                         {q.options.map((opt, oIdx) => {
                           const key = ["A", "B", "C", "D"][oIdx] || opt.charAt(0);
                           const isUserChoice = userAns === key;
@@ -937,7 +943,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                           return (
                             <div
                               key={oIdx}
-                              className={`flex items-start gap-3 rounded-2xl border p-3.5 text-xs transition-all ${optStyle}`}
+                              className={`flex flex-wrap items-start gap-2.5 rounded-2xl border p-3 text-xs transition-all sm:flex-nowrap sm:gap-3 sm:p-3.5 ${optStyle}`}
                             >
                               <div
                                 className={`grid h-6 w-6 shrink-0 place-items-center rounded-lg text-xs font-extrabold ${
@@ -950,16 +956,16 @@ export function BiologySection({ onBack }: BiologySectionProps) {
                               >
                                 {key}
                               </div>
-                              <div className="pt-0.5 leading-relaxed">
+                              <div className="min-w-0 flex-1 pt-0.5 leading-relaxed">
                                 {opt.replace(/^[A-DА-Д]\s*[).\-–]\s*/i, "")}
                               </div>
                               {isRightAnswer && (
-                                <span className="ml-auto flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                                <span className="ml-auto flex shrink-0 items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                                   <Check className="h-3.5 w-3.5" /> To'g'ri kalit
                                 </span>
                               )}
                               {isUserChoice && !isRightAnswer && (
-                                <span className="ml-auto text-[11px] font-bold text-rose-500">
+                                <span className="ml-auto shrink-0 text-[11px] font-bold text-rose-500">
                                   Sizning javobingiz
                                 </span>
                               )}

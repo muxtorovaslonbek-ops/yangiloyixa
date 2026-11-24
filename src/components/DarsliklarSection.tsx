@@ -179,14 +179,14 @@ export function DarsliklarSection({
   const [focusedSubject, setFocusedSubject] = useState<SubjectKey>(initialSubject);
 
   return (
-    <div className="space-y-6 px-4 pb-16 md:px-8">
+    <div className="space-y-5 px-3 pb-16 sm:space-y-6 sm:px-4 md:px-8">
       {/* Breadcrumb Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-4 pt-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-3.5 pt-2 sm:gap-4 sm:pb-4">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-all hover:bg-muted"
+            className="flex min-h-[40px] items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:bg-muted sm:px-4 sm:text-sm"
           >
             <ArrowLeft className="h-4 w-4 text-primary" />
             <span>Bosh sahifaga qaytish</span>
@@ -198,21 +198,21 @@ export function DarsliklarSection({
           </div>
         </div>
 
-        <span className="text-xs font-semibold text-muted-foreground">
+        <span className="rounded-lg bg-muted/60 px-2.5 py-1 text-xs font-semibold text-muted-foreground sm:bg-transparent sm:p-0">
           {SUBJECTS.length} ta asosiy universitet fani
         </span>
       </div>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-8">
+      <section className="relative overflow-hidden rounded-2xl bg-sidebar-grad p-5 text-navy-foreground shadow-card sm:rounded-3xl sm:p-6 md:p-8">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/25 blob" />
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-2.5">
             <div className="flex items-center gap-2 text-xs font-semibold text-cyan">
-              <BookOpen className="h-4 w-4" />
+              <BookOpen className="h-4 w-4 shrink-0" />
               <span>Universitet fanlari elektron kutubxonasi</span>
             </div>
-            <h1 className="text-2xl font-extrabold md:text-4xl">
+            <h1 className="text-xl font-extrabold leading-snug sm:text-2xl md:text-4xl">
               Darsliklar:{" "}
               <span className="text-shine">
                 Botanika, Genetika, Mikrobiologiya, Biokimyo, Gidrobiologiya, Biotexnologiya va
@@ -224,7 +224,7 @@ export function DarsliklarSection({
       </section>
 
       {/* Subject Cards with Logos */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
         {SUBJECTS.map((subj) => {
           const Icon = subj.icon;
           const isFocused = focusedSubject === subj.id;
@@ -247,7 +247,7 @@ export function DarsliklarSection({
                   onOpenBiotexnologiya();
                 }
               }}
-              className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
+              className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border bg-card shadow-card transition-all duration-300 active:scale-[0.99] sm:rounded-3xl sm:hover:-translate-y-1 sm:hover:shadow-glow ${
                 isFocused
                   ? "border-primary ring-2 ring-primary/20"
                   : "border-border hover:border-primary/50"
@@ -255,7 +255,7 @@ export function DarsliklarSection({
             >
               <div>
                 {/* Top visual header with logo */}
-                <div className="relative h-44 overflow-hidden bg-slate-900">
+                <div className="relative h-40 overflow-hidden bg-slate-900 sm:h-44">
                   <img
                     src={subj.img}
                     alt={subj.title}
@@ -289,17 +289,17 @@ export function DarsliklarSection({
                 </div>
 
                 {/* Body */}
-                <div className="space-y-4 p-5">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1.5 font-semibold text-foreground">
+                <div className="space-y-3.5 p-4 sm:space-y-4 sm:p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-2.5 py-1 font-semibold text-foreground sm:bg-transparent sm:p-0">
                       <Layers className="h-3.5 w-3.5 text-primary" />
                       {subj.topicsCount > 0 ? `${subj.topicsCount} ta mavzu` : "Mavzular tez kunda"}
                     </span>
                     <span
                       className={
                         subj.ready
-                          ? "font-bold text-emerald-600 dark:text-emerald-400"
-                          : "font-medium"
+                          ? "rounded-lg bg-emerald-500/10 px-2.5 py-1 font-bold text-emerald-600 dark:text-emerald-400 sm:bg-transparent sm:p-0"
+                          : "rounded-lg bg-muted px-2.5 py-1 font-medium sm:bg-transparent sm:p-0"
                       }
                     >
                       {subj.status}
@@ -310,11 +310,11 @@ export function DarsliklarSection({
                     {subj.description}
                   </p>
 
-                  <ul className="space-y-1.5 border-t border-border/60 pt-3 text-xs text-foreground/90">
+                  <ul className="space-y-2 border-t border-border/60 pt-3 text-xs text-foreground/90 sm:space-y-1.5">
                     {subj.topicsPreview.map((item) => (
-                      <li key={item} className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                        <span className="truncate">{item}</span>
+                      <li key={item} className="flex items-start gap-2 sm:items-center">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary sm:mt-0" />
+                        <span className="line-clamp-2 leading-relaxed sm:truncate">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -322,7 +322,7 @@ export function DarsliklarSection({
               </div>
 
               {/* Footer Action */}
-              <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-5 py-3.5">
+              <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-4 py-3 sm:px-5 sm:py-3.5">
                 {subj.id === "botanika" ||
                 subj.id === "genetika" ||
                 subj.id === "mikrobiologiya" ||
@@ -347,7 +347,7 @@ export function DarsliklarSection({
                         onOpenBiotexnologiya();
                       }
                     }}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
+                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all active:scale-[0.98] hover:bg-primary/90"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
                     <span>Darsni boshlash</span>
@@ -364,9 +364,9 @@ export function DarsliklarSection({
                         );
                       }
                     }}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-bold text-foreground transition-all hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
+                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-bold text-foreground transition-all active:scale-[0.98] hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    <Sparkles className="h-3.5 w-3.5 shrink-0 text-primary" />
                     <span>{subj.title} bo‘yicha AI Ustozdan konspekt olish</span>
                   </button>
                 )}

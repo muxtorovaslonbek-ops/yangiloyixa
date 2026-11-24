@@ -128,31 +128,33 @@ export function EnglishVideoLessons({
   const progressPercent = Math.round((completedIds.size / ENGLISH_VIDEO_LESSONS.length) * 100);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       {/* Top Progress & Stats Bar */}
-      <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-5 shadow-card sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-            <Tv className="h-6 w-6" />
+      <div className="flex flex-col gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-card sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:rounded-3xl sm:p-5">
+        <div className="flex items-start gap-3 sm:items-center">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary sm:h-12 sm:w-12">
+            <Tv className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-foreground">180 ta Video darslik kursi</h3>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base font-bold text-foreground sm:text-lg">
+                180 ta Video darslik kursi
+              </h3>
               <span className="rounded-md bg-cyan/15 px-2.5 py-0.5 text-xs font-bold text-navy dark:text-cyan">
                 001 dan 180 gacha
               </span>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               To'liq ketma-ketlikda grammatika, to be, zamonlar va xalqaro imtihonlarga tayyorgarlik
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 sm:border-l sm:border-border sm:pl-6">
-          <div className="w-40 space-y-1">
+        <div className="flex items-center gap-3 border-t border-border/60 pt-3 sm:gap-4 sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
+          <div className="flex-1 space-y-1 sm:w-40 sm:flex-none">
             <div className="flex items-center justify-between text-xs font-semibold">
               <span className="text-muted-foreground">O'zlashtirildi:</span>
-              <span className="text-primary font-bold">
+              <span className="font-bold text-primary">
                 {completedIds.size} / {ENGLISH_VIDEO_LESSONS.length}
               </span>
             </div>
@@ -169,7 +171,7 @@ export function EnglishVideoLessons({
 
       {/* Main Video Player / Preview Area (Does NOT autoplay when section opens) */}
       <div ref={playerRef} className="scroll-mt-24">
-        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-card sm:rounded-3xl">
           {isPlaying ? (
             /* Active YouTube Video Player */
             <div className="relative aspect-video w-full bg-slate-950">
@@ -193,23 +195,23 @@ export function EnglishVideoLessons({
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
 
               {/* Central Start Lesson Button */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white">
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-white sm:p-6">
                 <button
                   type="button"
                   onClick={() => setIsPlaying(true)}
-                  className="group flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow transition-all duration-300 hover:scale-110 hover:bg-cyan hover:text-navy"
+                  className="group flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow transition-all duration-300 hover:scale-110 hover:bg-cyan hover:text-navy sm:h-20 sm:w-20"
                   aria-label="Darsni boshlash"
                 >
-                  <Play className="ml-1.5 h-9 w-9 fill-current" />
+                  <Play className="ml-1 h-6 w-6 fill-current sm:ml-1.5 sm:h-9 sm:w-9" />
                 </button>
-                <div className="mt-4 space-y-1">
-                  <span className="inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-bold text-cyan backdrop-blur-md">
+                <div className="mt-2.5 space-y-1 sm:mt-4">
+                  <span className="inline-block max-w-full truncate rounded-full bg-primary/20 px-2.5 py-0.5 text-[11px] font-bold text-cyan backdrop-blur-md sm:px-3 sm:py-1 sm:text-xs">
                     Dars #{currentLesson.code} · {currentLesson.category}
                   </span>
-                  <h2 className="text-2xl font-extrabold md:text-3xl">
+                  <h2 className="line-clamp-2 text-base font-extrabold sm:text-2xl md:text-3xl">
                     {currentLesson.code}. {currentLesson.title}
                   </h2>
-                  <p className="max-w-md text-xs text-white/80 md:text-sm">
+                  <p className="hidden max-w-md text-xs text-white/80 sm:block md:text-sm">
                     Darsni boshlash uchun bosing. Video darslar birdaniga boshlanmaydi, siz xohlagan
                     vaqtingizda tomosha qilishingiz mumkin.
                   </p>
@@ -217,7 +219,7 @@ export function EnglishVideoLessons({
                 <button
                   type="button"
                   onClick={() => setIsPlaying(true)}
-                  className="mt-4 flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:scale-105"
+                  className="mt-2.5 hidden items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:scale-105 sm:mt-4 sm:flex"
                 >
                   <Play className="h-4 w-4 fill-current" />
                   <span>Darsni tomosha qilish</span>
@@ -227,16 +229,16 @@ export function EnglishVideoLessons({
           )}
 
           {/* Video Meta & Controls Bar */}
-          <div className="space-y-4 p-5 md:p-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
+          <div className="space-y-4 p-4 sm:p-5 md:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4 sm:gap-4">
+              <div className="min-w-0 space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-lg bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
                     Dars #{currentLesson.code}
                   </span>
                   <span className="text-xs text-muted-foreground">{currentLesson.category}</span>
                 </div>
-                <h2 className="text-xl font-extrabold text-foreground md:text-2xl">
+                <h2 className="text-lg font-extrabold text-foreground sm:text-xl md:text-2xl">
                   {currentLesson.code}. {currentLesson.title}
                 </h2>
               </div>
@@ -288,32 +290,34 @@ export function EnglishVideoLessons({
             </div>
 
             {/* Prev / Next navigation buttons */}
-            <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center justify-between gap-2 pt-1">
               <button
                 type="button"
                 onClick={handlePrev}
                 disabled={selectedId <= 1}
-                className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-bold text-foreground transition-all hover:bg-muted disabled:opacity-40"
+                className="flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-foreground transition-all hover:bg-muted disabled:opacity-40 sm:gap-2 sm:px-4 sm:py-2.5"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-4 w-4 shrink-0" />
                 <span>Oldingi dars</span>
               </button>
 
-              <div className="text-center">
+              <div className="shrink-0 text-center">
                 <span className="text-xs font-bold text-primary">
                   {currentLesson.id} / {ENGLISH_VIDEO_LESSONS.length}
                 </span>
-                <p className="text-[11px] text-muted-foreground">Ketma-ketlik bo'yicha</p>
+                <p className="hidden text-[11px] text-muted-foreground sm:block">
+                  Ketma-ketlik bo'yicha
+                </p>
               </div>
 
               <button
                 type="button"
                 onClick={handleNext}
                 disabled={selectedId >= ENGLISH_VIDEO_LESSONS.length}
-                className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 disabled:opacity-40"
+                className="flex min-h-[40px] items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 disabled:opacity-40 sm:gap-2 sm:px-5 sm:py-2.5"
               >
                 <span>Keyingi dars</span>
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-4 w-4 shrink-0" />
               </button>
             </div>
           </div>
@@ -321,10 +325,10 @@ export function EnglishVideoLessons({
       </div>
 
       {/* FILTER & SEARCH HEADER FOR 180 RECTANGULAR CARDS */}
-      <div className="space-y-4">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="space-y-3.5 sm:space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
-            <h3 className="text-xl font-extrabold text-foreground">
+            <h3 className="text-lg font-extrabold text-foreground sm:text-xl">
               Barcha video darslar ro'yxati
             </h3>
             <p className="text-xs text-muted-foreground">
@@ -341,7 +345,7 @@ export function EnglishVideoLessons({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Dars raqami yoki mavzusi..."
-              className="w-full rounded-xl border border-border bg-card py-2 pl-9 pr-8 text-xs outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-xl border border-border bg-card py-2.5 pl-9 pr-8 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 sm:py-2 sm:text-xs"
             />
             {searchQuery && (
               <button
@@ -356,7 +360,7 @@ export function EnglishVideoLessons({
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none sm:flex-wrap sm:overflow-visible sm:pb-0">
           {[
             { id: "all", label: "Barchasi (180)" },
             { id: "1-24", label: "001-024 (To Be & Asosiy zamonlar)" },
@@ -370,10 +374,10 @@ export function EnglishVideoLessons({
               key={cat.id}
               type="button"
               onClick={() => setCategoryFilter(cat.id)}
-              className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all ${
+              className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all sm:py-1.5 ${
                 categoryFilter === cat.id
-                  ? "bg-primary text-primary-foreground font-bold shadow-sm scale-102"
-                  : "bg-card text-muted-foreground border border-border hover:bg-muted hover:text-foreground"
+                  ? "bg-primary font-bold text-primary-foreground shadow-sm"
+                  : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               {cat.label}
@@ -384,7 +388,7 @@ export function EnglishVideoLessons({
 
       {/* RECTANGULAR VIDEO CARDS GRID ("to'rt burchak qilib chiroyli qilib joylashtirish") */}
       {filteredLessons.length > 0 ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
           {filteredLessons.map((lesson) => {
             const isSelected = selectedId === lesson.id;
             const isDone = completedIds.has(lesson.id);
@@ -392,7 +396,7 @@ export function EnglishVideoLessons({
             return (
               <div
                 key={lesson.id}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-card shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-glow ${
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-card shadow-card transition-all duration-300 active:scale-[0.99] sm:hover:-translate-y-1.5 sm:hover:shadow-glow ${
                   isSelected
                     ? "border-primary ring-2 ring-primary/40 shadow-glow"
                     : "border-border hover:border-primary/50"
@@ -457,22 +461,22 @@ export function EnglishVideoLessons({
                 </div>
 
                 {/* Rectangular Card Content */}
-                <div className="flex flex-1 flex-col justify-between p-4">
+                <div className="flex flex-1 flex-col justify-between p-3.5 sm:p-4">
                   <div>
-                    <h4 className="font-bold text-sm text-foreground line-clamp-2 leading-snug transition-colors group-hover:text-primary">
+                    <h4 className="line-clamp-2 text-sm font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
                       {lesson.code}. {lesson.title}
                     </h4>
-                    <p className="mt-1 text-xs text-muted-foreground line-clamp-1">
+                    <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
                       {lesson.category}
                     </p>
                   </div>
 
                   {/* Action Buttons Row */}
-                  <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
+                  <div className="mt-3.5 flex items-center justify-between gap-2 border-t border-border/60 pt-3 sm:mt-4">
                     <button
                       type="button"
                       onClick={() => handleSelectAndPlay(lesson.id)}
-                      className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`flex min-h-[38px] items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:min-h-0 sm:py-1.5 ${
                         isSelected && isPlaying
                           ? "bg-primary text-primary-foreground shadow-sm"
                           : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
@@ -486,7 +490,7 @@ export function EnglishVideoLessons({
                       <button
                         type="button"
                         onClick={() => toggleCompleted(lesson.id)}
-                        className={`rounded-lg p-1.5 transition-colors ${
+                        className={`rounded-lg p-2 transition-colors sm:p-1.5 ${
                           isDone
                             ? "text-emerald-500 hover:bg-emerald-500/10"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -501,7 +505,7 @@ export function EnglishVideoLessons({
                         target="_blank"
                         rel="noreferrer noopener"
                         title="YouTube orqali ochish"
-                        className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:p-1.5"
                       >
                         <ExternalLink className="h-4 w-4" />
                       </a>
