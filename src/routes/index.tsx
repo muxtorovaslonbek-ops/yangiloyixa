@@ -243,6 +243,20 @@ function Index() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [open]);
+
   const allSearchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     return searchAppContent(searchQuery);
@@ -306,7 +320,8 @@ function Index() {
   return (
     <div className="mesh-bg min-h-screen bg-background font-sans text-foreground">
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-sidebar-grad text-navy-foreground transition-transform duration-500 lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"} shadow-2xl`}
+        aria-label="Asosiy menyu"
+        className={`fixed inset-y-0 left-0 z-40 flex w-[280px] max-w-[85vw] flex-col bg-sidebar-grad text-navy-foreground transition-transform duration-300 ease-out lg:w-64 lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"} shadow-2xl`}
       >
         <div className="pointer-events-none absolute -left-10 top-1/3 h-48 w-48 rounded-full bg-primary/40 blob" />
 
@@ -403,17 +418,27 @@ function Index() {
         </nav>
       </aside>
       {open && (
-        <div className="fixed inset-0 z-30 bg-navy/50 lg:hidden" onClick={() => setOpen(false)} />
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 z-30 bg-navy/55 backdrop-blur-[2px] transition-opacity lg:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
 
-      <main className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex items-center gap-4 bg-background/80 px-4 py-4 backdrop-blur-xl md:px-8">
-          <button className="lg:hidden" onClick={() => setOpen(true)} aria-label="Menyu">
-            <Menu />
+      <main className="min-w-0 lg:pl-64">
+        <header className="sticky top-0 z-20 flex items-center gap-2.5 bg-background/85 px-3 py-3 backdrop-blur-xl sm:gap-4 sm:px-4 sm:py-4 md:px-8">
+          <button
+            type="button"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-border bg-card text-foreground shadow-xs transition-colors hover:bg-muted lg:hidden"
+            onClick={() => setOpen(true)}
+            aria-label="Menyuni ochish"
+            aria-expanded={open}
+          >
+            <Menu className="h-5 w-5" />
           </button>
-          <div ref={searchContainerRef} className="relative flex-1 max-w-xl">
-            <div className="flex items-center gap-3 rounded-full bg-muted px-4 py-2.5 transition-all focus-within:shadow-glow focus-within:ring-2 focus-within:ring-primary">
-              <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+          <div ref={searchContainerRef} className="relative min-w-0 flex-1 max-w-xl">
+            <div className="flex items-center gap-2.5 rounded-full bg-muted px-3.5 py-2 transition-all focus-within:shadow-glow focus-within:ring-2 focus-within:ring-primary sm:gap-3 sm:px-4 sm:py-2.5">
+              <Search className="h-4 w-4 shrink-0 text-muted-foreground sm:h-5 sm:w-5" />
               <input
                 value={searchQuery}
                 onChange={(e) => {
@@ -427,7 +452,7 @@ function Index() {
                   }
                 }}
                 placeholder="Fan, mavzu, video dars yoki testlarni qidiring..."
-                className="w-full bg-transparent text-sm outline-none"
+                className="min-w-0 w-full bg-transparent text-xs outline-none sm:text-sm"
               />
               {searchQuery && (
                 <button
@@ -446,7 +471,7 @@ function Index() {
 
             {/* Floating quick search dropdown */}
             {isSearchOpen && searchQuery.trim().length > 0 && (
-              <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[480px] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl backdrop-blur-xl">
+              <div className="fixed left-3 right-3 top-[66px] z-50 max-h-[calc(100vh-84px)] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl backdrop-blur-xl sm:absolute sm:left-0 sm:right-0 sm:top-full sm:mt-2 sm:max-h-[480px]">
                 <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
                   <span className="text-xs font-semibold text-muted-foreground">
                     Topilgan natijalar ({filteredSearchResults.length})
@@ -554,28 +579,29 @@ function Index() {
               </div>
             )}
           </div>
-          <div className="ml-auto flex items-center gap-5">
+          <div className="ml-auto flex shrink-0 items-center gap-2.5 sm:gap-5">
             <button
-              className="relative transition-transform hover:rotate-12"
+              type="button"
+              className="relative grid h-9 w-9 place-items-center rounded-xl transition-transform hover:rotate-12 sm:h-auto sm:w-auto"
               aria-label="Bildirishnomalar"
             >
-              <Bell className="h-6 w-6" />
-              <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 animate-ping rounded-full bg-destructive" />
-              <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-destructive" />
+              <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="absolute right-1 top-1 h-2 w-2 animate-ping rounded-full bg-destructive sm:-right-0.5 sm:-top-0.5 sm:h-2.5 sm:w-2.5" />
+              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-destructive sm:-right-0.5 sm:-top-0.5 sm:h-2.5 sm:w-2.5" />
             </button>
-            <div className="flex items-center gap-3 border-l border-border pl-5">
+            <div className="flex items-center gap-2.5 border-l border-border pl-2.5 sm:gap-3 sm:pl-5">
               <img
                 src={avatar}
                 alt="Aslonbek"
                 width={44}
                 height={44}
-                className="h-11 w-11 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-background transition-transform hover:scale-110"
+                className="h-9 w-9 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-background transition-transform hover:scale-110 sm:h-11 sm:w-11"
               />
               <div className="hidden sm:block">
                 <p className="font-bold leading-tight">Aslonbek</p>
                 <p className="text-xs text-muted-foreground">Talaba</p>
               </div>
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="hidden h-4 w-4 sm:block" />
             </div>
           </div>
         </header>
@@ -774,13 +800,13 @@ function Index() {
                 )}
               </section>
             )}
-            <section className="fade-up hero-zoom relative overflow-hidden rounded-3xl shadow-card">
+            <section className="fade-up hero-zoom relative min-h-[260px] overflow-hidden rounded-3xl shadow-card sm:min-h-[300px]">
               <img
                 src={hero}
                 alt="Universitet talabalari"
                 width={1600}
                 height={640}
-                className="h-[300px] w-full object-cover object-right transition-transform duration-[2s] hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover object-right transition-transform duration-[2s] hover:scale-105"
               />
               <div className="absolute inset-0 bg-hero-grad" />
               {Array.from({ length: 14 }).map((_, k) => (
@@ -794,12 +820,12 @@ function Index() {
                   }}
                 />
               ))}
-              <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-12 text-navy-foreground">
-                <h2 className="max-w-3xl text-3xl font-extrabold leading-tight md:text-[2.6rem]">
+              <div className="relative z-10 flex min-h-[260px] flex-col justify-center p-5 text-navy-foreground sm:min-h-[300px] sm:p-8 md:p-12">
+                <h2 className="max-w-3xl text-2xl font-extrabold leading-tight sm:text-3xl md:text-[2.6rem]">
                   Universitet ta’limini <br />
                   <span className="text-shine">oson va samarali</span> o‘zlashtiring!
                 </h2>
-                <p className="mt-3 max-w-md text-lg font-medium opacity-95">
+                <p className="mt-2.5 max-w-md text-sm font-medium opacity-95 sm:mt-3 sm:text-base md:text-lg">
                   Darsliklar, topshiriqlar, kurs ishi, kutubxona va til o‘rganish — barchasi bir
                   platformada!
                 </p>
@@ -808,7 +834,7 @@ function Index() {
                     setActive(5);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="btn-shine group shrink-0 mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-card px-7 py-3 font-bold text-primary transition-all hover:shadow-glow hover:scale-105"
+                  className="btn-shine group mt-5 inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-card px-5 py-2.5 text-sm font-bold text-primary transition-all hover:scale-105 hover:shadow-glow sm:mt-6 sm:px-7 sm:py-3 sm:text-base"
                 >
                   Boshlash{" "}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -816,7 +842,7 @@ function Index() {
               </div>
             </section>
 
-            <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-7">
+            <section className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
               {features.map((f, i) => (
                 <div
                   key={f.t}
@@ -876,12 +902,12 @@ function Index() {
 
             <section className="grid gap-6 xl:grid-cols-[1fr_440px]">
               <div
-                className="fade-up rounded-3xl bg-card p-5 shadow-card"
+                className="fade-up min-w-0 rounded-3xl bg-card p-4 shadow-card sm:p-5"
                 style={{ animationDelay: "400ms" }}
               >
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="flex items-center gap-2 text-xl font-bold">
-                    <GraduationCap className="text-primary" /> Tavsiya etilgan kurslar
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="flex items-center gap-2 text-lg font-bold sm:text-xl">
+                    <GraduationCap className="shrink-0 text-primary" /> Tavsiya etilgan kurslar
                   </h3>
                   <button
                     type="button"
@@ -889,13 +915,13 @@ function Index() {
                       setActive(1);
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className="group flex items-center gap-1 text-sm font-semibold text-primary"
+                    className="group flex shrink-0 items-center gap-1 text-sm font-semibold text-primary"
                   >
                     Barchasi{" "}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
-                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3.5 min-[400px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
                   {list.map((c) => (
                     <div
                       key={c.t}
@@ -1048,19 +1074,19 @@ function Index() {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }
                   }}
-                  className={`fade-up lift spot group relative flex cursor-pointer items-center gap-5 overflow-hidden rounded-3xl ${b.c} p-6 pr-40`}
+                  className={`fade-up lift spot group relative flex cursor-pointer items-center gap-3.5 overflow-hidden rounded-3xl ${b.c} p-5 sm:gap-5 sm:p-6 sm:pr-36 md:pr-40`}
                 >
                   <div
-                    className={`grid h-16 w-16 shrink-0 place-items-center rounded-2xl ${b.ic} text-primary-foreground float`}
+                    className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl ${b.ic} text-primary-foreground float sm:h-16 sm:w-16`}
                   >
-                    <b.i className="h-8 w-8" />
+                    <b.i className="h-6 w-6 sm:h-8 sm:w-8" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold">{b.t}</h3>
-                    <p className="text-sm text-muted-foreground">{b.d}</p>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-bold sm:text-xl">{b.t}</h3>
+                    <p className="text-xs text-muted-foreground sm:text-sm">{b.d}</p>
                   </div>
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-card text-primary shadow-card transition-transform group-hover:translate-x-1">
-                    <ArrowRight className="h-5 w-5" />
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-card text-primary shadow-card transition-transform group-hover:translate-x-1 sm:h-10 sm:w-10">
+                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                   </span>
                   <img
                     src={b.img}
@@ -1068,7 +1094,7 @@ function Index() {
                     loading="lazy"
                     width={816}
                     height={816}
-                    className="pointer-events-none absolute -bottom-3 right-2 h-32 w-32 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110"
+                    className="pointer-events-none absolute -bottom-3 right-2 hidden h-28 w-28 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110 sm:block md:h-32 md:w-32"
                   />
                 </div>
               ))}

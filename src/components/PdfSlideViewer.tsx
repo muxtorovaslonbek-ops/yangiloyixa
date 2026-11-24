@@ -78,7 +78,7 @@ function PdfPageCanvas({
         if (cancelled) return;
 
         const baseViewport = page.getViewport({ scale: 1 });
-        const targetWidth = Math.max(280, containerWidth - 24);
+        const targetWidth = Math.max(220, containerWidth - 16);
         const fitScale = (targetWidth / baseViewport.width) * zoom;
         const outputScale = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -372,7 +372,7 @@ export function PdfSlideViewer({ url, title, compactHeight = false }: PdfSlideVi
       {/* Main Scrollable PDF Canvas Container */}
       <div
         ref={scrollContainerRef}
-        className={`overflow-y-auto bg-muted/30 p-3 md:p-5 ${
+        className={`overflow-x-auto overflow-y-auto bg-muted/30 p-2.5 sm:p-3 md:p-5 ${
           isFullscreen ? "flex-1" : compactHeight ? "max-h-[680px]" : "max-h-[78vh]"
         }`}
       >
@@ -444,18 +444,19 @@ export function PdfSlideViewer({ url, title, compactHeight = false }: PdfSlideVi
 
       {/* Bottom Slide Navigation Bar (in Slide mode or when pages > 0) */}
       {!loading && !errorMsg && numPages > 0 && viewMode === "slide" && (
-        <div className="flex items-center justify-between border-t border-border bg-card px-4 py-2.5">
+        <div className="flex items-center justify-between gap-2 border-t border-border bg-card px-3 py-2.5 sm:px-4">
           <button
             type="button"
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted disabled:opacity-40"
+            className="flex items-center gap-1 rounded-xl border border-border bg-background px-2.5 py-1.5 text-xs font-bold text-foreground hover:bg-muted disabled:opacity-40 sm:px-3"
           >
-            <ChevronLeft className="h-4 w-4" />
-            <span>Oldingi slayd</span>
+            <ChevronLeft className="h-4 w-4 shrink-0" />
+            <span className="hidden min-[380px]:inline">Oldingi slayd</span>
+            <span className="min-[380px]:hidden">Oldingi</span>
           </button>
 
-          <span className="font-mono text-xs font-bold text-muted-foreground tabular-nums">
+          <span className="shrink-0 font-mono text-xs font-bold text-muted-foreground tabular-nums">
             {currentPage} / {numPages}
           </span>
 
@@ -463,10 +464,11 @@ export function PdfSlideViewer({ url, title, compactHeight = false }: PdfSlideVi
             type="button"
             disabled={currentPage >= numPages}
             onClick={() => setCurrentPage((p) => Math.min(numPages, p + 1))}
-            className="flex items-center gap-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted disabled:opacity-40"
+            className="flex items-center gap-1 rounded-xl border border-border bg-background px-2.5 py-1.5 text-xs font-bold text-foreground hover:bg-muted disabled:opacity-40 sm:px-3"
           >
-            <span>Keyingi slayd</span>
-            <ChevronRight className="h-4 w-4" />
+            <span className="hidden min-[380px]:inline">Keyingi slayd</span>
+            <span className="min-[380px]:hidden">Keyingi</span>
+            <ChevronRight className="h-4 w-4 shrink-0" />
           </button>
         </div>
       )}

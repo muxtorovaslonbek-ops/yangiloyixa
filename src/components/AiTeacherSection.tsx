@@ -392,9 +392,9 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
 
                 {/* Message Bubble */}
                 <div
-                  className={`max-w-[85%] md:max-w-[75%] space-y-1 ${isUser ? "items-end" : "items-start"}`}
+                  className={`min-w-0 max-w-[85%] space-y-1 md:max-w-[75%] ${isUser ? "items-end" : "items-start"}`}
                 >
-                  <div className="flex items-center gap-2 px-1 text-[11px] text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-1 text-[11px] text-muted-foreground">
                     <span className="font-semibold">{isUser ? "Siz" : "AI Ustoz"}</span>
                     <span>•</span>
                     <span>{msg.timestamp}</span>
@@ -406,14 +406,14 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
                   </div>
 
                   <div
-                    className={`group relative rounded-3xl p-4 md:p-5 text-xs md:text-sm leading-relaxed shadow-sm transition-all ${
+                    className={`group relative rounded-3xl p-3.5 text-xs leading-relaxed shadow-sm transition-all sm:p-4 md:p-5 md:text-sm ${
                       isUser
                         ? "bg-primary text-primary-foreground rounded-tr-none"
                         : "bg-background border border-border text-foreground rounded-tl-none"
                     }`}
                   >
                     {/* Render message with line breaks and markdown format */}
-                    <div className="whitespace-pre-wrap leading-relaxed space-y-2">
+                    <div className="whitespace-pre-wrap break-words leading-relaxed space-y-2">
                       {msg.content}
                     </div>
 
@@ -474,41 +474,41 @@ Kerakli bo'limni tanlang yoki savolingizni to'g'ridan-to'g'ri yozing!`,
         </div>
 
         {/* Input Bar */}
-        <div className="border-t border-border bg-background/50 p-4 md:p-5 backdrop-blur-md">
+        <div className="border-t border-border bg-background/50 p-3 backdrop-blur-md sm:p-4 md:p-5">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSendMessage();
             }}
-            className="flex items-center gap-3"
+            className="flex items-center gap-2 sm:gap-3"
           >
-            <div className="relative flex-1">
+            <div className="relative min-w-0 flex-1">
               <input
                 type="text"
                 value={inputPrompt}
                 onChange={(e) => setInputPrompt(e.target.value)}
                 placeholder="Savolingizni kiriting (masalan: DNK formulalari, Kurs ishi rejasi, Present Perfect qoidalari)..."
                 disabled={isLoading}
-                className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-xs md:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
+                className="w-full rounded-2xl border border-border bg-card px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50 sm:px-4 sm:py-3 md:text-sm"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !inputPrompt.trim()}
-              className="flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-xs md:text-sm font-bold text-primary-foreground shadow-glow transition-all hover:bg-primary/90 hover:scale-105 disabled:opacity-40 disabled:pointer-events-none"
+              className="flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-40 sm:px-5 sm:py-3 md:text-sm"
             >
               <Send className="h-4 w-4" />
               <span className="hidden sm:inline">Yuborish</span>
             </button>
           </form>
 
-          <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground px-1">
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 px-1 text-[11px] text-muted-foreground">
             <span>
               Tanlangan soha:{" "}
               <strong>{CATEGORIES.find((c) => c.id === selectedCategory)?.label}</strong>
             </span>
-            <span>Enter tugmasi orqali yuboring</span>
+            <span className="hidden sm:inline">Enter tugmasi orqali yuboring</span>
           </div>
         </div>
       </div>

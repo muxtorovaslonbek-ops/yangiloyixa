@@ -724,7 +724,7 @@ Vazifalari:
           {/* Filter & Add Toolbar */}
           <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-5 shadow-card">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="relative flex-1 min-w-[240px]">
+              <div className="relative w-full min-w-0 flex-1 sm:min-w-[220px]">
                 <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
