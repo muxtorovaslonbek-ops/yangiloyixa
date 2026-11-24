@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="eduuni-bg" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="42%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#172554" />
+    </linearGradient>
+    <linearGradient id="eduuni-shine" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.28" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#eduuni-bg)" />
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#eduuni-shine)" />
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="15.25" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1.5" />
+  <!-- White Academic Graduation Cap (EduUni emblem) -->
+  <path
+    d="M32 17L12 26.8L32 36.6L52 26.8L32 17Z"
+    fill="#FFFFFF"
+  />
+  <path
+    d="M19.5 32.8V41.6C19.5 44.7 25.1 47.5 32 47.5C38.9 47.5 44.5 44.7 44.5 41.6V32.8L32 38.9L19.5 32.8Z"
+    fill="#FFFFFF"
+    fill-opacity="0.94"
+  />
+  <path
+    d="M49 28.4V40.5"
+    stroke="#E0F2FE"
+    stroke-width="2.8"
+    stroke-linecap="round"
+  />
+  <circle cx="49" cy="42.2" r="2.2" fill="#E0F2FE" />
+</svg>

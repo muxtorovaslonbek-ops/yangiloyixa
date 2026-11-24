@@ -70,15 +70,57 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Darsliklar, kurs ishi, mustaqil ish, kutubxona va ingliz tili — barchasi bir platformada.",
-      },
-      { property: "og:title", content: "EduUni — raqamli ta’lim platformasi" },
-      {
-        property: "og:description",
-        content: "Universitet talabalari uchun zamonaviy ta’lim platformasi.",
+          "Darsliklar, kurs ishi, mustaqil ish, kutubxona, ingliz tili va biologiya — universitet talabalari uchun zamonaviy raqamli ta’lim platformasi.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "EduUni" },
+      { property: "og:url", content: "https://eduuni.vercel.app/" },
+      { property: "og:title", content: "EduUni — Universitet ta’limini oson o‘zlashtiring" },
+      {
+        property: "og:description",
+        content:
+          "Darsliklar, kurs ishi, mustaqil ish, kutubxona, ingliz tili va biologiya — barchasi bir platformada.",
+      },
+      { property: "og:image", content: "https://eduuni.vercel.app/og-image.png" },
+      { property: "og:image:secure_url", content: "https://eduuni.vercel.app/og-image.png" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "EduUni — Universitet ta’limini oson o‘zlashtiring",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "EduUni — Universitet ta’limini oson o‘zlashtiring" },
+      {
+        name: "twitter:description",
+        content:
+          "Darsliklar, kurs ishi, mustaqil ish, kutubxona, ingliz tili va biologiya — barchasi bir platformada.",
+      },
+      { name: "twitter:image", content: "https://eduuni.vercel.app/og-image.png" },
+    ],
+    links: [{ rel: "canonical", href: "https://eduuni.vercel.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "EduUni",
+          url: "https://eduuni.vercel.app/",
+          image: "https://eduuni.vercel.app/og-image.png",
+          applicationCategory: "EducationalApplication",
+          operatingSystem: "All",
+          inLanguage: "uz",
+          description:
+            "Darsliklar, kurs ishi, mustaqil ish, kutubxona, ingliz tili va biologiya — universitet talabalari uchun zamonaviy raqamli ta’lim platformasi.",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "UZS",
+          },
+        }),
+      },
     ],
   }),
   component: Index,
