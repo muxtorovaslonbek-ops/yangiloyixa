@@ -12,6 +12,7 @@ import {
   FlaskConical,
   Waves,
   Atom,
+  Binary,
 } from "lucide-react";
 import botanikaImg from "@/assets/botanika.jpg";
 import genetikaImg from "@/assets/genetika.jpg";
@@ -19,6 +20,7 @@ import mikroImg from "@/assets/mikro.jpg";
 import biokimyoImg from "@/assets/biokimyo.jpg";
 import gidrobiologiyaImg from "@/assets/images/gidrobiologiya_card_1795159354389.jpg";
 import biotexnologiyaImg from "@/assets/images/biotexnologiya_card_1795159350578.jpg";
+import bioinformatikaImg from "@/assets/images/bioinformatika_card_1795550419194.jpg";
 import { BOTANIKA_TOPICS } from "@/data/botanikaTopics";
 import { BIOKIMYO_TOPICS } from "@/data/biokimyoTopics";
 import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
@@ -27,7 +29,13 @@ import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
 
 export type SubjectKey =
-  "botanika" | "genetika" | "mikrobiologiya" | "biokimyo" | "gidrobiologiya" | "biotexnologiya";
+  | "botanika"
+  | "genetika"
+  | "mikrobiologiya"
+  | "biokimyo"
+  | "gidrobiologiya"
+  | "biotexnologiya"
+  | "bioinformatika";
 
 interface DarsliklarSectionProps {
   onBack: () => void;
@@ -138,6 +146,23 @@ const SUBJECTS = [
       `18–${BIOTEXNOLOGIYA_TOPICS.length}-mavzular: O‘simlik in vitro, agrobiotexnologiya, tibbiyot, ekologik biotexnologiya va soha kelajagi (PDF + ma’ruza)`,
     ],
   },
+  {
+    id: "bioinformatika" as SubjectKey,
+    title: "Bioinformatika",
+    subtitle: "Biologik ma’lumotlar tahlili, genomika va hisoblash biologiyasi",
+    description:
+      "DNK va oqsil ketma-ketliklarini tahlil qilish, BLAST va ketma-ketliklarni tekislash (alignment), filogenetik daraxtlar, genom annotatsiyasi, oqsillar 3D tuzilishini modellashtirish hamda biologik ma’lumotlar bazalari bo‘yicha ma’ruzalar to‘plami.",
+    topicsCount: 0,
+    status: "Tayyorlanmoqda",
+    img: bioinformatikaImg,
+    icon: Binary,
+    ready: false,
+    topicsPreview: [
+      "Biologik ma’lumotlar bazalari (NCBI, GenBank, UniProt, PDB) va FASTA formati",
+      "Ketma-ketliklarni tekislash (BLAST, Clustal) va filogenetik tahlil usullari",
+      "Genomika, transkriptomika va oqsillar 3D tuzilishini kompyuter modellashtirish",
+    ],
+  },
 ];
 
 export function DarsliklarSection({
@@ -190,7 +215,8 @@ export function DarsliklarSection({
             <h1 className="text-2xl font-extrabold md:text-4xl">
               Darsliklar:{" "}
               <span className="text-shine">
-                Botanika, Genetika, Mikrobiologiya, Biokimyo, Gidrobiologiya va Biotexnologiya
+                Botanika, Genetika, Mikrobiologiya, Biokimyo, Gidrobiologiya, Biotexnologiya va
+                Bioinformatika
               </span>
             </h1>
           </div>
