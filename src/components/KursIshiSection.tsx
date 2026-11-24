@@ -642,39 +642,39 @@ ${introMethods}`;
       </div>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-800 to-indigo-950 p-8 text-white shadow-xl md:p-10">
+      <section className="relative overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-800 to-indigo-950 p-5 text-white shadow-xl sm:p-8 md:p-10">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
         <div className="pointer-events-none absolute -bottom-12 -left-12 h-64 w-64 rounded-full bg-violet-400/20 blur-2xl" />
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md">
-            <BookOpen className="h-4 w-4 text-amber-300" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-md sm:px-3.5 sm:py-1.5">
+            <BookOpen className="h-4 w-4 shrink-0 text-amber-300" />
             <span>Talabaning mustaqil ilmiy-tadqiqot ishi</span>
           </div>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
+          <h2 className="mt-3.5 text-2xl font-extrabold tracking-tight sm:mt-4 sm:text-3xl md:text-4xl">
             Kurs Ishi Qanday Yoziladi?
           </h2>
-          <p className="mt-3 text-base text-violet-100/90 md:text-lg">
+          <p className="mt-2.5 text-sm leading-relaxed text-violet-100/90 sm:mt-3 sm:text-base md:text-lg">
             Mavzu tanlashdan tortib himoyagacha bo'lgan 6 ta asosiy bosqich, standart reja
             strukturasi, interaktiv reja generatori, kirish konstruktori va tekshiruv nazorati.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-              <Layers className="h-4 w-4 text-amber-300" />
-              <span className="text-sm font-bold">6 ta Bosqich</span>
+          <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
+            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+              <Layers className="h-4 w-4 shrink-0 text-amber-300" />
+              <span className="text-xs font-bold sm:text-sm">6 ta Bosqich</span>
             </div>
-            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-              <FileCheck className="h-4 w-4 text-cyan-300" />
-              <span className="text-sm font-bold">30-50 bet hajm</span>
+            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+              <FileCheck className="h-4 w-4 shrink-0 text-cyan-300" />
+              <span className="text-xs font-bold sm:text-sm">30-50 bet hajm</span>
             </div>
-            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-              <Sparkles className="h-4 w-4 text-emerald-300" />
-              <span className="text-sm font-bold">Reja & Kirish Generator</span>
+            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+              <Sparkles className="h-4 w-4 shrink-0 text-emerald-300" />
+              <span className="text-xs font-bold sm:text-sm">Reja & Kirish Generator</span>
             </div>
-            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-              <ListChecks className="h-4 w-4 text-purple-300" />
-              <span className="text-sm font-bold">10 bandlik Checklist</span>
+            <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+              <ListChecks className="h-4 w-4 shrink-0 text-purple-300" />
+              <span className="text-xs font-bold sm:text-sm">10 bandlik Checklist</span>
             </div>
           </div>
         </div>
@@ -684,57 +684,57 @@ ${introMethods}`;
       <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-3">
         <button
           onClick={() => setActiveTab("guide")}
-          className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-xs font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-xs font-bold transition-all sm:px-5 ${
             activeTab === "guide"
               ? "bg-primary text-primary-foreground shadow-glow"
               : "border border-border bg-card text-muted-foreground hover:bg-muted"
           }`}
         >
-          <BookOpen className="h-4 w-4" /> 6 ta Bosqichli Yo‘riqnoma
+          <BookOpen className="h-4 w-4 shrink-0" /> 6 ta Bosqichli Yo‘riqnoma
         </button>
 
         <button
           onClick={() => setActiveTab("generator")}
-          className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-xs font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-xs font-bold transition-all sm:px-5 ${
             activeTab === "generator"
               ? "bg-primary text-primary-foreground shadow-glow"
               : "border border-border bg-card text-muted-foreground hover:bg-muted"
           }`}
         >
-          <Sparkles className="h-4 w-4 text-amber-400" /> Reja Konstruktori
+          <Sparkles className="h-4 w-4 shrink-0 text-amber-400" /> Reja Konstruktori
         </button>
 
         <button
           onClick={() => setActiveTab("intro_builder")}
-          className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-xs font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-xs font-bold transition-all sm:px-5 ${
             activeTab === "intro_builder"
               ? "bg-primary text-primary-foreground shadow-glow"
               : "border border-border bg-card text-muted-foreground hover:bg-muted"
           }`}
         >
-          <PenTool className="h-4 w-4" /> Kirish Qismi Konstruktori
+          <PenTool className="h-4 w-4 shrink-0" /> Kirish Qismi Konstruktori
         </button>
 
         <button
           onClick={() => setActiveTab("formatting")}
-          className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-xs font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-xs font-bold transition-all sm:px-5 ${
             activeTab === "formatting"
               ? "bg-primary text-primary-foreground shadow-glow"
               : "border border-border bg-card text-muted-foreground hover:bg-muted"
           }`}
         >
-          <Printer className="h-4 w-4" /> Standart & Titul Varaq
+          <Printer className="h-4 w-4 shrink-0" /> Standart & Titul Varaq
         </button>
 
         <button
           onClick={() => setActiveTab("checklist")}
-          className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-xs font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-xs font-bold transition-all sm:px-5 ${
             activeTab === "checklist"
               ? "bg-primary text-primary-foreground shadow-glow"
               : "border border-border bg-card text-muted-foreground hover:bg-muted"
           }`}
         >
-          <CheckSquare className="h-4 w-4" /> Tayyorgarlik Checklisti
+          <CheckSquare className="h-4 w-4 shrink-0" /> Tayyorgarlik Checklisti
         </button>
       </div>
 
@@ -770,13 +770,13 @@ ${introMethods}`;
           </div>
 
           {/* Active Step Content Card */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-card md:p-8">
+          <div className="rounded-3xl border border-border bg-card p-4 shadow-card sm:p-6 md:p-8">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-4">
               <div>
                 <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-extrabold text-primary">
                   {guideSteps[currentStep].step}-bosqich
                 </span>
-                <h3 className="mt-2 text-2xl font-extrabold tracking-tight">
+                <h3 className="mt-2 text-xl font-extrabold tracking-tight sm:text-2xl">
                   {guideSteps[currentStep].title}
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground">

@@ -23,7 +23,7 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
   return (
     <div className="space-y-10 px-4 pb-16 md:px-8">
       {/* Full-Height Hero Section with Video Background */}
-      <section className="relative min-h-[calc(100vh-112px)] w-full overflow-hidden rounded-3xl bg-slate-950 shadow-card">
+      <section className="relative min-h-[60vh] w-full overflow-hidden rounded-3xl bg-slate-950 shadow-card sm:min-h-[calc(100vh-112px)]">
         {/* Background Autoplay Loop Muted Video */}
         <video
           ref={videoRef}
@@ -41,15 +41,15 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/65 via-black/30 to-black/75" />
 
         {/* Translucent Glass Top Bar Floating Over Hero Video */}
-        <header className="relative z-20 flex flex-wrap items-center justify-between gap-4 border-b border-white/15 bg-black/25 px-5 py-4 backdrop-blur-md md:px-8">
-          <div className="flex items-center gap-3.5">
+        <header className="relative z-20 flex flex-wrap items-center justify-between gap-3 border-b border-white/15 bg-black/25 px-4 py-3.5 backdrop-blur-md sm:gap-4 sm:px-5 sm:py-4 md:px-8">
+          <div className="flex items-center gap-3">
             <img
               src="/assets/aistudio/nsu-seal-2048_4a843caa.png"
               alt="Navoiy Davlat Universiteti logotipi"
               referrerPolicy="no-referrer"
-              className="h-12 w-12 shrink-0 rounded-full bg-white/95 object-cover p-0.5 shadow-md ring-2 ring-white/40 md:h-14 md:w-14"
+              className="h-10 w-10 shrink-0 rounded-full bg-white/95 object-cover p-0.5 shadow-md ring-2 ring-white/40 sm:h-12 sm:w-12 md:h-14 md:w-14"
             />
-            <span className="text-base font-extrabold tracking-tight text-white drop-shadow-sm md:text-xl">
+            <span className="text-sm font-extrabold tracking-tight text-white drop-shadow-sm sm:text-base md:text-xl">
               Navoiy Davlat Universiteti
             </span>
           </div>
@@ -57,7 +57,7 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
           <button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition-colors hover:bg-white/20 md:text-sm"
+            className="flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-3.5 py-2 text-xs font-bold text-white backdrop-blur-md transition-colors hover:bg-white/20 sm:px-4 md:text-sm"
           >
             <ArrowLeft className="h-4 w-4 text-cyan" />
             <span>Bosh sahifaga qaytish</span>
@@ -65,7 +65,7 @@ export function BizHaqimizdaSection({ onBack }: BizHaqimizdaSectionProps) {
         </header>
 
         {/* Centered Hero Content */}
-        <div className="relative z-10 flex min-h-[calc(100vh-204px)] flex-col items-center justify-center px-6 py-16 text-center text-white md:px-12">
+        <div className="relative z-10 flex min-h-[46vh] flex-col items-center justify-center px-5 py-12 text-center text-white sm:min-h-[calc(100vh-204px)] sm:px-6 sm:py-16 md:px-12">
           <div className="max-w-3xl space-y-5">
             <p className="text-xs font-semibold tracking-wide text-cyan/95 md:text-sm">
               Navoiy Davlat Universiteti · Biz haqimizda

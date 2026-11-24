@@ -247,13 +247,13 @@ export function BiologySection({ onBack }: BiologySectionProps) {
   return (
     <div className="space-y-6 px-4 pb-16 md:px-8">
       {/* Top Breadcrumb & Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground sm:text-sm">
           <button
             onClick={onBack}
             className="flex items-center gap-1.5 font-medium transition-colors hover:text-primary"
           >
-            <ArrowLeft className="h-4 w-4" /> Bosh sahifa
+            <ArrowLeft className="h-4 w-4 shrink-0" /> Bosh sahifa
           </button>
           <span>/</span>
           <span className="font-semibold text-foreground">Biologiya (Milliy sertifikat)</span>
@@ -284,51 +284,53 @@ export function BiologySection({ onBack }: BiologySectionProps) {
       {view === "list" && (
         <div className="space-y-8">
           {/* Hero Banner */}
-          <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-600 via-teal-700 to-indigo-900 p-8 text-white shadow-xl md:p-10">
+          <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-600 via-teal-700 to-indigo-900 p-5 text-white shadow-xl sm:p-8 md:p-10">
             <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-12 -left-12 h-64 w-64 rounded-full bg-emerald-400/20 blur-2xl" />
 
             <div className="relative z-10 max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md">
-                <Award className="h-4 w-4 text-amber-300" />
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-md sm:px-3.5 sm:py-1.5">
+                <Award className="h-4 w-4 shrink-0 text-amber-300" />
                 <span>Davlat test markazi (DTM) standarti</span>
               </div>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
+              <h2 className="mt-3.5 text-2xl font-extrabold tracking-tight sm:mt-4 sm:text-3xl md:text-4xl">
                 Biologiya — Milliy Sertifikatga Tayyorgarlik
               </h2>
-              <p className="mt-3 text-base text-emerald-50/90 md:text-lg">
+              <p className="mt-2.5 text-sm leading-relaxed text-emerald-50/90 sm:mt-3 sm:text-base md:text-lg">
                 30 ta to'liq rasmiy variant. Har bir variantda 30 ta savol va real imtihondagi kabi
                 aniq 1 soat (60 daqiqa) vaqt beriladi. Natijangizni darhol bilib oling!
               </p>
 
               {/* Stats badges */}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <BookOpen className="h-4 w-4 text-emerald-300" />
-                  <span className="text-sm font-bold">30 ta Variant</span>
+              <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+                  <BookOpen className="h-4 w-4 shrink-0 text-emerald-300" />
+                  <span className="text-xs font-bold sm:text-sm">30 ta Variant</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <Zap className="h-4 w-4 text-amber-300" />
-                  <span className="text-sm font-bold">900 ta Savol</span>
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+                  <Zap className="h-4 w-4 shrink-0 text-amber-300" />
+                  <span className="text-xs font-bold sm:text-sm">900 ta Savol</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <Clock className="h-4 w-4 text-cyan-300" />
-                  <span className="text-sm font-bold">1 soat (60 daqiqa) timer</span>
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+                  <Clock className="h-4 w-4 shrink-0 text-cyan-300" />
+                  <span className="text-xs font-bold sm:text-sm">1 soat (60 daqiqa) timer</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <BarChart2 className="h-4 w-4 text-purple-300" />
-                  <span className="text-sm font-bold">Avtomatik tahlil va sertifikat darajasi</span>
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+                  <BarChart2 className="h-4 w-4 shrink-0 text-purple-300" />
+                  <span className="text-xs font-bold sm:text-sm">
+                    Avtomatik tahlil va sertifikat darajasi
+                  </span>
                 </div>
               </div>
             </div>
           </section>
 
           {/* Filter & Search Bar */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               <button
                 onClick={() => setStatusFilter("all")}
-                className={`rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+                className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:px-4 ${
                   statusFilter === "all"
                     ? "bg-primary text-primary-foreground shadow-glow"
                     : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -338,7 +340,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
               </button>
               <button
                 onClick={() => setStatusFilter("completed")}
-                className={`rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+                className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:px-4 ${
                   statusFilter === "completed"
                     ? "bg-primary text-primary-foreground shadow-glow"
                     : "border border-border bg-card text-muted-foreground hover:bg-muted"
@@ -348,7 +350,7 @@ export function BiologySection({ onBack }: BiologySectionProps) {
               </button>
               <button
                 onClick={() => setStatusFilter("uncompleted")}
-                className={`rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+                className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:px-4 ${
                   statusFilter === "uncompleted"
                     ? "bg-primary text-primary-foreground shadow-glow"
                     : "border border-border bg-card text-muted-foreground hover:bg-muted"

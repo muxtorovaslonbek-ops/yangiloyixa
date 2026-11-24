@@ -147,7 +147,7 @@ export function KutubxonaSection({ onBack, onOpenDarslik }: KutubxonaSectionProp
       </div>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-8">
+      <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-5 text-navy-foreground shadow-card sm:p-6 md:p-8">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/25 blob" />
         <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-2.5">
@@ -178,8 +178,8 @@ export function KutubxonaSection({ onBack, onOpenDarslik }: KutubxonaSectionProp
       </section>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-col gap-3.5 rounded-2xl border border-border bg-card p-3.5 shadow-sm sm:p-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 sm:flex-wrap">
           {CATEGORIES.map((category) => {
             const count =
               category === "Barchasi"

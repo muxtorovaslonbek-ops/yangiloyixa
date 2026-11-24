@@ -644,7 +644,7 @@ Vazifalari:
       </div>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-8">
+      <section className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-5 text-navy-foreground shadow-card sm:p-6 md:p-8">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/25 blob" />
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-3">
@@ -689,7 +689,7 @@ Vazifalari:
       </section>
 
       {/* Main Tabs Navigation */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+      <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-3 sm:flex-wrap">
         {[
           { id: "tasks", label: "Topshiriqlar banki", icon: BookOpen },
           { id: "templates", label: "Tayyor namunalar (4 tur)", icon: FileText },
@@ -703,13 +703,13 @@ Vazifalari:
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center gap-2 whitespace-nowrap shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all sm:px-4 sm:py-2.5 sm:text-sm ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "bg-card text-muted-foreground border border-border hover:bg-muted hover:text-foreground"
+                  : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 shrink-0" />
               <span>{tab.label}</span>
             </button>
           );

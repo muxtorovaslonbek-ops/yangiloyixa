@@ -588,8 +588,7 @@ function Index() {
               </div>
             )}
           </div>
-          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-4">
-            <PWAInstallButton variant="header" />
+          <div className="ml-auto flex shrink-0 items-center gap-2.5 sm:gap-5">
             <button
               type="button"
               className="relative grid h-9 w-9 place-items-center rounded-xl transition-transform hover:rotate-12 sm:h-auto sm:w-auto"
@@ -1135,22 +1134,18 @@ function Index() {
                 { label: "Darsliklar", icon: BookOpen, tab: 1 },
                 { label: "Kutubxona", icon: Library, tab: 4 },
                 { label: "AI Ustoz", icon: Sparkles, tab: 7 },
-                { label: "Menyu", icon: Menu, tab: -1 },
+                { label: "Ingliz tili", icon: Languages, tab: 5 },
               ].map((item) => {
                 const Icon = item.icon;
-                const isActive = item.tab === -1 ? open : active === item.tab;
+                const isActive = active === item.tab;
                 return (
                   <button
                     key={item.label}
                     type="button"
                     onClick={() => {
-                      if (item.tab === -1) {
-                        setOpen((prev) => !prev);
-                      } else {
-                        setActive(item.tab);
-                        setOpen(false);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }
+                      setActive(item.tab);
+                      setOpen(false);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     className={`flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 text-[10px] font-bold transition-all active:scale-95 ${
                       isActive

@@ -568,18 +568,18 @@ export function EnglishSection({ onBack }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-            <Flame className="h-4 w-4" /> 5 kunlik faollik
+            <Flame className="h-4 w-4 shrink-0" /> 5 kunlik faollik
           </span>
           <span className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-            <Sparkles className="h-4 w-4" /> {learnedCount} so'z o'rganildi
+            <Sparkles className="h-4 w-4 shrink-0" /> {learnedCount} so'z o'rganildi
           </span>
         </div>
       </div>
 
       {/* Hero Banner for English */}
-      <div className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-6 text-navy-foreground shadow-card md:p-8">
+      <div className="relative overflow-hidden rounded-3xl bg-sidebar-grad p-5 text-navy-foreground shadow-card sm:p-6 md:p-8">
         <div className="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan/30 blob" />
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-3">
@@ -644,8 +644,8 @@ export function EnglishSection({ onBack }: Props) {
             </div>
 
             {/* Video-Based Dynamic Level Status & Progress */}
-            <div className="space-y-1.5 pt-2 border-t border-navy-foreground/15">
-              <div className="flex items-center justify-between text-xs font-semibold text-navy-foreground/90">
+            <div className="space-y-1.5 border-t border-navy-foreground/15 pt-2">
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs font-semibold text-navy-foreground/90">
                 <span>
                   O'zlashtirilgan video darslar:{" "}
                   <strong className="text-cyan">{completedCount} / 180 ta</strong>
@@ -702,7 +702,7 @@ export function EnglishSection({ onBack }: Props) {
       </div>
 
       {/* Main Tabs Navigation */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-2">
+      <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-2.5 sm:flex-wrap">
         {[
           { id: "videos", label: "Video darslar (180 ta)", icon: Tv },
           { id: "lessons", label: "Darslar & Grammatika", icon: BookOpen },
@@ -717,13 +717,13 @@ export function EnglishSection({ onBack }: Props) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all sm:px-4 sm:py-2.5 sm:text-sm ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 shrink-0" />
               <span>{tab.label}</span>
             </button>
           );
