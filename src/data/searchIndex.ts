@@ -6,6 +6,7 @@ import { GENETIKA_TOPICS } from "./genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "./mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "./gidrobiologiyaTopics";
 import { BIOTEXNOLOGIYA_TOPICS } from "./biotexnologiyaTopics";
+import { BIOINFORMATIKA_TOPICS } from "./bioinformatikaTopics";
 
 export interface SearchResultItem {
   id: string;
@@ -75,6 +76,14 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
     category: "Darsliklar",
     targetActiveTab: 1,
     badge: `${BIOTEXNOLOGIYA_TOPICS.length} ta mavzu`,
+  },
+  {
+    id: "course-bioinf",
+    title: "Bioinformatika fani (Amaliy qism)",
+    description: `Shennon entropiyasi, GenBank/UniProt, Needleman–Wunsch va Smith–Waterman, BLAST, ko‘p martali tekislash, filogenetika, CRISPR, PDB, gidrofoblik profillari va TALEN bo‘yicha ${BIOINFORMATIKA_TOPICS.length} ta amaliy mashg‘ulot.`,
+    category: "Darsliklar",
+    targetActiveTab: 1,
+    badge: `${BIOINFORMATIKA_TOPICS.length} ta amaliyot`,
   },
 
   // 2. Kurs ishi bo'limi
@@ -410,6 +419,24 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
+  // 10. Bioinformatika Practical Topics Matches (limit to top 8)
+  const bioinformatikaMatches: SearchResultItem[] = [];
+  for (const topic of BIOINFORMATIKA_TOPICS) {
+    const combined =
+      `bioinformatika amaliy mashgulot darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+    if (tokens.every((token) => combined.includes(token))) {
+      bioinformatikaMatches.push({
+        id: topic.id,
+        title: `Bioinformatika ${topic.topicLabel}: ${topic.title}`,
+        description: topic.syllabusPoints[0] ?? topic.studyNotes,
+        category: "Darsliklar",
+        targetActiveTab: 1,
+        badge: `${topic.topicLabel} · PDF`,
+      });
+      if (bioinformatikaMatches.length >= 8) break;
+    }
+  }
+
   // Combine and deduplicate
   const results = [
     ...directoryMatches,
@@ -419,6 +446,7 @@ export function searchAppContent(query: string): SearchResultItem[] {
     ...biokimyoMatches,
     ...gidrobiologiyaMatches,
     ...biotexnologiyaMatches,
+    ...bioinformatikaMatches,
     ...videoMatches,
     ...biologyMatches,
   ];

@@ -49,6 +49,7 @@ import { MikrobiologiyaSection } from "@/components/MikrobiologiyaSection";
 import { BiokimyoSection } from "@/components/BiokimyoSection";
 import { GidrobiologiyaSection } from "@/components/GidrobiologiyaSection";
 import { BiotexnologiyaSection } from "@/components/BiotexnologiyaSection";
+import { BioinformatikaSection } from "@/components/BioinformatikaSection";
 import { AiTeacherSection } from "@/components/AiTeacherSection";
 import { BizHaqimizdaSection } from "@/components/BizHaqimizdaSection";
 import { KutubxonaSection } from "@/components/KutubxonaSection";
@@ -205,6 +206,7 @@ function Index() {
   const [biokimyoFullscreen, setBiokimyoFullscreen] = useState(false);
   const [gidrobiologiyaFullscreen, setGidrobiologiyaFullscreen] = useState(false);
   const [biotexnologiyaFullscreen, setBiotexnologiyaFullscreen] = useState(false);
+  const [bioinformatikaFullscreen, setBioinformatikaFullscreen] = useState(false);
   const [selectedDarslikSubject, setSelectedDarslikSubject] = useState<SubjectKey>("botanika");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -233,6 +235,7 @@ function Index() {
     biokimyoFullscreen,
     gidrobiologiyaFullscreen,
     biotexnologiyaFullscreen,
+    bioinformatikaFullscreen,
   ]);
 
   useEffect(() => {
@@ -302,6 +305,9 @@ function Index() {
     } else if (item.id === "course-biotex" || item.id.startsWith("biotex-")) {
       setActive(1);
       setBiotexnologiyaFullscreen(true);
+    } else if (item.id === "course-bioinf" || item.id.startsWith("bioinf-")) {
+      setActive(1);
+      setBioinformatikaFullscreen(true);
     } else {
       setActive(item.targetActiveTab);
     }
@@ -317,6 +323,7 @@ function Index() {
     setBiokimyoFullscreen(false);
     setGidrobiologiyaFullscreen(false);
     setBiotexnologiyaFullscreen(false);
+    setBioinformatikaFullscreen(false);
     setActive(7);
     setIsSearchOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -629,6 +636,7 @@ function Index() {
             onOpenBiokimyo={() => setBiokimyoFullscreen(true)}
             onOpenGidrobiologiya={() => setGidrobiologiyaFullscreen(true)}
             onOpenBiotexnologiya={() => setBiotexnologiyaFullscreen(true)}
+            onOpenBioinformatika={() => setBioinformatikaFullscreen(true)}
             onAskAi={handleAskAiTeacher}
           />
         ) : active === 2 ? (
@@ -1119,7 +1127,8 @@ function Index() {
         genetikaFullscreen ||
         mikrobiologiyaFullscreen ||
         gidrobiologiyaFullscreen ||
-        biotexnologiyaFullscreen
+        biotexnologiyaFullscreen ||
+        bioinformatikaFullscreen
       ) && (
         <>
           <PWAInstallBanner />
@@ -1218,6 +1227,16 @@ function Index() {
           onBack={() => setBiotexnologiyaFullscreen(false)}
           onAskAi={(prompt) => {
             setBiotexnologiyaFullscreen(false);
+            handleAskAiTeacher(prompt);
+          }}
+        />
+      )}
+
+      {bioinformatikaFullscreen && (
+        <BioinformatikaSection
+          onBack={() => setBioinformatikaFullscreen(false)}
+          onAskAi={(prompt) => {
+            setBioinformatikaFullscreen(false);
             handleAskAiTeacher(prompt);
           }}
         />

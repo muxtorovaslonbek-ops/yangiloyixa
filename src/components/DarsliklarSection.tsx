@@ -27,6 +27,7 @@ import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
+import { BIOINFORMATIKA_PRACTICAL_TOPICS } from "@/data/bioinformatikaTopics";
 
 export type SubjectKey =
   | "botanika"
@@ -45,6 +46,7 @@ interface DarsliklarSectionProps {
   onOpenBiokimyo: () => void;
   onOpenGidrobiologiya: () => void;
   onOpenBiotexnologiya: () => void;
+  onOpenBioinformatika: () => void;
   onAskAi?: (prompt: string) => void;
   initialSubject?: SubjectKey;
 }
@@ -150,17 +152,16 @@ const SUBJECTS = [
     id: "bioinformatika" as SubjectKey,
     title: "Bioinformatika",
     subtitle: "Biologik ma’lumotlar tahlili, genomika va hisoblash biologiyasi",
-    description:
-      "DNK va oqsil ketma-ketliklarini tahlil qilish, BLAST va ketma-ketliklarni tekislash (alignment), filogenetik daraxtlar, genom annotatsiyasi, oqsillar 3D tuzilishini modellashtirish hamda biologik ma’lumotlar bazalari bo‘yicha ma’ruzalar to‘plami.",
-    topicsCount: 0,
-    status: "Tayyorlanmoqda",
+    description: `Bioinformatika fanining amaliy qismi: axborot nazariyasi, GenBank/UniProt, Needleman–Wunsch va Smith–Waterman, BLAST, ko‘p martali tekislash, filogenetika, CRISPR, PDB, gidrofoblik profillari va TALEN bo‘yicha barcha ${BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta amaliy mashg‘ulot (1–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulot) PDF qo‘llanmalari.`,
+    topicsCount: BIOINFORMATIKA_PRACTICAL_TOPICS.length,
+    status: "Amaliy qism ishga tushirildi",
     img: bioinformatikaImg,
     icon: Binary,
-    ready: false,
+    ready: true,
     topicsPreview: [
-      "Biologik ma’lumotlar bazalari (NCBI, GenBank, UniProt, PDB) va FASTA formati",
-      "Ketma-ketliklarni tekislash (BLAST, Clustal) va filogenetik tahlil usullari",
-      "Genomika, transkriptomika va oqsillar 3D tuzilishini kompyuter modellashtirish",
+      "1–3-amaliy mashg‘ulotlar: Axborot entropiyasi, GenBank/UniProt va juft tekislash (PDF)",
+      "4–6-amaliy mashg‘ulotlar: BLAST tahlili, ko‘p martali tekislash va filogenetik daraxtlar (PDF)",
+      `7–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulotlar: CRISPR, PDB 3D struktura, gidrofoblik profillari va TALEN (PDF)`,
     ],
   },
 ];
@@ -173,6 +174,7 @@ export function DarsliklarSection({
   onOpenBiokimyo,
   onOpenGidrobiologiya,
   onOpenBiotexnologiya,
+  onOpenBioinformatika,
   onAskAi,
   initialSubject = "botanika",
 }: DarsliklarSectionProps) {
@@ -245,6 +247,8 @@ export function DarsliklarSection({
                   onOpenGidrobiologiya();
                 } else if (subj.id === "biotexnologiya") {
                   onOpenBiotexnologiya();
+                } else if (subj.id === "bioinformatika") {
+                  onOpenBioinformatika();
                 }
               }}
               className={`group flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border bg-card shadow-card transition-all duration-300 active:scale-[0.99] sm:rounded-3xl sm:hover:-translate-y-1 sm:hover:shadow-glow ${
@@ -328,7 +332,8 @@ export function DarsliklarSection({
                 subj.id === "mikrobiologiya" ||
                 subj.id === "biokimyo" ||
                 subj.id === "gidrobiologiya" ||
-                subj.id === "biotexnologiya" ? (
+                subj.id === "biotexnologiya" ||
+                subj.id === "bioinformatika" ? (
                   <button
                     type="button"
                     onClick={(e) => {
@@ -343,14 +348,18 @@ export function DarsliklarSection({
                         onOpenBiokimyo();
                       } else if (subj.id === "gidrobiologiya") {
                         onOpenGidrobiologiya();
-                      } else {
+                      } else if (subj.id === "biotexnologiya") {
                         onOpenBiotexnologiya();
+                      } else {
+                        onOpenBioinformatika();
                       }
                     }}
                     className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all active:scale-[0.98] hover:bg-primary/90"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
-                    <span>Darsni boshlash</span>
+                    <span>
+                      {subj.id === "bioinformatika" ? "Amaliy qismni ochish" : "Darsni boshlash"}
+                    </span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 ) : (
