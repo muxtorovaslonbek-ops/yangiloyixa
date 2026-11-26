@@ -225,6 +225,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/01-mavzu_Mikrobiologiya_va_virusologiya_faniga_kirish_27ed6047.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "1-mavzu: Mikrobiologiya va virusologiya faniga kirish (Taqdimot)",
+        url: "/assets/aistudio/01-mavzu_Mikrobiologiya_va_virusologiya_faniga_kiri_d6f75289.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -384,6 +389,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "2-mavzu: Bakteriyalar tasnifi, morfologiyasi va tuzilishi (Ma’ruza matni)",
         url: "/assets/aistudio/02-mavzu_Bakteriyalar_tasnifi_morfologiyasi_va_tuzili_6cb44cdd.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "2-mavzu: Bakteriyalar tasnifi, morfologiyasi va tuzilishi (Taqdimot)",
+        url: "/assets/aistudio/02-mavzu_Bakteriyalar_tasnifi_morfologiyasi_va_tuzi_d2304b04.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -560,6 +570,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/03-mavzu_Mikroorganizmlar_ekologiyasi_muhit_omillari__a9c27b4b.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "3-mavzu: Mikroorganizmlar ekologiyasi, muhit omillari va sterillash (Taqdimot)",
+        url: "/assets/aistudio/03-mavzu_Mikroorganizmlar_ekologiyasi_muhit_omillar_adc9be08.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -735,6 +750,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "4-mavzu: Oziqa muhitlar va mikrobiologik tekshirish usullari (Ma’ruza matni)",
         url: "/assets/aistudio/04-mavzu_Oziqa_muhitlar_va_mikrobiologik_tekshirish_u_2aa017b5.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "4-mavzu: Oziqa muhitlar va mikrobiologik tekshirish usullari (Taqdimot)",
+        url: "/assets/aistudio/04-mavzu_Oziqa_muhitlar_va_mikrobiologik_tekshirish_3d5ff6f6.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -913,6 +933,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/05-mavzu_Mikroorganizmlar_ishtirokidagi_bijg_ish_jara_436ffb95.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "5-mavzu: Mikroorganizmlar ishtirokidagi bijg‘ish jarayonlari (Taqdimot)",
+        url: "/assets/aistudio/05-mavzu_Mikroorganizmlar_ishtirokidagi_bijg_ish_ja_a301f412.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1063,6 +1088,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "6-mavzu: Bakteriofaglar xossalari va o‘rganish usullari (Ma’ruza matni)",
         url: "/assets/aistudio/06-mavzu_Bakteriofaglar_xossalari_va_o_rganish_usulla_f8476f9c.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "6-mavzu: Bakteriofaglar xossalari va o‘rganish usullari (Taqdimot)",
+        url: "/assets/aistudio/06-mavzu_Bakteriofaglar_xossalari_va_o_rganish_usul_5db4c946.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1226,6 +1256,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "7-mavzu: Antibiotiklar va infeksion jarayonning umumiy tavsifi (Ma’ruza matni)",
         url: "/assets/aistudio/07-mavzu_Antibiotiklar_va_infeksion_jarayonning_umumi_93229ecb.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "7-mavzu: Antibiotiklar va infeksion jarayonning umumiy tavsifi (Taqdimot)",
+        url: "/assets/aistudio/07-mavzu_Antibiotiklar_va_infeksion_jarayonning_umu_1e0e029e.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1398,6 +1433,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/08-mavzu_Grammusbat_kokklar_stafilokokk_streptokokk_p_6fef6617.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "8-mavzu: Gram-musbat kokklar: stafilokokk, streptokokk, pnevmokokk (Taqdimot)",
+        url: "/assets/aistudio/08-mavzu_Grammusbat_kokklar_stafilokokk_streptokokk_6e99e2fa.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1562,6 +1602,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "9-mavzu: Enterokokklar va gram-manfiy kokklar (Ma’ruza matni)",
         url: "/assets/aistudio/09-mavzu_Enterokokklar_va_grammanfiy_kokklar_6df54d07.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "9-mavzu: Enterokokklar va gram-manfiy kokklar (Taqdimot)",
+        url: "/assets/aistudio/09-mavzu_Enterokokklar_va_grammanfiy_kokklar_abff7758.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1737,6 +1782,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/10-mavzu_Esherixiylar_va_salmonellalar_qorin_tifi_va__6bf5bbb6.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "10-mavzu: Esherixiylar, salmonellalar, qorin tifi va paratiflar (Taqdimot)",
+        url: "/assets/aistudio/10-mavzu_Esherixiylar_va_salmonellalar_qorin_tifi_v_2d861a96.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1893,6 +1943,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "11-mavzu: Shigellalar, klebsiyellalar, proteylar va iyersiniyalar (Ma’ruza matni)",
         url: "/assets/aistudio/11-mavzu_Shigellalar_klebsiyellalar_proteylar_va_iyer_40818e64.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "11-mavzu: Shigellalar, klebsiyellalar, proteylar va iyersiniyalar (Taqdimot)",
+        url: "/assets/aistudio/11-mavzu_Shigellalar_klebsiyellalar_proteylar_va_iy_1f720164.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -2061,6 +2116,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "12-mavzu: Ko‘k-yashil yiring tayoqchasi, vabo, toun va brutsellyoz (Ma’ruza matni)",
         url: "/assets/aistudio/12-mavzu_Ko_kyashil_yiring_tayoqchasi_vabo_toun_va_br_aa6f1b11.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "12-mavzu: Ko‘k-yashil yiring tayoqchasi, vabo, toun va brutsellyoz (Taqdimot)",
+        url: "/assets/aistudio/12-mavzu_Ko_kyashil_yiring_tayoqchasi_vabo_toun_va__b5dec10e.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -2236,6 +2296,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "13-mavzu: Sil qo‘zg‘atuvchisi, qoqshol va gazli gangrena (Ma’ruza matni)",
         url: "/assets/aistudio/13-mavzu_Sil_qo_zg_atuvchisi_patogen_anaeroblar_qoqsh_46977cbc.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "13-mavzu: Sil qo‘zg‘atuvchisi, qoqshol va gazli gangrena (Taqdimot)",
+        url: "/assets/aistudio/13-mavzu_Sil_qo_zg_atuvchisi_patogen_anaeroblar_qoq_093a086c.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -2418,6 +2483,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         url: "/assets/aistudio/14-mavzu_Botulizm_zaxm_qaytalama_tif_va_toshmali_tif_394297cf.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "14-mavzu: Botulizm, zaxm, qaytalama tif va leptospiroz (Taqdimot)",
+        url: "/assets/aistudio/14-mavzu_Botulizm_zaxm_qaytalama_tif_va_toshmali_ti_2ed3f073.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -2580,6 +2650,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "15-mavzu: Rikketsiyalar va rikketsiozlar (Ma’ruza matni)",
         url: "/assets/aistudio/15-mavzu_Rikketsiyalar_va_rikketsiozlar_6bcbb35b.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "15-mavzu: Rikketsiyalar va rikketsiozlar (Taqdimot)",
+        url: "/assets/aistudio/15-mavzu_Rikketsiyalar_va_rikketsiozlar_907c3430.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -2749,6 +2824,11 @@ export const MIKROBIOLOGIYA_TOPICS: MikrobiologiyaTopic[] = [
         title: "16-mavzu: Bartonellyoz, xlamidiyalar va mikoplazmalar (Ma’ruza matni)",
         url: "/assets/aistudio/16-mavzu_Bartonellyoz_xlamidiyalar_va_mikoplazmalar_6578aa20.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "16-mavzu: Bartonellyoz, xlamidiyalar va mikoplazmalar (Taqdimot)",
+        url: "/assets/aistudio/16-mavzu_Bartonellyoz_xlamidiyalar_va_mikoplazmalar_0af0b0eb.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
