@@ -231,6 +231,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/01-mavzu_Gidrobiologiya_faniga_kirish__1__fcf250ea.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "1-mavzu: Gidrobiologiya faniga kirish (Taqdimot)",
+        url: "/assets/aistudio/01-mavzu_Gidrobiologiya_faniga_kirish_cc3eedf4.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -612,6 +617,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/03-mavzu_Gidrobiontlarning_ekologik_guruhlari__1__39aa95fa.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "3-mavzu: Gidrobiontlarning ekologik guruhlari (Taqdimot)",
+        url: "/assets/aistudio/03-mavzu_Gidrobiontlarning_ekologik_guruhlari_0aacce33.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -801,6 +811,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/04-mavzu_Suv_o_simliklari_biologiyasi_va_makrofitlar__1__83947436.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "4-mavzu: Suv o‘simliklari biologiyasi va makrofitlar (Taqdimot)",
+        url: "/assets/aistudio/04-mavzu_Suv_o_simliklari_biologiyasi_va_makrofitla_2357cf46.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -988,6 +1003,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         title: "5-mavzu: Fitoplankton va birlamchi mahsuldorlik (Ma’ruza matni)",
         url: "/assets/aistudio/05-mavzu_Fitoplankton_va_birlamchi_mahsuldorlik__1__0e84dfe5.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "5-mavzu: Fitoplankton va birlamchi mahsuldorlik (Taqdimot)",
+        url: "/assets/aistudio/05-mavzu_Fitoplankton_va_birlamchi_mahsuldorlik_aebabc83.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1179,6 +1199,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/06-mavzu_Suv_hayvonlari_va_baliqlar_ekologiyasi__1__2fbd7097.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "6-mavzu: Suv hayvonlari va baliqlar ekologiyasi (Taqdimot)",
+        url: "/assets/aistudio/06-mavzu_Suv_hayvonlari_va_baliqlar_ekologiyasi_39fde505.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1357,6 +1382,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/07-mavzu_Oziq_zanjirlari_va_moddalar_aylanishi__1__96593ef7.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "7-mavzu: Oziq zanjirlari va moddalar aylanishi (Taqdimot)",
+        url: "/assets/aistudio/07-mavzu_Oziq_zanjirlari_va_moddalar_aylanishi_e3fd4e2b.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1508,6 +1538,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         title: "8-mavzu: Suv havzalarining biologik mahsuldorligi (Ma’ruza matni)",
         url: "/assets/aistudio/08-mavzu_Suv_havzalarining_biologik_mahsuldorligi__1__ad866884.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "8-mavzu: Suv havzalarining biologik mahsuldorligi (Taqdimot)",
+        url: "/assets/aistudio/08-mavzu_Suv_havzalarining_biologik_mahsuldorligi_f24d6373.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1695,6 +1730,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/09-mavzu_Evtrofikatsiya_ifloslanish_va_suvni_muhofaza__1__d83b3c2d.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "9-mavzu: Evtrofikatsiya, ifloslanish va suvni muhofaza qilish (Taqdimot)",
+        url: "/assets/aistudio/09-mavzu_Evtrofikatsiya_ifloslanish_va_suvni_muhofa_bd815c8d.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1867,6 +1907,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         title: "10-mavzu: Biologik monitoring va suv bioresurslari (Ma’ruza matni)",
         url: "/assets/aistudio/10-mavzu_Biologik_monitoring_va_bioresurslar__1__96dec29f.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "10-mavzu: Biologik monitoring va suv bioresurslari (Taqdimot)",
+        url: "/assets/aistudio/10-mavzu_Biologik_monitoring_va_bioresurslar_2ae0c1a1.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -2044,6 +2089,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         title: "11-mavzu: Gidrobiologiyaning zamonaviy muammolari va istiqbollari (Ma’ruza matni)",
         url: "/assets/aistudio/11-mavzu_Zamonaviy_muammolar_va_istiqbollar__1__850a9234.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "11-mavzu: Gidrobiologiyaning zamonaviy muammolari va istiqbollari (Taqdimot)",
+        url: "/assets/aistudio/11-mavzu_Zamonaviy_muammolar_va_istiqbollar_faa85734.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
