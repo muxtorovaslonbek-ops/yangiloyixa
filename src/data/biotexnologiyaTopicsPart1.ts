@@ -145,6 +145,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/01-mavzu_Biotexnologiya_faniga_kirish_c992a9e2.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "1-mavzu: Biotexnologiya faniga kirish (Taqdimot)",
+        url: "/assets/aistudio/01-mavzu_Biotexnologiya_faniga_kirish_9e5b4125.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -304,6 +309,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/02-mavzu_Hujayralar_biotexnologik_ob_ekt_sifatida_59e3867f.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "2-mavzu: Prokariot va eukariot hujayralar biotexnologik ob’ekt sifatida (Taqdimot)",
+        url: "/assets/aistudio/02-mavzu_Hujayralar_biotexnologik_ob_ekt_sifatida_a1e709df.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -437,6 +447,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         title: "3-mavzu: Markaziy dogma va genetik jarayonlar (Ma’ruza matni)",
         url: "/assets/aistudio/03-mavzu_Markaziy_dogma_va_genetik_jarayonlar_6e868de3.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "3-mavzu: Markaziy dogma va genetik jarayonlar (Taqdimot)",
+        url: "/assets/aistudio/03-mavzu_Markaziy_dogma_va_genetik_jarayonlar_bd0106b9.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -597,6 +612,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/04-mavzu_Gen_muhandisligi_fermentlari_4ba9cb41.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "4-mavzu: Gen muhandisligi fermentlari (Taqdimot)",
+        url: "/assets/aistudio/04-mavzu_Gen_muhandisligi_fermentlari_b11ed906.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -744,6 +764,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         title: "5-mavzu: Klonlash uchun DNK manbalari va vektor molekulalar (Ma’ruza matni)",
         url: "/assets/aistudio/05-mavzu_DNK_manbalari_va_vektorlar_7c050c42.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "5-mavzu: Klonlash uchun DNK manbalari va vektor molekulalar (Taqdimot)",
+        url: "/assets/aistudio/05-mavzu_DNK_manbalari_va_vektorlar_f746003f.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -903,6 +928,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/06-mavzu_Rekombinant_DNK_va_gen_konstruksiyalari_1260d46f.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "6-mavzu: Rekombinant DNK va gen konstruksiyalari (Taqdimot)",
+        url: "/assets/aistudio/06-mavzu_Rekombinant_DNK_va_gen_konstruksiyalari_f57430e9.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1058,6 +1088,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         title: "7-mavzu: Rekombinant hujayralarni seleksiya qilish va ko‘paytirish (Ma’ruza matni)",
         url: "/assets/aistudio/07-mavzu_Rekombinant_hujayralarni_seleksiya_qilish_e72b68ee.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "7-mavzu: Rekombinant hujayralarni seleksiya qilish va ko‘paytirish (Taqdimot)",
+        url: "/assets/aistudio/07-mavzu_Rekombinant_hujayralarni_seleksiya_qilish_adfd580e.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
