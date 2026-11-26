@@ -617,6 +617,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/15-mavzu_Enzimatik_muhandislik_va_fermentlar_90f55ca0.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "15-mavzu: Enzimatik muhandislik va fermentlar biotexnologiyasi (Taqdimot)",
+        url: "/assets/aistudio/15-mavzu_Enzimatik_muhandislik_va_fermentlar_533f9a4c.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -771,6 +776,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         title: "16-mavzu: Ferment va hujayralarni immobilizatsiya qilish (Ma’ruza matni)",
         url: "/assets/aistudio/16-mavzu_Immobilizatsiya_texnologiyasi_17eaaac3.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "16-mavzu: Ferment va hujayralarni immobilizatsiya qilish (Taqdimot)",
+        url: "/assets/aistudio/16-mavzu_Immobilizatsiya_texnologiyasi_d6fe624e.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -935,6 +945,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/17-mavzu_Biosensorlar_biochiplar_va_bioreaktorlar_30530db0.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "17-mavzu: Biosensorlar, biochiplar va bioreaktorlar (Taqdimot)",
+        url: "/assets/aistudio/17-mavzu_Biosensorlar_biochiplar_va_bioreaktorlar_c5ef57da.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1090,6 +1105,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         title: "18-mavzu: O‘simlik hujayra va to‘qima muhandisligi (Ma’ruza matni)",
         url: "/assets/aistudio/18-mavzu_O_simlik_hujayra_va_to_qima_muhandisligi_bb662b7d.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "18-mavzu: O‘simlik hujayra va to‘qima muhandisligi (Taqdimot)",
+        url: "/assets/aistudio/18-mavzu_O_simlik_hujayra_va_to_qima_muhandisligi_f8225baf.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1247,6 +1267,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/19-mavzu_Agrobiotexnologiya_edf94961.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "19-mavzu: Agrobiotexnologiya va qishloq xo‘jaligi biotexnologiyasi (Taqdimot)",
+        url: "/assets/aistudio/19-mavzu_Agrobiotexnologiya_a4efa7c6.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1399,6 +1424,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/20-mavzu_Tibbiyot_biotexnologiyasi_6b513f37.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "20-mavzu: Tibbiyot biotexnologiyasi, gen diagnostikasi va genoterapiya (Taqdimot)",
+        url: "/assets/aistudio/20-mavzu_Tibbiyot_biotexnologiyasi_4c2e79de.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1546,6 +1576,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
           "21-mavzu: Ekologik biotexnologiya, biometanogenez va bioremediatsiya (Ma’ruza matni)",
         url: "/assets/aistudio/21-mavzu_Ekologik_biotexnologiya_eb4912ae.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "21-mavzu: Ekologik biotexnologiya, biometanogenez va bioremediatsiya (Taqdimot)",
+        url: "/assets/aistudio/21-mavzu_Ekologik_biotexnologiya_0323040f.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -1702,6 +1737,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         title: "22-mavzu: Biotexnologiya mahsulotlari, blok-sxemalari va kelajagi (Ma’ruza matni)",
         url: "/assets/aistudio/22-mavzu_Biotexnologiya_mahsulotlari_va_kelajagi_e34e6c15.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "22-mavzu: Biotexnologiya mahsulotlari, blok-sxemalari va kelajagi (Taqdimot)",
+        url: "/assets/aistudio/22-mavzu_Biotexnologiya_mahsulotlari_va_kelajagi_b6419175.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
