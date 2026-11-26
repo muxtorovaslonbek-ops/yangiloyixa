@@ -427,6 +427,11 @@ export const GIDROBIOLOGIYA_TOPICS: GidrobiologiyaTopic[] = [
         url: "/assets/aistudio/02-mavzu_Suv_muhitining_xususiyatlari_va_suv_ekotizim__1__8ebffa93.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "2-mavzu: Suv muhitining xususiyatlari va suv ekotizimlari (Taqdimot)",
+        url: "/assets/aistudio/02-mavzu_Suv_muhitining_xususiyatlari_va_suv_ekotiz__1___1__de144bd0.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
