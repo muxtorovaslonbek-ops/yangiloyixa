@@ -1238,6 +1238,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/08-mavzu_Transgen_ekinlar_va_gen_ekspressiyasi_2a8899d0.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "8-mavzu: Transgen ekinlar va gen ekspressiyasi (Taqdimot)",
+        url: "/assets/aistudio/08-mavzu_Transgen_ekinlar_va_gen_ekspressiyasi_753d81f5.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1391,6 +1396,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/09-mavzu_Hayvonlar_genetik_muhandisligi_f2d161b0.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "9-mavzu: Hayvonlar genetik muhandisligi va transgen hayvonlar (Taqdimot)",
+        url: "/assets/aistudio/09-mavzu_Hayvonlar_genetik_muhandisligi_717ff434.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1543,6 +1553,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/10-mavzu_Zamonaviy_gen_muhandisligi_va_genomika_93f5740c.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "10-mavzu: Zamonaviy gen muhandisligi va genomika yutuqlari (Taqdimot)",
+        url: "/assets/aistudio/10-mavzu_Zamonaviy_gen_muhandisligi_va_genomika_aabc0374.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -1682,6 +1697,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_1: BiotexnologiyaTopic[] = [
         title: "11-mavzu: Mikroorganizmlar biotexnologiyasi va kultivatsiya (Ma’ruza matni)",
         url: "/assets/aistudio/11-mavzu_Mikroorganizmlar_biotexnologiyasi_7c3fcfc3.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "11-mavzu: Mikroorganizmlar biotexnologiyasi va kultivatsiya (Taqdimot)",
+        url: "/assets/aistudio/11-mavzu_Mikroorganizmlar_biotexnologiyasi_de70bc54.pdf",
+        kind: "Taqdimot",
       },
     ],
   },

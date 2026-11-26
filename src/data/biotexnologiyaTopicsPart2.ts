@@ -148,6 +148,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         url: "/assets/aistudio/12-mavzu_Antibiotik_va_biologik_faol_moddalar_d4e755c0.pdf",
         kind: "Ma’ruza matni",
       },
+      {
+        title: "12-mavzu: Antibiotik va biologik faol moddalar biotexnologiyasi (Taqdimot)",
+        url: "/assets/aistudio/12-mavzu_Antibiotik_va_biologik_faol_moddalar_31e35fa2.pdf",
+        kind: "Taqdimot",
+      },
     ],
   },
   {
@@ -295,6 +300,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         title: "13-mavzu: Organik kislotalar olish biotexnologiyasi (Ma’ruza matni)",
         url: "/assets/aistudio/13-mavzu_Organik_kislotalar_biotexnologiyasi_00422103.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "13-mavzu: Organik kislotalar olish biotexnologiyasi (Taqdimot)",
+        url: "/assets/aistudio/13-mavzu_Organik_kislotalar_biotexnologiyasi_c945eb22.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
@@ -445,6 +455,11 @@ export const BIOTEXNOLOGIYA_TOPICS_PART_2: BiotexnologiyaTopic[] = [
         title: "14-mavzu: Tabiatda moddalar aylanishida mikroorganizmlarning roli (Ma’ruza matni)",
         url: "/assets/aistudio/14-mavzu_Moddalar_aylanishida_mikroorganizmlar_5df8c18d.pdf",
         kind: "Ma’ruza matni",
+      },
+      {
+        title: "14-mavzu: Tabiatda moddalar aylanishida mikroorganizmlarning roli (Taqdimot)",
+        url: "/assets/aistudio/14-mavzu_Moddalar_aylanishida_mikroorganizmlar_1a6ca0de.pdf",
+        kind: "Taqdimot",
       },
     ],
   },
