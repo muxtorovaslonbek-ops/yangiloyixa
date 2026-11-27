@@ -15,6 +15,7 @@ import {
   ZoomOut,
 } from "lucide-react";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 interface PdfSlideViewerProps {
   url: string;
@@ -207,7 +208,7 @@ export function PdfSlideViewer({ url, title, compactHeight = false }: PdfSlideVi
 
       try {
         const pdfjsLib = await import("pdfjs-dist");
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
         loadingTask = pdfjsLib.getDocument({ url });
 

@@ -79,11 +79,11 @@ export const SEARCH_DIRECTORY: SearchResultItem[] = [
   },
   {
     id: "course-bioinf",
-    title: "Bioinformatika fani (Amaliy qism)",
-    description: `Shennon entropiyasi, GenBank/UniProt, Needleman–Wunsch va Smith–Waterman, BLAST, ko‘p martali tekislash, filogenetika, CRISPR, PDB, gidrofoblik profillari va TALEN bo‘yicha ${BIOINFORMATIKA_TOPICS.length} ta amaliy mashg‘ulot.`,
+    title: "Bioinformatika fani (Amaliy va laboratoriya)",
+    description: `Ma’lumotlar bazalari, PubMed, BLAST, ORFfinder, filogenetika, 3D vizuallashtirish (RasMol/PyMOL), SWISS-MODEL, AutoDock doking, Shennon entropiyasi, CRISPR va TALEN bo‘yicha 10 ta laboratoriya ishi va 10 ta amaliy mashg‘ulot.`,
     category: "Darsliklar",
     targetActiveTab: 1,
-    badge: `${BIOINFORMATIKA_TOPICS.length} ta amaliyot`,
+    badge: `${BIOINFORMATIKA_TOPICS.length} ta mashg‘ulot`,
   },
 
   // 2. Kurs ishi bo'limi
@@ -419,11 +419,11 @@ export function searchAppContent(query: string): SearchResultItem[] {
     }
   }
 
-  // 10. Bioinformatika Practical Topics Matches (limit to top 8)
+  // 10. Bioinformatika Laboratory & Practical Topics Matches (limit to top 8)
   const bioinformatikaMatches: SearchResultItem[] = [];
   for (const topic of BIOINFORMATIKA_TOPICS) {
     const combined =
-      `bioinformatika amaliy mashgulot darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
+      `bioinformatika laboratoriya ishi amaliy mashgulot darslik ${topic.code} ${topic.topicLabel} ${topic.module} ${topic.title} ${topic.syllabusPoints.join(" ")} ${topic.keyTerms.join(" ")}`.toLowerCase();
     if (tokens.every((token) => combined.includes(token))) {
       bioinformatikaMatches.push({
         id: topic.id,

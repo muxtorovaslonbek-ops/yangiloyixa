@@ -1,3 +1,5 @@
+import { BIOINFORMATIKA_LAB_TOPICS } from "./bioinformatikaLabTopics";
+
 export interface BioinformatikaTopicSection {
   heading: string;
   content: string;
@@ -36,7 +38,9 @@ export interface BioinformatikaTopic {
   topicLabel: string;
   module:
     | "I qism: Axborot nazariyasi, bazalar va ketma-ketliklarni tekislash"
-    | "II qism: Filogenetika, genom tahrirlash va oqsil strukturalari";
+    | "II qism: Filogenetika, genom tahrirlash va oqsil strukturalari"
+    | "I qism: Ma’lumotlar bazalari, BLAST, ORF va filogenetika"
+    | "II qism: 3D vizuallashtirish, modellashtirish va molekulyar doking";
   title: string;
   syllabusPoints: string[];
   studyNotes: string;
@@ -1513,4 +1517,9 @@ export const BIOINFORMATIKA_PRACTICAL_TOPICS: BioinformatikaTopic[] = [
   },
 ];
 
-export const BIOINFORMATIKA_TOPICS: BioinformatikaTopic[] = [...BIOINFORMATIKA_PRACTICAL_TOPICS];
+export { BIOINFORMATIKA_LAB_TOPICS };
+
+export const BIOINFORMATIKA_TOPICS: BioinformatikaTopic[] = [
+  ...BIOINFORMATIKA_LAB_TOPICS,
+  ...BIOINFORMATIKA_PRACTICAL_TOPICS,
+];

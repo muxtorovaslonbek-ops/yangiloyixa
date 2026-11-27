@@ -23,7 +23,9 @@ import {
 } from "lucide-react";
 import bioinformatikaImg from "@/assets/images/bioinformatika_card_1795550419194.jpg";
 import {
+  BIOINFORMATIKA_LAB_TOPICS,
   BIOINFORMATIKA_PRACTICAL_TOPICS,
+  BIOINFORMATIKA_TOPICS,
   type BioinformatikaCategory,
   type BioinformatikaPdfDocument,
   type BioinformatikaTopic,
@@ -52,12 +54,7 @@ interface BioinformatikaSectionProps {
 
 export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSectionProps) {
   const [sectionTab, setSectionTab] = useState<BioinformatikaCategory>("amaliy");
-  const [moduleFilter, setModuleFilter] = useState<
-    | "all"
-    | "I qism: Axborot nazariyasi, bazalar va ketma-ketliklarni tekislash"
-    | "II qism: Filogenetika, genom tahrirlash va oqsil strukturalari"
-    | "done"
-  >("all");
+  const [moduleFilter, setModuleFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [readerTab, setReaderTab] = useState<"all" | "pdf" | "lecture">("all");
@@ -130,8 +127,14 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
 
   const currentSectionTopics = useMemo(() => {
     if (sectionTab === "amaliy") return BIOINFORMATIKA_PRACTICAL_TOPICS;
+    if (sectionTab === "laboratoriya") return BIOINFORMATIKA_LAB_TOPICS;
     return [];
   }, [sectionTab]);
+
+  const currentSectionCompletedCount = useMemo(
+    () => currentSectionTopics.filter((t) => completedIds.has(t.id)).length,
+    [currentSectionTopics, completedIds],
+  );
 
   const filteredTopics = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -152,11 +155,18 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
 
   const activeTopic: BioinformatikaTopic | null = useMemo(() => {
     if (!selectedTopicId) return null;
-    return BIOINFORMATIKA_PRACTICAL_TOPICS.find((t) => t.id === selectedTopicId) ?? null;
+    return BIOINFORMATIKA_TOPICS.find((t) => t.id === selectedTopicId) ?? null;
   }, [selectedTopicId]);
 
+  const activeCategoryTopics = useMemo(() => {
+    if (!activeTopic) return [];
+    return activeTopic.category === "laboratoriya"
+      ? BIOINFORMATIKA_LAB_TOPICS
+      : BIOINFORMATIKA_PRACTICAL_TOPICS;
+  }, [activeTopic]);
+
   const activeTopicIndex = activeTopic
-    ? BIOINFORMATIKA_PRACTICAL_TOPICS.findIndex((t) => t.id === activeTopic.id)
+    ? activeCategoryTopics.findIndex((t) => t.id === activeTopic.id)
     : -1;
 
   const activeTopicDocs = useMemo(
@@ -165,9 +175,12 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
   );
   const activePdf = activeTopicDocs[selectedPdfIndex] ?? activeTopicDocs[0] ?? null;
 
-  const progressPercent = Math.round(
-    (completedIds.size / BIOINFORMATIKA_PRACTICAL_TOPICS.length) * 100,
+  const totalCompletedCount = useMemo(
+    () => BIOINFORMATIKA_TOPICS.filter((t) => completedIds.has(t.id)).length,
+    [completedIds],
   );
+
+  const progressPercent = Math.round((totalCompletedCount / BIOINFORMATIKA_TOPICS.length) * 100);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-background text-foreground">
@@ -195,8 +208,9 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   Bioinformatika fani
                 </h1>
                 <p className="truncate text-[11px] text-muted-foreground">
-                  Amaliy mashg‘ulotlar · 1–{BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy
-                  mashg‘ulot ({BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta PDF)
+                  {BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta amaliy ·{" "}
+                  {BIOINFORMATIKA_LAB_TOPICS.length} ta laboratoriya ({BIOINFORMATIKA_TOPICS.length}{" "}
+                  ta PDF)
                 </p>
               </div>
             </div>
@@ -209,7 +223,7 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                 O‘zlashtirildi:
               </span>
               <span className="font-extrabold text-primary tabular-nums">
-                {completedIds.size} / {BIOINFORMATIKA_PRACTICAL_TOPICS.length} ({progressPercent}%)
+                {totalCompletedCount} / {BIOINFORMATIKA_TOPICS.length} ({progressPercent}%)
               </span>
             </div>
           </div>
@@ -231,16 +245,18 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
               <div className="max-w-2xl space-y-2">
                 <div className="flex items-center gap-2 text-xs font-semibold text-cyan">
                   <Binary className="h-4 w-4 shrink-0" />
-                  <span>Bioinformatika darsligi · Amaliy mashg‘ulotlar to‘plami</span>
+                  <span>Bioinformatika darsligi · Amaliy va laboratoriya mashg‘ulotlari</span>
                 </div>
                 <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl md:text-3xl">
-                  Bioinformatika: Axborot nazariyasi, BLAST, filogenetika, CRISPR va PDB tahlili
+                  Bioinformatika: Axborot nazariyasi, BLAST, ORF, 3D vizuallashtirish, doking va
+                  CRISPR
                 </h2>
                 <p className="text-xs leading-relaxed text-navy-foreground/85 md:text-sm">
-                  Bioinformatika fanining amaliy qismidagi barcha{" "}
-                  {BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta mashg‘ulot (1-amaliy mashg‘ulotdan{" "}
-                  {BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulotgacha) ketma-ket
-                  kartochkalarda jamlangan. Har bir mashg‘ulot to‘liq oynada rasmiy PDF qo‘llanma,
+                  Bioinformatika fanining barcha {BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta amaliy
+                  mashg‘uloti (1–{BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy) va{" "}
+                  {BIOINFORMATIKA_LAB_TOPICS.length} ta laboratoriya ishi (1–
+                  {BIOINFORMATIKA_LAB_TOPICS.length}-laboratoriya) ketma-ket kartochkalarda
+                  jamlangan. Har bir mashg‘ulot to‘liq oynada rasmiy PDF qo‘llanma,
                   maqsad-vazifalar, qiyosiy jadval, glossariy va nazorat savollari bilan ochiladi.
                 </p>
               </div>
@@ -248,7 +264,7 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
 
             <div className="w-full shrink-0 space-y-2 rounded-2xl bg-navy-foreground/10 p-4 backdrop-blur-md lg:w-64">
               <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="text-navy-foreground/80">Amaliy qism natijasi</span>
+                <span className="text-navy-foreground/80">Umumiy o‘zlashtirish</span>
                 <span className="font-extrabold text-cyan tabular-nums">{progressPercent}%</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-navy-foreground/20">
@@ -258,14 +274,14 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                 />
               </div>
               <p className="text-[11px] text-navy-foreground/75">
-                {completedIds.size} ta amaliy mashg‘ulot bajarildi (
-                {BIOINFORMATIKA_PRACTICAL_TOPICS.length - completedIds.size} ta qoldi)
+                {totalCompletedCount} ta mashg‘ulot bajarildi (
+                {BIOINFORMATIKA_TOPICS.length - totalCompletedCount} ta qoldi)
               </p>
             </div>
           </div>
         </section>
 
-        {/* Textbook Part Switcher (Amaliy / Ma'ruza / Laboratoriya) */}
+        {/* Textbook Part Switcher (Amaliy / Laboratoriya / Ma'ruza) */}
         <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-2.5 shadow-sm">
           {[
             {
@@ -274,14 +290,14 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
               icon: ClipboardList,
             },
             {
+              id: "laboratoriya" as BioinformatikaCategory,
+              label: `Laboratoriya (${BIOINFORMATIKA_LAB_TOPICS.length})`,
+              icon: FlaskConical,
+            },
+            {
               id: "maruza" as BioinformatikaCategory,
               label: "Ma’ruzalar (tez kunda)",
               icon: BookOpen,
-            },
-            {
-              id: "laboratoriya" as BioinformatikaCategory,
-              label: "Laboratoriya (tez kunda)",
-              icon: FlaskConical,
             },
           ].map((tab) => {
             const TabIcon = tab.icon;
@@ -290,7 +306,10 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setSectionTab(tab.id)}
+                onClick={() => {
+                  setSectionTab(tab.id);
+                  setModuleFilter("all");
+                }}
                 className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
                   isActive
                     ? "bg-primary text-primary-foreground shadow-sm"
@@ -308,25 +327,42 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
         {currentSectionTopics.length > 0 && (
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm sm:gap-4 sm:p-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
-              {[
-                {
-                  id: "all",
-                  label: `Barcha amaliy mashg‘ulotlar (${BIOINFORMATIKA_PRACTICAL_TOPICS.length})`,
-                },
-                {
-                  id: "I qism: Axborot nazariyasi, bazalar va ketma-ketliklarni tekislash",
-                  label: "Bazalar va tekislash (1–5)",
-                },
-                {
-                  id: "II qism: Filogenetika, genom tahrirlash va oqsil strukturalari",
-                  label: "Filogeniya, CRISPR va PDB (6–10)",
-                },
-                { id: "done", label: `O‘zlashtirilganlar (${completedIds.size})` },
-              ].map((tab) => (
+              {(sectionTab === "laboratoriya"
+                ? [
+                    {
+                      id: "all",
+                      label: `Barcha laboratoriya ishlari (${BIOINFORMATIKA_LAB_TOPICS.length})`,
+                    },
+                    {
+                      id: "I qism: Ma’lumotlar bazalari, BLAST, ORF va filogenetika",
+                      label: "Bazalar, BLAST va ORF (1–5)",
+                    },
+                    {
+                      id: "II qism: 3D vizuallashtirish, modellashtirish va molekulyar doking",
+                      label: "3D, modellashtirish va doking (6–10)",
+                    },
+                    { id: "done", label: `O‘zlashtirilganlar (${currentSectionCompletedCount})` },
+                  ]
+                : [
+                    {
+                      id: "all",
+                      label: `Barcha amaliy mashg‘ulotlar (${BIOINFORMATIKA_PRACTICAL_TOPICS.length})`,
+                    },
+                    {
+                      id: "I qism: Axborot nazariyasi, bazalar va ketma-ketliklarni tekislash",
+                      label: "Bazalar va tekislash (1–5)",
+                    },
+                    {
+                      id: "II qism: Filogenetika, genom tahrirlash va oqsil strukturalari",
+                      label: "Filogeniya, CRISPR va PDB (6–10)",
+                    },
+                    { id: "done", label: `O‘zlashtirilganlar (${currentSectionCompletedCount})` },
+                  ]
+              ).map((tab) => (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setModuleFilter(tab.id as typeof moduleFilter)}
+                  onClick={() => setModuleFilter(tab.id)}
                   className={`shrink-0 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                     moduleFilter === tab.id
                       ? "bg-primary font-bold text-primary-foreground shadow-sm"
@@ -344,7 +380,11 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Amaliyot raqami (1–10) yoki atama..."
+                placeholder={
+                  sectionTab === "laboratoriya"
+                    ? "Laboratoriya raqami (1–10) yoki atama..."
+                    : "Amaliyot raqami (1–10) yoki atama..."
+                }
                 className="w-full rounded-xl border border-border bg-muted/40 py-2.5 pl-9 pr-8 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 sm:py-2 sm:text-xs"
               />
               {searchQuery && (
@@ -365,21 +405,35 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
           <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
             <BookOpen className="mx-auto h-10 w-10 text-primary/60" />
             <h3 className="mt-3 text-base font-extrabold text-foreground">
-              {sectionTab === "maruza"
-                ? "Ma’ruzalar bo‘limi tayyorlanmoqda"
-                : "Laboratoriya mashg‘ulotlari bo‘limi tayyorlanmoqda"}
+              Ma’ruzalar bo‘limi tayyorlanmoqda
             </h3>
             <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
-              Hozircha Bioinformatika fanining barcha 10 ta amaliy mashg‘ulot PDF qo‘llanmalari
-              yuklangan. Amaliy qismga qaytib darslarni o‘qishingiz mumkin.
+              Hozircha Bioinformatika fanining barcha {BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta
+              amaliy mashg‘uloti va {BIOINFORMATIKA_LAB_TOPICS.length} ta laboratoriya ishi PDF
+              qo‘llanmalari yuklangan.
             </p>
-            <button
-              type="button"
-              onClick={() => setSectionTab("amaliy")}
-              className="mt-4 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
-            >
-              Amaliy qismga o‘tish (10 ta PDF)
-            </button>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setSectionTab("amaliy");
+                  setModuleFilter("all");
+                }}
+                className="rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              >
+                Amaliy qismga o‘tish ({BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta PDF)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSectionTab("laboratoriya");
+                  setModuleFilter("all");
+                }}
+                className="rounded-xl border border-primary/30 bg-primary/10 px-5 py-2.5 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                Laboratoriya qismiga o‘tish ({BIOINFORMATIKA_LAB_TOPICS.length} ta PDF)
+              </button>
+            </div>
           </div>
         ) : filteredTopics.length > 0 ? (
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
@@ -470,7 +524,9 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
           <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center">
             <BookOpen className="mx-auto h-10 w-10 text-muted-foreground/50" />
             <p className="mt-3 text-sm font-bold text-foreground">
-              Qidiruv bo‘yicha amaliy mashg‘ulot topilmadi
+              {sectionTab === "laboratoriya"
+                ? "Qidiruv bo‘yicha laboratoriya ishi topilmadi"
+                : "Qidiruv bo‘yicha amaliy mashg‘ulot topilmadi"}
             </p>
             <button
               type="button"
@@ -480,7 +536,9 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
               }}
               className="mt-3 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-foreground"
             >
-              Barcha amaliy mashg‘ulotlarni ko‘rsatish
+              {sectionTab === "laboratoriya"
+                ? "Barcha laboratoriya ishlarini ko‘rsatish"
+                : "Barcha amaliy mashg‘ulotlarni ko‘rsatish"}
             </button>
           </div>
         )}
@@ -508,7 +566,9 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   <span className="rounded-lg bg-primary px-2.5 py-0.5 font-mono font-extrabold text-primary-foreground tabular-nums">
                     {activeTopic.topicLabel}
                   </span>
-                  <span className="font-semibold text-muted-foreground">Amaliy qism</span>
+                  <span className="font-semibold text-muted-foreground">
+                    {activeTopic.category === "laboratoriya" ? "Laboratoriya qismi" : "Amaliy qism"}
+                  </span>
                   <span aria-hidden="true" className="text-muted-foreground">
                     ·
                   </span>
@@ -572,7 +632,13 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   <div className="flex flex-wrap items-center gap-2">
                     {[
                       { id: "all", label: "Barchasi (PDF + Qo‘llanma)" },
-                      { id: "pdf", label: "PDF amaliy mashg‘ulot" },
+                      {
+                        id: "pdf",
+                        label:
+                          activeTopic.category === "laboratoriya"
+                            ? "PDF laboratoriya ishi"
+                            : "PDF amaliy mashg‘ulot",
+                      },
                       { id: "lecture", label: "Nazariy qo‘llanma" },
                     ].map((tab) => (
                       <button
@@ -627,7 +693,11 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
                     <h3 className="flex items-center gap-2 text-base font-extrabold text-primary">
                       <ListChecks className="h-5 w-5" />
-                      <span>Amaliy mashg‘ulot maqsadi va asosiy vazifalari</span>
+                      <span>
+                        {activeTopic.category === "laboratoriya"
+                          ? "Laboratoriya ishi maqsadi va asosiy vazifalari"
+                          : "Amaliy mashg‘ulot maqsadi va asosiy vazifalari"}
+                      </span>
                     </h3>
                     <div className="mt-4 grid gap-3">
                       {activeTopic.syllabusPoints.map((pt, idx) => (
@@ -814,7 +884,7 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   type="button"
                   disabled={activeTopicIndex <= 0}
                   onClick={() => {
-                    const prev = BIOINFORMATIKA_PRACTICAL_TOPICS[activeTopicIndex - 1];
+                    const prev = activeCategoryTopics[activeTopicIndex - 1];
                     if (prev) {
                       setSelectedTopicId(prev.id);
                     }
@@ -822,25 +892,33 @@ export function BioinformatikaSection({ onBack, onAskAi }: BioinformatikaSection
                   className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted disabled:opacity-40"
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  <span>Oldingi mashg‘ulot</span>
+                  <span>
+                    {activeTopic.category === "laboratoriya"
+                      ? "Oldingi laboratoriya ishi"
+                      : "Oldingi mashg‘ulot"}
+                  </span>
                 </button>
 
                 <span className="hidden px-2 font-mono text-xs font-bold text-muted-foreground tabular-nums sm:inline">
-                  {activeTopicIndex + 1} / {BIOINFORMATIKA_PRACTICAL_TOPICS.length}
+                  {activeTopicIndex + 1} / {activeCategoryTopics.length}
                 </span>
 
                 <button
                   type="button"
-                  disabled={activeTopicIndex >= BIOINFORMATIKA_PRACTICAL_TOPICS.length - 1}
+                  disabled={activeTopicIndex >= activeCategoryTopics.length - 1}
                   onClick={() => {
-                    const next = BIOINFORMATIKA_PRACTICAL_TOPICS[activeTopicIndex + 1];
+                    const next = activeCategoryTopics[activeTopicIndex + 1];
                     if (next) {
                       setSelectedTopicId(next.id);
                     }
                   }}
                   className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted disabled:opacity-40"
                 >
-                  <span>Keyingi mashg‘ulot</span>
+                  <span>
+                    {activeTopic.category === "laboratoriya"
+                      ? "Keyingi laboratoriya ishi"
+                      : "Keyingi mashg‘ulot"}
+                  </span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>

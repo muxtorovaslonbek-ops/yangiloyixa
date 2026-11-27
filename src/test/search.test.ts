@@ -6,7 +6,10 @@ import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
-import { BIOINFORMATIKA_PRACTICAL_TOPICS } from "@/data/bioinformatikaTopics";
+import {
+  BIOINFORMATIKA_LAB_TOPICS,
+  BIOINFORMATIKA_PRACTICAL_TOPICS,
+} from "@/data/bioinformatikaTopics";
 
 describe("searchAppContent", () => {
   it("returns empty array for empty query", () => {
@@ -253,6 +256,34 @@ describe("searchAppContent", () => {
       expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-\d+_amaliy_mashgulot_.*\.pdf$/);
       expect(topic.pdfDocuments).toHaveLength(1);
       expect(topic.pdfDocuments[0]?.kind).toBe("Amaliy mashg‘ulot");
+      expect(topic.pdfDocuments[0]?.url).toBe(topic.pdfUrl);
+    });
+  });
+
+  it("finds Bioinformatika sequential laboratory sessions (1 through 10) and verifies matched PDFs", () => {
+    const dockingResults = searchAppContent("AutoDock");
+    expect(
+      dockingResults.some((r) => r.id === "bioinf-lab-10" && r.category === "Darsliklar"),
+    ).toBe(true);
+
+    const orfResults = searchAppContent("ORFfinder");
+    expect(orfResults.some((r) => r.id === "bioinf-lab-4" && r.category === "Darsliklar")).toBe(
+      true,
+    );
+
+    expect(BIOINFORMATIKA_LAB_TOPICS).toHaveLength(10);
+    BIOINFORMATIKA_LAB_TOPICS.forEach((topic, idx) => {
+      expect(topic.order).toBe(idx + 1);
+      expect(topic.category).toBe("laboratoriya");
+      expect(topic.topicLabel).toBe(`${idx + 1}-laboratoriya ishi`);
+      expect(topic.overview.length).toBeGreaterThan(100);
+      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
+      expect(topic.comparisonTable.rows.length).toBeGreaterThanOrEqual(3);
+      expect(topic.keyConcepts.length).toBeGreaterThanOrEqual(4);
+      expect(topic.selfCheckQuestions.length).toBeGreaterThanOrEqual(3);
+      expect(topic.pdfUrl).toMatch(/^\/assets\/aistudio\/\d{2}-\d+_laboratoriya_ishi_.*\.pdf$/);
+      expect(topic.pdfDocuments).toHaveLength(1);
+      expect(topic.pdfDocuments[0]?.kind).toBe("Laboratoriya");
       expect(topic.pdfDocuments[0]?.url).toBe(topic.pdfUrl);
     });
   });

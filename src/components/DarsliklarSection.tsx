@@ -27,7 +27,11 @@ import { GENETIKA_TOPICS } from "@/data/genetikaTopics";
 import { MIKROBIOLOGIYA_TOPICS } from "@/data/mikrobiologiyaTopics";
 import { GIDROBIOLOGIYA_TOPICS } from "@/data/gidrobiologiyaTopics";
 import { BIOTEXNOLOGIYA_TOPICS } from "@/data/biotexnologiyaTopics";
-import { BIOINFORMATIKA_PRACTICAL_TOPICS } from "@/data/bioinformatikaTopics";
+import {
+  BIOINFORMATIKA_LAB_TOPICS,
+  BIOINFORMATIKA_PRACTICAL_TOPICS,
+  BIOINFORMATIKA_TOPICS,
+} from "@/data/bioinformatikaTopics";
 
 export type SubjectKey =
   | "botanika"
@@ -152,16 +156,16 @@ const SUBJECTS = [
     id: "bioinformatika" as SubjectKey,
     title: "Bioinformatika",
     subtitle: "Biologik ma’lumotlar tahlili, genomika va hisoblash biologiyasi",
-    description: `Bioinformatika fanining amaliy qismi: axborot nazariyasi, GenBank/UniProt, Needleman–Wunsch va Smith–Waterman, BLAST, ko‘p martali tekislash, filogenetika, CRISPR, PDB, gidrofoblik profillari va TALEN bo‘yicha barcha ${BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta amaliy mashg‘ulot (1–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulot) PDF qo‘llanmalari.`,
-    topicsCount: BIOINFORMATIKA_PRACTICAL_TOPICS.length,
-    status: "Amaliy qism ishga tushirildi",
+    description: `Bioinformatika fanining barcha ${BIOINFORMATIKA_PRACTICAL_TOPICS.length} ta amaliy mashg‘uloti (1–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy) hamda ${BIOINFORMATIKA_LAB_TOPICS.length} ta laboratoriya ishi (1–${BIOINFORMATIKA_LAB_TOPICS.length}-laboratoriya): ma’lumotlar bazalari, BLAST, ORFfinder, filogenetika, RasMol/PyMOL, gomologik modellashtirish, AutoDock Vina dokingi, CRISPR va TALEN PDF qo‘llanmalari.`,
+    topicsCount: BIOINFORMATIKA_TOPICS.length,
+    status: "Laboratoriya va amaliy qism",
     img: bioinformatikaImg,
     icon: Binary,
     ready: true,
     topicsPreview: [
-      "1–3-amaliy mashg‘ulotlar: Axborot entropiyasi, GenBank/UniProt va juft tekislash (PDF)",
-      "4–6-amaliy mashg‘ulotlar: BLAST tahlili, ko‘p martali tekislash va filogenetik daraxtlar (PDF)",
-      `7–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulotlar: CRISPR, PDB 3D struktura, gidrofoblik profillari va TALEN (PDF)`,
+      `1–${BIOINFORMATIKA_PRACTICAL_TOPICS.length}-amaliy mashg‘ulotlar: Axborot entropiyasi, tekislash, BLAST, filogenetika, CRISPR, PDB va TALEN (PDF)`,
+      "1–5-laboratoriya ishlari: PubMed/Entrez, BLAST, ORF qidirish, ORFfinder va Clustal/MEGA (PDF)",
+      `6–${BIOINFORMATIKA_LAB_TOPICS.length}-laboratoriya ishlari: 3D vizuallashtirish, PDB/UniProt, SWISS-MODEL/AlphaFold, RasMol va AutoDock doking (PDF)`,
     ],
   },
 ];
@@ -357,9 +361,7 @@ export function DarsliklarSection({
                     className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground shadow-sm transition-all active:scale-[0.98] hover:bg-primary/90"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
-                    <span>
-                      {subj.id === "bioinformatika" ? "Amaliy qismni ochish" : "Darsni boshlash"}
-                    </span>
+                    <span>Darsni boshlash</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 ) : (
